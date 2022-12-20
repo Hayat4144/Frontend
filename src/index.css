@@ -14,8 +14,6 @@
   -webkit-text-size-adjust: 100%;
 }
 
-
-
 body {
   min-width: 320px;
   min-height: 100vh;
@@ -34,6 +32,18 @@ body {
 
 .home_slider_image {
   z-index: -1;
-  margin-bottom: -250px;
   mask-image: linear-gradient(to bottom, rgb(0, 0, 0, 1), rgba(0, 0, 0, 0));
+}
+
+.home_products {
+  z-index: 1;
+  background-color: white;
+}
+
+
+.home_rows {
+  z-index: 1;
+  display: flex;
+  margin-right: 10px;
+  margin-left: 10px;
 }

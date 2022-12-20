@@ -5,6 +5,7 @@ import ImageThumbnail_3 from '../assets/SliderImage/Slider_3.jpg'
 import ImageThumbnail_4 from '../assets/SliderImage/Slider_4.jpg'
 import { BsArrowLeftCircle, BsArrowRightCircle } from 'react-icons/bs'
 import '../index.css'
+import SlidersProducts from '../shop/SlidersProducts'
 export default function HomeSlider() {
     const [slideIndex, setSlideIndex] = useState(0)
 
@@ -52,11 +53,14 @@ export default function HomeSlider() {
 
     return (
         <Fragment>
-            <section className='hero_section_slider_container'>
+            <section className='hero_section_slider_container w-full'>
                 <figure className='slider_image_container'>
-                    <img className='home_slider_image w-full' src={Product_image[slideIndex].imagetumbnail} />
+                    <img className='home_slider_image -mb-14 md:-mb-64'
+                        src={Product_image[slideIndex].imagetumbnail} />
                 </figure>
-                <div className='w-full px-5 justify-between relative bottom-40 text-white font-bold text-4xl flex'>
+                <div className='w-full px-5 justify-between   
+                        font-bold text-4xl flex absolute top-36 md:top-48
+                        text-white'>
                     <h3 className='cursor-pointer' onClick={() => {
                         backslide();
                     }}><BsArrowLeftCircle /></h3>
@@ -65,6 +69,12 @@ export default function HomeSlider() {
                     }}><BsArrowRightCircle /></h3>
                 </div>
             </section>
-        </Fragment>
+            <div className='home_rows'>
+                <SlidersProducts />
+                <SlidersProducts />
+                <SlidersProducts />
+            </div>
+
+        </Fragment >
     )
 }
