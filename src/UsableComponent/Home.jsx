@@ -16,7 +16,7 @@ export default function Home() {
                 <Navbar />
                 <FetchCategory />
             </Suspense>
-            <HomeSlider />
+            {/* <HomeSlider /> */}
         </Fragment>
     )
 }
