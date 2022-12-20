@@ -36,7 +36,6 @@ export default function ProductSearch() {
         // change the page number to load the fresh data accoring to the price
         setCurrentPage(1)
     }
-
     useEffect(() => {
 
         if (searchParams.get('price[gte]') && searchParams.get('price[lte]') && searchParams.get('page')) {
@@ -293,9 +292,11 @@ export default function ProductSearch() {
                                     <img src={ProductImage} alt="product-pic"
                                         className='w-full h-56 rounded-md hover:scale-125  transition ease-in-out duration-500' />
                                 </figure>
-                                <div className='product_details my-2'>
-                                    <p className='product_name capitalize w-full text-[17px] 
-                                    hover:text-indigo-700'>
+                                <div className='product_details my-2' onClick={() => {
+                                    navigate(`/V2/shop/product/${item._id}/${item.name}`)
+                                }}>
+                                    <p className='product_name capitalize w-full 
+                                    text-[17px] hover:text-indigo-700'>
                                         {item.name}
                                     </p>
                                     <p className='product_price text-[18px]'>
