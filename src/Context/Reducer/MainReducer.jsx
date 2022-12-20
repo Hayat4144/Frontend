@@ -3,12 +3,14 @@ import storage from 'redux-persist/lib/storage';
 import { persistReducer } from 'redux-persist';
 import SigninReducer from "./SigninReducer";
 import address_reducer from "./UserAddressReducer";
+import CategoryReducer from "./CategoryReducer";
 
 
 
 const MainReducer = combineReducers({
     Signin: SigninReducer,
-    Address: address_reducer
+    Address: address_reducer,
+    Category: CategoryReducer
 
 })
 
