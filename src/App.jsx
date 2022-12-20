@@ -24,7 +24,7 @@ function App() {
           <Route path="/V2/account/change/password" element={<ChangePassword />} />
           <Route path="/V2/auth/sign_up" element={<Signup />} />
           <Route path="/V2/auth/sign_in" element={<Signin />} />
-          <Route path="/V2/shop/product/page" element={<ProductPage />} />
+          <Route path="/V2/shop/product/:id/:name" element={<ProductPage />} />
           <Route path="/V2/shop/search" element={<ProductSearch />} />
           <Route path="/V2/shop/products" element={<Products />} />
           <Route path='*' element={<NotFound />} />
