@@ -4,13 +4,15 @@ import { persistReducer } from 'redux-persist';
 import SigninReducer from "./SigninReducer";
 import address_reducer from "./UserAddressReducer";
 import CategoryReducer from "./CategoryReducer";
+import UserReducer from "./UserReducer";
 
 
 
 const MainReducer = combineReducers({
     Signin: SigninReducer,
     Address: address_reducer,
-    Category: CategoryReducer
+    Category: CategoryReducer,
+    User: UserReducer
 
 })
 
