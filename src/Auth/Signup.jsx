@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react'
 import { IoIosCloseCircleOutline } from 'react-icons/io'
-import { json, Link } from 'react-router-dom'
+import { json, Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 
@@ -9,10 +9,13 @@ export default function Signup() {
     const [mobile_no, setmobile_no] = useState('')
     const [email, setemail] = useState('')
     const [password, setpassword] = useState('')
-    const [confirm_password, setconfpassword] = useState('')
+    const [confirmpassword, setconfpassword] = useState('')
     const [showPassword1, setshowpassword1] = useState(false)
     const [showPassword2, setshowpassword2] = useState(false)
     const [isLoading, setisLoading] = useState(false)
+
+    const navigate = useNavigate();
+
     const SignupFunc = async () => {
         setisLoading(!isLoading)
         await fetch('http://localhost:5000/v3/api/user/signup/', {
@@ -23,13 +26,15 @@ export default function Signup() {
             body: JSON.stringify({
                 name: full_name,
                 email,
-                password
+                password,
+                confirmpassword,
             })
         })
             .then(async (res) => {
                 setisLoading(false)
                 const data = await res.json();
-                if (data.status === 200) {
+                console.log(data.data)
+                if (res.status === 200) {
                     toast.success(data.data, {
                         position: "bottom-center",
                         autoClose: 5000,
@@ -40,12 +45,13 @@ export default function Signup() {
                         progress: undefined,
                         theme: "dark",
                     });
+                    navigate('/V2/auth/sign_in')
                 }
                 else {
                     toast.error(data.error, {
-                        position: 'bottom-center',
+                        position: "bottom-center",
                         autoClose: 5000,
-                        hideProgressBar: true,
+                        hideProgressBar: false,
                         closeOnClick: true,
                         pauseOnHover: true,
                         draggable: true,
@@ -120,7 +126,7 @@ export default function Signup() {
                             <label htmlFor='Password' className='text-sm font-bold text-gray-700'>
                                 Re-enter Password</label>
                             <input type={showPassword2 ? 'text' : 'password'} required
-                                value={confirm_password} onChange={(e) => { setconfpassword(e.target.value) }}
+                                value={confirmpassword} onChange={(e) => { setconfpassword(e.target.value) }}
                                 className="border border-gray-300 rounded-md my-2 py-[8px] 
                                 w-full focus:border-indigo-600 focus:ring-indigo-700 bg-inherit 
                                 focus:border  px-2 outline-none text-sm text-gray-700

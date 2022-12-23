@@ -1,11 +1,17 @@
 import React, { Fragment, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import DecodeJwtToken from '../utils/DecodeJwtToken'
 
 export default function Signin() {
     const [email, setemail] = useState('')
     const [password, setpassword] = useState('')
     const [showPassword, setshowpassword] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const EmailChange = (e) => {
         setemail(e.target.value)
@@ -39,6 +45,9 @@ export default function Signin() {
                 progress: undefined,
                 theme: "dark",
             });
+            DecodeJwtToken(dispatch);
+            navigate('/')
+
         }
         else {
             setIsLoading(false)
