@@ -7,16 +7,18 @@ import HomeSlider from './HomeSlider'
 import Paginations from './Paginations'
 const FetchCategory = lazy(() => import('../shop/Category/FetchCategory'))
 const Footer = lazy(() => import('./Footer'))
-const Navbar = lazy(() => import('./Navbar'))
+// const Navbar = lazy(() => import('./Navbar'))
+import Navbar from './Navbar'
+
+import Dummy from '../Dummy';
 
 export default function Home() {
     return (
         <Fragment>
-            <Suspense fallback={<NavbarSkeleton />}>
-                <Navbar />
-                <FetchCategory />
-            </Suspense>
-            {/* <HomeSlider /> */}
+            <Navbar />
+            <div className='bg-gray-300'>
+                <HomeSlider />
+            </div>
         </Fragment>
     )
 }
