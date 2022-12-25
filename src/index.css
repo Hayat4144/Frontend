@@ -3,10 +3,11 @@
 @tailwind utilities;
 
 :root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
+  font-family: 'Noto Sans', sans-serif;
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
   line-height: 24px;
-  font-weight: 400;
+  /* font-weight: 400; */
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -24,22 +25,27 @@ body {
   border-top-right-radius: 6px;
 }
 
-.search_box {
+/* .search_box {
   border-bottom-left-radius: 6px;
   border-top-left-radius: 6px;
-}
+} */
 
 
 .home_slider_image {
   z-index: -1;
-  mask-image: linear-gradient(to bottom, rgb(0, 0, 0, 1), rgba(0, 0, 0, 0));
+  height: 100%;
+  /* mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)); */
+
 }
+
 
 .home_products {
   z-index: 1;
-  background-color: white;
 }
 
+.items {
+  z-index: 1;
+}
 
 .home_rows {
   z-index: 1;
