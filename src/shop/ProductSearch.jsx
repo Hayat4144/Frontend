@@ -6,6 +6,7 @@ import { AiOutlineClose } from 'react-icons/ai'
 import { BsPlus } from 'react-icons/bs'
 import { AiOutlineMinus } from 'react-icons/ai'
 import ProductImage from '../assets/images/thumbnail-1.jpg'
+import NoResult from '../assets/images/no-results.png'
 import Slider from '@mui/material/Slider';
 import { createSearchParams, useSearchParams, useNavigate } from 'react-router-dom'
 import Paginations from '../UsableComponent/Paginations'
@@ -23,10 +24,11 @@ export default function ProductSearch() {
     const [SizeOpen, setSizeOpen] = useState(false)
     const [filterOpne, setfilterOpen] = useState(false)
     const [PriceOpne, setPriceOpen] = useState(false)
-    const [price, setprice] = useState([0, 400])
+    const [price, setprice] = useState([0, 4000])
     const [totalProduct, setTotalProduct] = useState()
     const [showProductPerPage, setShowProductPerPage] = useState(10)
     const [currentPage, setCurrentPage] = useState(1)
+    const [NoProduct, setNoProduct] = useState(false)
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
@@ -52,6 +54,7 @@ export default function ProductSearch() {
                 search: `?${createSearchParams(searchParams)}`
             })
         }
+
         const link = `http://localhost:5000/v4/api/get_all/product?search=${searchParams.get('keyword')}&price[gte]=${price[0]}&price[lte]=${price[1]}&page=${currentPage}`
         async function fetchproducts() {
             await fetch(link, {
@@ -61,10 +64,17 @@ export default function ProductSearch() {
                 },
                 credentials: 'include'
             }).then(async (res) => {
-                const { data } = await res.json();
-                const { result, total_result } = data[0];
-                setProducts(result)
-                setTotalProduct(Number(total_result[0].count))
+                if (res.status === 200) {
+                    const { data } = await res.json();
+                    console.log(data)
+                    const { result, total_result } = data[0];
+                    setProducts(result)
+                    setTotalProduct(Number(total_result[0].count))
+                }
+                else {
+                    setNoProduct(true)
+                }
+
             })
         }
         fetchproducts();
@@ -87,7 +97,7 @@ export default function ProductSearch() {
             setCurrentPage(currentPage - 1)
     }
 
-    console.log(currentPage)
+    console.log('h')
 
     return (
         <Fragment>
@@ -284,9 +294,11 @@ export default function ProductSearch() {
                         </article>
                     </section >
                 </section >
+
                 <section className='md:col-span-3 mx-5 lg:col-span-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5'>
                     {
                         products.length > 0 ? products.map(item => (
+
                             <div key={item._id} className="cursor-pointer">
                                 <figure className='overflow-hidden rounded-md'>
                                     <img src={ProductImage} alt="product-pic"
@@ -305,11 +317,27 @@ export default function ProductSearch() {
                                     </p>
                                 </div>
                             </div>
+
                         )) : <Fragment>
-                            not found
+                            <div className="no-serach-result col-span-5  mx-auto">
+                                <figure className='no-search-result-image-container'>
+                                    <img src={NoResult} alt=""
+                                        className="cursor-pointer" />
+                                </figure>
+                                <div className="no_result_text_box text-center">
+                                    <div className='no_result_found'>
+                                        <h1 className='font-bold text-3xl my-5'>Results not found</h1>
+                                        <p className='my-5'>Sorry!  we could not found the information
+                                            at that moment which you want.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </Fragment>
                     }
                 </section>
+
+
             </main >
             {
                 totalProduct > 10 ? <div className='paginations my-16'>
