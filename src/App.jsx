@@ -11,14 +11,18 @@ import 'react-toastify/dist/ReactToastify.css';
 import ProductPage from "./shop/ProductPage";
 import ProductSearch from "./shop/ProductSearch";
 import Products from "./shop/AllProducts";
+import Navbar from "./UsableComponent/Navbar";
+import Cart from "./shop/Cart/Cart";
 
 function App() {
 
   return (
     <div className="App">
+
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/V2/user/cart" element={<Cart />} />
           <Route path="/V2/account/profile" element={<Profile />} />
           <Route path="/V2/account/address" element={<Address />} />
           <Route path="/V2/account/change/password" element={<ChangePassword />} />

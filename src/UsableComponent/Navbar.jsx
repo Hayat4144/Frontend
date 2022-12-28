@@ -6,8 +6,9 @@ import { BiSearch } from 'react-icons/bi'
 import { MdArrowDropDown } from 'react-icons/md'
 import { BsHandbag } from 'react-icons/bs';
 import { CiUser } from 'react-icons/ci'
-import { createSearchParams, Navigate, useNavigate } from 'react-router-dom'
+import { createSearchParams, Link, Navigate, useNavigate } from 'react-router-dom'
 const Account_List_Modal = lazy(() => import('./Account_List_Modal'))
+
 
 export default function Navbar() {
     const [isMobileViewOpen, setIsMobileViewOpen] = useState(false);
@@ -50,7 +51,7 @@ export default function Navbar() {
 
                 <div className="main_menu flex items-center space-x-20">
                     {/* ---- Company logo ---- */}
-                    <div className='company_logo text-xl cursor-pointer'>Taj Jwellery</div>
+                    <div className='company_logo text-xl cursor-pointer'><Link to={'/'}>Taj Jwellery</Link></div>
                     <div className="list_of_item hidden md:block">
                         <ul className='flex items-center space-x-5 text-[17px]'>
                             <li className='hover:text-indigo-700 hover:border-b-2 
@@ -108,19 +109,20 @@ export default function Navbar() {
                     </div>
 
                     {/* ---- Cart Icon */}
-                    <div className="cart_icon  hover:text-indigo-700">
+                    <Link to="/V2/user/cart" className="cart_icon  hover:text-indigo-700">
+
                         <div className='flex'>
                             <BsHandbag className='text-2xl' />
                             <span className='number_of_item_in_cart text-sm -translate-y-2'>1</span>
                         </div>
                         <span className='icon_name hidden md:block text-sm font-bold'>Cart</span>
-                    </div>
+                    </Link>
                 </div>
             </nav>
 
             {/* ---- Mobile Menu ----- */}
             <div className={`mobile_menu_dialog_model fixed md:hidden bg-black w-full
-             opacity-100 bg-opacity-30  inset-0 ${isMobileViewOpen ? 'flex' : 'hidden'}`}
+             opacity-100 bg-opacity-30  inset-0 z-50 ${isMobileViewOpen ? 'flex' : 'hidden'}`}
             >
                 {/* ---- Mobile link Menu white background */}
                 <div className=' w-3/4 bg-white'>
