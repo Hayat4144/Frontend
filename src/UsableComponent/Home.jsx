@@ -10,7 +10,6 @@ const Footer = lazy(() => import('./Footer'))
 // const Navbar = lazy(() => import('./Navbar'))
 import Navbar from './Navbar'
 
-import Dummy from '../Dummy';
 
 export default function Home() {
     return (
