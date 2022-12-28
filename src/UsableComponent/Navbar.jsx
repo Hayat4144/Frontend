@@ -7,6 +7,8 @@ import { MdArrowDropDown } from 'react-icons/md'
 import { BsHandbag } from 'react-icons/bs';
 import { CiUser } from 'react-icons/ci'
 import { createSearchParams, Link, Navigate, useNavigate } from 'react-router-dom'
+import FetchCategory from '../shop/Category/FetchCategory'
+import { useSelector } from 'react-redux'
 const Account_List_Modal = lazy(() => import('./Account_List_Modal'))
 
 
@@ -15,8 +17,10 @@ export default function Navbar() {
     const [Islogding, setIslogding] = useState(false)
     const [IsAccountModalOpen, SetIsAccountModalOpen] = useState(false)
     const [keyword, setKeyword] = useState('')
-
     const navigate = useNavigate();
+
+    // ---- cart data ----- //
+    const { productItems } = useSelector(state => state.Cart)
 
     // MobileViewOpen Function
     const OpenMobileeView = () => {
@@ -53,7 +57,8 @@ export default function Navbar() {
                     {/* ---- Company logo ---- */}
                     <div className='company_logo text-xl cursor-pointer'><Link to={'/'}>Taj Jwellery</Link></div>
                     <div className="list_of_item hidden md:block">
-                        <ul className='flex items-center space-x-5 text-[17px]'>
+                        <FetchCategory />
+                        {/* <ul className='flex items-center space-x-5 text-[17px]'>
                             <li className='hover:text-indigo-700 hover:border-b-2 
                              hover:border-indigo-700 duration-150 ease-in-out
                              cursor-pointer py-4 '>
@@ -71,7 +76,7 @@ export default function Navbar() {
                             <li className='hover:text-indigo-700 hover:border-b-2 
                              hover:border-indigo-700 font-semibold cursor-pointer duration-300 
                              transition ease-in-out py-4 '>Fashion</li>
-                        </ul>
+                        </ul> */}
                     </div>
                 </div>
 
@@ -113,7 +118,7 @@ export default function Navbar() {
 
                         <div className='flex'>
                             <BsHandbag className='text-2xl' />
-                            <span className='number_of_item_in_cart text-sm -translate-y-2'>1</span>
+                            <span className='number_of_item_in_cart text-sm -translate-y-2'>{productItems.length}</span>
                         </div>
                         <span className='icon_name hidden md:block text-sm font-bold'>Cart</span>
                     </Link>
@@ -153,6 +158,8 @@ export default function Navbar() {
                     <AiOutlineCloseCircle className='text-4xl cursor-pointer' onClick={OpenMobileeView} />
                 </div>
             </div>
+
+
         </header >
 
     )
