@@ -1,27 +1,36 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, lazy, Suspense } from 'react'
 import AccoutnImage from '../assets/images/account.png'
 import SecurityImage from '../assets/images/security.png'
 import OrderImage from '../assets/images/Order.webp'
 import WishlistImage from '../assets/images/Wishlist.png'
 import { Link } from 'react-router-dom'
-
+import NavbarSkeleton from '../Skeleton/NavbarSkeleton'
+import Footer from '../UsableComponent/Footer'
+const Navbar = lazy(() => import('../UsableComponent/Navbar'))
 export default function AccountContainer() {
+
     return (
         <Fragment>
-            <div className='Account_Container my-5 px-5 md:mx-auto md:w-[80%]'>
+            <Suspense fallback={<NavbarSkeleton />}>
+                <Navbar />
+            </Suspense>
+            <div className='Account_Container my-10 px-5 md:mx-auto md:w-[80%]'>
                 <h3 className='text-2xl mb-5'>Your Account</h3>
                 <div className='account_container_grid_box grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3'>
-                    <div className='account_box border hover:bg-gray-100 border-gray-300 rounded-md px-5 py-2 flex  space-x-5 cursor-pointer'>
-                        <figure>
-                            <img src={SecurityImage} className="w-[80px]" />
-                        </figure>
-                        <div className='loging&security_text'>
-                            <h3 className='text-bold'>Login & Security</h3>
-                            <p className='text-gray-700 text-sm'>
-                                Login , apply security to your account
-                            </p>
+                    <Link to={'/V2/auth/sign_in'}>
+                        <div className='account_box border hover:bg-gray-100 border-gray-300 rounded-md px-5 py-2 flex  space-x-5 cursor-pointer'>
+                            <figure>
+                                <img src={SecurityImage} className="w-[80px]" />
+                            </figure>
+                            <div className='loging&security_text'>
+                                <h3 className='text-bold'>Login & Security</h3>
+                                <p className='text-gray-700 text-sm'>
+                                    Login , apply security to your account
+                                </p>
+                            </div>
                         </div>
-                    </div>
+                    </Link>
+
                     <Link to={'/V2/account/address'}>
                         <div className='address_box border hover:bg-gray-100 border-gray-300 rounded-md px-5 py-2 flex  space-x-5 cursor-pointer'>
 
@@ -78,8 +87,11 @@ export default function AccountContainer() {
 
 
                 </div>
-
             </div>
+            <div className="absolute bottom-0 w-full">
+                <Footer />
+            </div>
+
         </Fragment>
     )
 }
