@@ -1,4 +1,4 @@
-import React, { Fragment, lazy, useState } from 'react'
+import React, { Fragment, lazy, Suspense, useState } from 'react'
 import { BsCart } from 'react-icons/bs'
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 import { FaUserCircle } from 'react-icons/fa'
@@ -28,8 +28,9 @@ export default function Navbar() {
         console.log(isMobileViewOpen)
     }
 
-    const Account_LisModelshowFunc = () => {
-        SetIsAccountModalOpen(!IsAccountModalOpen)
+    // pass this function to child component to change the state of this state 
+    const AccountModalToggle = (state) => {
+        SetIsAccountModalOpen(!state)
     }
 
     const SubmitHandler = () => {
@@ -107,9 +108,13 @@ export default function Navbar() {
                     </div>
 
                     {/* ---- User Icon  ---- */}
-                    <div className="user_icon hidden md:block text-center cursor-pointer hover:text-indigo-700">
+                    <div className="user_icon hidden md:block text-center cursor-pointer
+                    hover:text-indigo-700" onMouseEnter={() => AccountModalToggle(IsAccountModalOpen)}>
                         <CiUser className='text-2xl' />
-                        <span className='icon_name text-sm font-bold'>Profile</span>
+                        <span className='icon_name text-sm font-bold hover:border-b-2
+                        border-b-indigo-700 pb-4'>
+                            Profile
+                        </span>
                     </div>
 
                     {/* ---- Cart Icon */}
@@ -158,7 +163,12 @@ export default function Navbar() {
                 </div>
             </div>
 
-
+            <Suspense fallback={<p>loading...</p>}>
+                <Account_List_Modal
+                    Modalopen={IsAccountModalOpen}
+                    AccountModalToggle={AccountModalToggle}
+                />
+            </Suspense>
         </header >
 
     )
