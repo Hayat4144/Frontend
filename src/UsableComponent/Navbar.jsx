@@ -57,8 +57,7 @@ export default function Navbar() {
                     {/* ---- Company logo ---- */}
                     <div className='company_logo text-xl cursor-pointer'><Link to={'/'}>Taj Jwellery</Link></div>
                     <div className="list_of_item hidden md:block">
-                        <FetchCategory />
-                        {/* <ul className='flex items-center space-x-5 text-[17px]'>
+                        <ul className='flex items-center space-x-5 text-[17px]'>
                             <li className='hover:text-indigo-700 hover:border-b-2 
                              hover:border-indigo-700 duration-150 ease-in-out
                              cursor-pointer py-4 '>
@@ -76,7 +75,7 @@ export default function Navbar() {
                             <li className='hover:text-indigo-700 hover:border-b-2 
                              hover:border-indigo-700 font-semibold cursor-pointer duration-300 
                              transition ease-in-out py-4 '>Fashion</li>
-                        </ul> */}
+                        </ul>
                     </div>
                 </div>
 
