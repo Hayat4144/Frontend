@@ -2,55 +2,28 @@ import React, { Fragment, useState, useEffect } from 'react'
 import Navbar from '../UsableComponent/Navbar';
 import { BsArrowLeftCircle, BsArrowRightCircle } from 'react-icons/bs'
 import { useParams } from 'react-router-dom'
-import '../ProductPage.css'
+import { useDispatch } from 'react-redux'
 import { BiPlus } from 'react-icons/bi'
 import { AiOutlineMinus } from 'react-icons/ai'
-import Imagethumbnail_1 from '../assets/images/thumbnail-1.jpg'
-import Imagethumbnail_2 from '../assets/images/thumbnail_2.jpg'
-import Imagethumbnail_3 from '../assets/images/thumbnail_3.jpg'
-import Imagethumbnail_4 from '../assets/images/thumbnail_4.jpg'
-
+import { ADD_TO_CART_ACTION } from '../Context/Actions/CartActions';
+import { toast } from 'react-toastify'
 
 
 export default function ProductPage() {
     const { id, category } = useParams();
-    const [quanity, setquantity] = useState(10)
-    const [sizevalue, setsizevalue] = useState('Choose a size')
-    const [colourvalue, setColourvalue] = useState('')
+    const [quantity, setquantity] = useState(10)
     const [image_value, setimage_value] = useState(0)
     const [slideindex, setslidindex] = useState(1)
     const [product_detail, setProduct_detail] = useState([])
     const [product_varient, setProduct_varient] = useState([])
-    const [productAttribute, setProductAttribute] = useState([])
     const [selectedSize, setSelectedSize] = useState('Choose a size');
     const [selectedColor, setSelectedColor] = useState('Choose a color');
 
-    const Product_image = [
-        {
-            "imagetumbnail": Imagethumbnail_1,
-            "id": "1"
-        },
-        {
-            "imagetumbnail": Imagethumbnail_2,
-            "id": "2"
-        },
-        {
-            "imagetumbnail": Imagethumbnail_3,
-            "id": "3"
-        },
-        {
-            "imagetumbnail": Imagethumbnail_4,
-            "id": "4"
-        },
-        {
-            "imagetumbnail": Imagethumbnail_2,
-            "id": "5"
-        }
-    ]
+    const dispatch = useDispatch();
 
 
     useEffect(() => {
-        const result = Promise.all([
+        Promise.all([
             fetch(`http://localhost:5000/v4/api/product/${id}`, {
                 method: "GET",
                 credentials: 'include'
@@ -83,34 +56,54 @@ export default function ProductPage() {
         return varients.filter(item => item.product_attribute.size == seletectedsize && item.product_attribute.color == selectedcolor)
     }
 
-    //  ----- assing the selected varient 
+    //  ----- assing the selected varient ----- //
     const selectedvarients = getSelectedVarients(product_varient, selectedSize, selectedColor)
 
 
     useEffect(() => {
+
         if (selectedvarients.length > 0) {
             const updateState = product_detail.map(obj => {
                 return { ...obj, price: selectedvarients[0].price }
             })
+            setProduct_detail(updateState)
         }
-    }, [selectedvarients])
+    }, [selectedSize, selectedColor, product_varient])
 
-    const imagetumbnail = Product_image[image_value]
 
+    // ---- Add to Cart ---- //
 
     const Add_TO_CART_FUNC = () => {
-        // const item_data = {
-        //     'product_item_id': '27',
-        //     'product_image': Product_image[0].imagetumbnail,
-        //     'size': sizevalue,
-        //     'colour': colourvalue,
-        //     'quantity': quanity,
-        //     'product_name': product_data[0].name,
-        //     "price": product_data[0].regular_price
+        if (selectedvarients.length > 0) {
+            let data = {
+                ...selectedvarients[0], quantity, name: product_detail[0].name,
+                image: product_detail[0].assets.images[0]
+            }
+            dispatch(ADD_TO_CART_ACTION(data))
+            toast.success(`product has been added successfully to your cart.`, {
+                position: "bottom-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
 
-        // }
-        // const l = dispatch(ADD_TO_CART(item_data))
-        // console.log(l)
+        }
+        else {
+            toast.error("Please select color and size.", {
+                position: 'bottom-center',
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            })
+        }
     }
 
     // next slide
@@ -123,7 +116,7 @@ export default function ProductPage() {
         }
     }
 
-    // back slide
+    //  ----- back slide ----- // 
     const backslide = (product_image) => {
         if (slideindex !== 1) {
             setslidindex(slideindex - 1)
@@ -134,11 +127,11 @@ export default function ProductPage() {
     }
 
     const IncreaseQuantity = () => {
-        setquantity(quanity + 1)
+        setquantity(quantity + 1)
     }
 
     const DicreaseQuantity = () => {
-        setquantity(quanity - 1)
+        setquantity(quantity - 1)
     }
 
     const ManualQuantityChange = (e) => {
@@ -285,21 +278,21 @@ export default function ProductPage() {
 
 
                         <div className='product-quantity my-4'>
-                            <div className='quanity-value flex 
+                            <div className='quantity-value flex 
                                 justify-between lg:mx-0 bg-gray-200 py-1 rounded-md 
                                 items-center lg:justify-between space-x-24 lg:space-x-20 
                                 px-5'
                             >
                                 <button className='decrease-btn bg-indigo-900 text-white rounded-full 
                                     indigo-700 focus:border-none'
-                                    disabled={quanity == 10 || quanity < 10 ? true : false}>
+                                    disabled={quantity == 10 || quantity < 10 ? true : false}>
                                     <AiOutlineMinus fontSize={'20px'} onClick={DicreaseQuantity} />
                                 </button>
                                 <input type={'text'} className='focus:outline-none focus:border
                                     focus:border-indigo-600 focus:shadow-lg focus:bg-indigo-700                            
                                     focus:text-white w-10 border rounded-md border-indigo-800 
                                     outline-none bg-transparent text-black  text-center'
-                                    value={quanity} onChange={(e) => {
+                                    value={quantity} onChange={(e) => {
                                         e.preventDefault();
                                         ManualQuantityChange(e);
                                     }} />
@@ -308,7 +301,7 @@ export default function ProductPage() {
                                 </button>
 
                             </div>
-                            <span id='quantity-limit' className={`text-sm text-red-700 ${quanity < 10 ? 'block' : 'hidden'}`}>You should have to buy at least 10 pcs.</span>
+                            <span id='quantity-limit' className={`text-sm text-red-700 ${quantity < 10 ? 'block' : 'hidden'}`}>You should have to buy at least 10 pcs.</span>
                         </div>
 
                         <div className='group-btn lg:flex lg:items-center '>
