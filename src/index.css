@@ -67,3 +67,7 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+.payment_ooption input:checked+label {
+  border: 1px solid indigo;
+}
