@@ -1,17 +1,17 @@
 import React, { Fragment, useState } from 'react'
 import { toast } from 'react-toastify'
-import { useDispatch } from 'react-redux'
-import { AddressAction } from '../Context/Actions/AddressActions'
+import { useDispatch, useSelector } from 'react-redux'
 import { CREATEADDRESS } from '../Context/Actions/ActionType'
 import Navbar from '../UsableComponent/Navbar'
 
-export default function Address() {
-    const [Street, setStreet] = useState('')
-    const [Area, setArea] = useState('')
-    const [city, setCity] = useState('')
-    const [State, setState] = useState('')
-    const [pincode, setPincode] = useState()
-    const [Country, setCountry] = useState('')
+export default function Address({ smWidth, lgWidth, mdWidth, xlWidth, title }) {
+    const { user_address } = useSelector(state => state.Address)
+    const [Street, setStreet] = useState(user_address.Street)
+    const [Area, setArea] = useState(user_address.Area)
+    const [city, setCity] = useState(user_address.city)
+    const [State, setState] = useState(user_address.State)
+    const [pincode, setPincode] = useState(user_address.pincode)
+    const [Country, setCountry] = useState(user_address.Country)
     const [isLoading, setIsLoading] = useState(false)
     const dispatch = useDispatch();
 
@@ -36,7 +36,9 @@ export default function Address() {
         const data = await result.json();
         setIsLoading(false)
         if (result.status === 200) {
-            dispatch({ type: CREATEADDRESS, payload: data.doc })
+            console.log(data.doc)
+            const m = dispatch({ type: CREATEADDRESS, payload: data.doc })
+            console.log(m)
             toast.success(data.data, {
                 position: "bottom-center",
                 autoClose: 5000,
@@ -64,14 +66,13 @@ export default function Address() {
 
     return (
         <Fragment>
-            <Navbar />
+            {/* <Navbar /> */}
             <div className='address-container'>
                 <div className='text-center page-text mb-5'>
-                    <h3 className='mx-4 py-1 text-3xl mt-3 font-[1000]'>Add your address</h3>
+                    <h3 className='mx-4 py-1 text-3xl mt-3 font-[1000]'>{title}</h3>
                 </div>
-                <div className='address-form sm:mx-auto sm:w-[50%] mt-4 xl:mx-auto
-                xl:w-[30%]  lg:mx-auto lg:w-[25%] border md:w-[50%] md:m-auto border-gray-300 shadow-lg 
-                    rounded-md px-4 mx-3 mb-2'>
+                <div className={`address-form mx-auto border border-gray-300 shadow-lg 
+                    rounded-md px-4 mb-2`}>
                     <form onSubmit={(e) => {
                         e.preventDefault();
                         SubmitHandler();
@@ -169,12 +170,12 @@ export default function Address() {
                                 placeholder="Enter your Country" />
                         </div>
                         <div className='submit_btn mb-5 my-2'>
-                            {!isLoading ? <button type='submit' className='w-24 h-10 text-center
+                            {!isLoading ? <button type='submit' className='h-10 w-36 text-center
                              text-white outline-none  text-bold bg-indigo-800 rounded-md
                               hover:bg-indigo-700'>Submit</button> : <button type="button"
                                 className="inline-flex items-center justify-center py-2  leading-4 
                               text-sm shadow rounded-md text-white bg-indigo-800 hover:bg-indigo-900
-                               w-24 text-center transition ease-in-out duration-150 cursor-not-allowed"
+                               w-36  text-center transition ease-in-out duration-150 cursor-not-allowed"
                                 disabled="">
                                 <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-slate-500"
                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
