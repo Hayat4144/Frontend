@@ -8,32 +8,21 @@ const Navbar = lazy(() => import('../../UsableComponent/Navbar'))
 import { useDispatch, useSelector } from 'react-redux';
 import EmptyCartImage from '../../assets/images/EmptyCart.webp'
 import { DECREASE_QUANTITY, INCREASE_QUANTITY, REMOVE_ITEM_FROM_CART } from '../../Context/Actions/ActionType'
-
+import { Link } from 'react-router-dom'
+const OrderSummary = lazy(() => import('./OrderSummary'))
 
 export default function Cart() {
     //  ----- states ---- //
     const Cartdata = useSelector(state => state.Cart.productItems)
     const [minimumquantity, setminimumquantity] = useState(10)
     const [quantityalert, setQuantityalert] = useState(false)
-    const [shippingestimate, setShippingestimate] = useState(200)
-    const [tax_percentage, settax_percentage] = useState(0.5)
+
     const [IsModalOpen, setIsModalOpen] = useState(false)
     const [isRemovedItem, setIsRemovedItem] = useState(false)
     const dispatch = useDispatch();
 
 
-    if (Cartdata.length > 0) {
-        var subtotal = Cartdata.reduce((a, b) => {
-            return a + b.price * b.quantity;
 
-        }, 0)
-
-        // tax applied according to the total price of shopping
-        var tax_amount = Math.trunc(tax_percentage / 100 * subtotal);
-
-        var total_amount = tax_amount + subtotal + shippingestimate;
-
-    }
 
 
     //  ---- Increase qunatity of cart item ---- //
@@ -206,26 +195,26 @@ export default function Cart() {
 
                             </section>
 
-                            {/* ----- Subtotal ---- */}
-                            <section className='subtotal mx-4 shadow-lg px-2 bg-gray-100 rounded-md my-5 md:my-0 '>
-                                <h3 className='order-summary-text py-2 text-xl text-indigo-700'>Order Summary</h3>
-                                <div className='subtotal flex items-center border-b border-slate-300 pb-3 my-2 justify-between'>
-                                    <h3 className='subtotaltext'>Subtotal</h3>
-                                    <span className='amount'>Rs {subtotal}</span>
+
+                            {/*  ---- Checkout And Subtotal */}
+                            <div className="checkout_Subtotal">
+
+                                <Suspense fallback={<p>loading...</p>}>
+                                    <OrderSummary />
+                                </Suspense>
+                                <div className="checkout mx-4 my-5">
+                                    <button className="checkout_btn px-5 w-full py-3 hover:border
+                                    hover:bg-transparent hover:border-indigo-700 bg-indigo-700
+                                    text-white shadow-md outline-none hover:text-black text-xl
+                                    rounded-md">
+                                        <Link to="/V2/shop/checkout?component=shipping">Place order now</Link>
+                                    </button>
                                 </div>
-                                <div className='shiping-estimate  my-2 border-b border-slate-300 pb-3 items-center justify-between flex'>
-                                    <h3 className='shipingtext'>Shipping estimate</h3>
-                                    <span className='amount'>Rs 200</span>
-                                </div>
-                                <div className='tax-estimate items-center border-b border-slate-300 pb-3 my-2 justify-between flex'>
-                                    <h3 className='tax-text '>Tax estimate</h3>
-                                    <span className='amount'>Rs {tax_amount}</span>
-                                </div>
-                                <div className='total flex items-center pb-2 justify-between mb-5'>
-                                    <h3 className='order-total'>Total</h3>
-                                    <span className='amount'>Rs {total_amount}</span>
-                                </div>
-                            </section>
+
+                            </div>
+
+
+
                         </main>
                     </Fragment>
                 }
