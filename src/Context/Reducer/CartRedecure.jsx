@@ -3,7 +3,8 @@ import { ADD_TO_CART, DECREASE_QUANTITY, INCREASE_QUANTITY, REMOVE_ITEM_FROM_CAR
     from "../Actions/ActionType";
 
 const initialState = {
-    productItems: []
+    productItems: [],
+    Shipping_Address: {}
 }
 
 const CartReducer = (state = initialState, action) => {

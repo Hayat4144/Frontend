@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import DecodeJwtToken from '../utils/DecodeJwtToken'
 
@@ -9,9 +9,11 @@ export default function Signin() {
     const [password, setpassword] = useState('')
     const [showPassword, setshowpassword] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-
+    const [searchParams] = useSearchParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+
 
     const EmailChange = (e) => {
         setemail(e.target.value)
@@ -19,6 +21,9 @@ export default function Signin() {
     const PasswordChange = (e) => {
         setpassword(e.target.value)
     }
+    console.log(searchParams.get('next'))
+
+
     const SigninFunc = async () => {
         setIsLoading(!isLoading)
         const result = await fetch('http://localhost:5000/v3/api/user/signin/', {
@@ -46,7 +51,7 @@ export default function Signin() {
                 theme: "dark",
             });
             DecodeJwtToken(dispatch);
-            navigate('/')
+            searchParams.get('next') ? navigate(searchParams.get('next')) : navigate('/')
 
         }
         else {
