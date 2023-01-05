@@ -68,6 +68,32 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-.payment_ooption input:checked+label {
+[type=radio] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* IMAGE STYLES */
+[type=radio]+.box_container {
+  cursor: pointer;
+  width: 100%;
+  border: 1px solid gray;
+
+}
+
+
+.checked_btn {
+  visibility: hidden;
+}
+
+/* CHECKED STYLES */
+[type=radio]:checked+div {
   border: 1px solid indigo;
+}
+
+/* CHECKED STYLES */
+[type=radio]:checked+div .checked_btn {
+  visibility: visible;
 }
