@@ -17,6 +17,7 @@ import AccountContainer from "./Accounts/AccountContainer";
 import Checkout from "./shop/Checkout/Checkout";
 import ConfrimOrder from "./shop/Checkout/ConfrimOrder";
 import { lazy, Suspense } from "react";
+import ProductByCategory from "./shop/Category/ProductByCategory";
 const Payment = lazy(() => import('./shop/Checkout/Payment'))
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
           <Route path="/V2/user/cart" element={<Cart />} />
           <Route path="/V2/shop/checkout" element={<Checkout />} />
           <Route path="V2/shop/checkout/confirm/order" element={<ConfrimOrder />} />
+          <Route path="/V2/shop/products/category" element={<ProductByCategory />} />
           <Route path="V2/shop/checkout/payment" element={<Suspense fallback={<p>laoding</p>}><Payment /></Suspense>} />
           <Route path="/V2/user/account" element={<AccountContainer />} />
           <Route path="/V2/account/profile" element={<Profile />} />
