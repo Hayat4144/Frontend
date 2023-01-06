@@ -7,8 +7,8 @@ export default function SlidersProducts() {
         <div className='home_products grid grid-cols-1 sm:grid-cols-2
         w-full md:grid-cols-3 lg:grid-cols-4 py-10 gap-5'>
             {
-                [1, 2, 3, 4].map((item) => (
-                    <div className='items bg-white mb-5 px-4 py-5'>
+                [1, 2, 3, 4].map((item, index) => (
+                    <div className='items bg-white mb-5 px-4 py-5' key={index}>
                         <div className='product-info cursor-pointer'>
                             <Link to="/V2/shop/products/category">
                                 <h3 className='card_title text-[17px] font-bold leading-tight'>
