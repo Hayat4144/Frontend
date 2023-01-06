@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect, Suspense, lazy } from 'react'
 import { AiOutlineDown } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
 import { FETCHCATEGORY } from '../../Context/Actions/ActionType';
-const ChildrenCateogry = lazy(() => import('./ChildrenCateogry'));
+
 
 export default function FetchCategory() {
     const dispatch = useDispatch();
