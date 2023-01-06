@@ -18,9 +18,9 @@ export default function SlidersProducts() {
                                     <img src={ProductImage} alt="image"
                                         className='w-full h-52' />
                                 </figure>
-                                <a className='see_more text-blue-700 cursor-pointer
+                                <h1 className='see_more text-blue-700 cursor-pointer
                             hover:underline text-[18px]'
-                                >see more</a>
+                                >see more</h1>
                             </Link>
 
                         </div>
