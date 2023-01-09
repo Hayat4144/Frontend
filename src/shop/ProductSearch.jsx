@@ -13,9 +13,11 @@ import Paginations from '../UsableComponent/Paginations'
 import Footer from '../UsableComponent/Footer'
 import { AiOutlineArrowRight } from 'react-icons/ai'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
+import { RiArrowDropDownLine } from 'react-icons/ri'
 
 
 export default function ProductSearch() {
+    //  ---------------------- All states ---------------------------- //
     const [products, setProducts] = useState([])
     const [isSortOpen, setisSortOpen] = useState(false)
     const [isFilterOpen, setisFilterOpen] = useState(false)
@@ -29,6 +31,12 @@ export default function ProductSearch() {
     const [showProductPerPage, setShowProductPerPage] = useState(10)
     const [currentPage, setCurrentPage] = useState(1)
     const [NoProduct, setNoProduct] = useState(false)
+    const [sortPriceLowToHigh, setSortPriceLowToHigh] = useState('sortPriceLowToHigh')
+    const [sortPriceHighToLow, setSortPriceHightToLow] = useState('sortPriceHighToLow')
+    const [sortByName, setSortByName] = useState('name')
+    const [sort, setsort] = useState(sortByName)
+    const [sortRelevence, setSortRelevence] = useState('Relevence')
+
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
@@ -40,22 +48,33 @@ export default function ProductSearch() {
     }
     useEffect(() => {
 
+        //  ---------------- query parameters -------------------    //
         if (searchParams.get('price[gte]') && searchParams.get('price[lte]') && searchParams.get('page')) {
             searchParams.delete('price[lte]')
             searchParams.delete('price[gte]')
             searchParams.delete('page', currentPage)
+            searchParams.delete('sort', sort)
         }
         else {
             searchParams.append('price[gte]', price[0])
             searchParams.append('price[lte]', price[1])
             searchParams.append('page', currentPage)
+            searchParams.append('sort', sort)
             navigate({
                 pathname: location.pathname,
                 search: `?${createSearchParams(searchParams)}`
             })
         }
 
-        const link = `http://localhost:5000/v4/api/get_all/product?search=${searchParams.get('keyword')}&price[gte]=${price[0]}&price[lte]=${price[1]}&page=${currentPage}`
+        //  -------------------- end of qurery paramters --------------------------  //
+
+
+        // ------------- Backend product fetch api url ------------------ //
+        const link = `http://localhost:5000/v4/api/get_all/product?search=${searchParams.get('keyword')}&price[gte]=${price[0]}&price[lte]=${price[1]}&page=${currentPage}&sort=${sort === 'sortPriceLowToHigh' ? 'price' : sort === 'sortPriceHighToLow' ? 'price' : sort}${sort === 'sortPriceHighToLow' ? '&orderby=desc' : ''}`;
+
+
+
+
         async function fetchproducts() {
             await fetch(link, {
                 method: 'GET',
@@ -78,8 +97,10 @@ export default function ProductSearch() {
             })
         }
         fetchproducts();
-    }, [price, navigate, searchParams, searchParams.get('keyword'), currentPage, setTotalProduct, setProducts])
+    }, [price, searchParams, currentPage, setTotalProduct, setProducts, sort, sortPriceHighToLow])
 
+
+    //  ------------------ pagination logic ----------------
     if (totalProduct > 10) {
         var numberofPages = Math.ceil(totalProduct / 10);
         var page_number = [...Array(numberofPages + 1).keys()].slice(1)
@@ -97,58 +118,81 @@ export default function ProductSearch() {
             setCurrentPage(currentPage - 1)
     }
 
-    console.log('h')
+    //  -------------------- end of pagination logic ------------------
+
+    // ---- calculating the product starting and ending number of every page
+
+    // --- starting product 
+    const startingProductNumber = (currentPage - 1) * showProductPerPage + 1;
+
+    // --- ending product 
+    var lastProductNumber;
+    if (totalProduct < showProductPerPage) {
+        lastProductNumber = totalProduct;
+    } else {
+        lastProductNumber = showProductPerPage * currentPage;
+    }
+
+
 
     return (
         <Fragment>
             <header>
                 <Navbar />
             </header>
-            <div className='product_search_total_value_show'>
-                <h2 className='product_total_info'>Showing <span className=''> {showProductPerPage} of {totalProduct} </span>
-                    result of <span className='text-indigo-700 hover:cursor-pointer
+
+            {/*  ----------------------product count --------------------------  */}
+            <div className='product_search_total_value_show border-b border-gray-400 
+            shadow-md h-10 w-full px-5 flex items-center justify-between'>
+                <h2 className='product_total_info'>Showing <span className='product_count'> {startingProductNumber} - {lastProductNumber} of {totalProduct} </span>
+                    for result <span className='text-indigo-700 hover:cursor-pointer
                     hover:text-indigo-900'>
                         "{searchParams.get('keyword')}"
                     </span>
                 </h2>
+
+                {/*  ----------------- sort for large screeen --------------- */}
+                <div className='sortByContainer border border-gray-300 text-sm md:flex items-center hidden'>
+                    <span className='sortby_text text-sm font-extrabold px-1'>Sort By:</span>
+                    <select name="sort"
+                        id="sort"
+                        defaultValue={sortByName}
+                        onChange={(e) => setsort(e.target.value)}
+                        className='px-2 py-1 rounded-md bg-inherit'>
+                        <option value={sortByName}> Name</option>
+                        <option value={sortPriceHighToLow}> Price Hight to low</option>
+                        <option value={sortPriceLowToHigh}> Price low to High </option>
+                    </select>
+                </div>
+                {/*  ------------------- end of sort for large screeen ----------------- */}
+
             </div>
 
+            {/*  -------------------- main container for product and filter ---------------------- */}
             <main className='my-5 md:my-10 grid grid-cols-1 md:grid-cols-5 lg:grid-cols-7 gap-y-5'>
-                <section className='sort_filter md:col-span-1'>
-                    {/* for mobile only */}
-                    <section className=' md:hidden filter-sort-for-mobile-only h-10 py-2 grid grid-cols-2 px-5'>
-                        <article className='sort'>
-                            <h3 className='flex items-center font-[500]'>Sort {isSortOpen ? <AiOutlineClose className='mx-2' onClick={() => { setisSortOpen(!setisSortOpen) }} fontSize={'20px'} /> : <MdSort onClick={() => { setisSortOpen(!isSortOpen) }} className='mx-2' fontSize={'22px'} />}</h3>
-                            <aside className={` ${isSortOpen ? 'visible' : 'hidden'} side-sort-menu z-2 bg-white absolute left-0  w-[15em] px-5`}>
-                                <form className='sort-form my-3 space-y-3'>
-                                    <div className='input-field flex items-center justify-between text-center'>
-                                        <label htmlFor='relevance'>Relevance</label>
-                                        <input type={'checkbox'} id='relevance' className='' />
-                                    </div>
-                                    <div className='input-field flex items-center justify-between text-center'>
-                                        <label htmlFor='low-to-high'>Price low-to-high</label>
-                                        <input type={'checkbox'} id='low-to-high' className='' />
-                                    </div>
-                                    <div className='input-field flex items-center justify-between text-center'>
-                                        <label htmlFor='high-to-low'>Price high-to-low</label>
-                                        <input type={'checkbox'} id='high-to-low' className='' />
-                                    </div>
-                                    <div className='input-field flex items-center justify-between text-center'>
-                                        <label htmlFor='new-arrivals'>New Arrivals</label>
-                                        <input type={'checkbox'} id='new-arrivals' className='' />
-                                    </div>
-                                    <div className='input-field flex items-center justify-between text-center'>
-                                        <label htmlFor='discount'>Discount</label>
-                                        <input type={'checkbox'} id='discount' className='' />
-                                    </div>
-                                    <div className='input-field flex items-center justify-between text-center'>
-                                        <label htmlFor='tranding'>Tranding</label>
-                                        <input type={'checkbox'} id='tranding' className='' />
-                                    </div>
-                                </form>
-                            </aside>
-                        </article>
 
+                {/*  --------------------- filter --------------- */}
+                <section className='sort_filter md:col-span-1'>
+                    <section className=' md:hidden filter-sort-for-mobile-only h-10 py-2 grid grid-cols-2 px-5'>
+
+                        {/* --------------- sort --------- */}
+                        <div className="sort_box flex items-center border border-gray-300">
+                            <h4>Sort:</h4>
+                            <select
+                                defaultValue={sortByName}
+                                onChange={(e) => setsort(e.target.value)}
+                                className='px-[6px] py-1 rounded-md bg-inherit text-sm'>
+                                <option value={sortByName}> Name</option>
+                                <option value={sortPriceHighToLow}>Price Hight to low</option>
+                                <option value={sortPriceLowToHigh}>Price low to High
+                                </option>
+                            </select>
+                        </div>
+
+                        {/* ------------------ end of sort -----------------------------*/}
+
+
+                        {/* ------------------ start of filter ------------------- */}
                         <article className='filter'>
                             <h3 className='flex items-center md:hidden  md:float-left float-right font-[500]'> Filter <FiFilter className='mx-2' fontSize={'20px'} onClick={() => {
                                 setfilterOpen(!isFilterOpen)
@@ -165,6 +209,8 @@ export default function ProductSearch() {
                                             <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Tops</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
                                         </ul>
                                     </div>
+
+                                    {/* -------------------- colours facet --------------------- */}
                                     <div className='Colour my-3 border-b border-gray-400 pb-2'>
                                         <h3 className='Colour-text flex w-full  justify-between items-center'><span> Colour</span> {!ColourOpen ? < BsPlus fontSize={'22px'} onClick={() => { setColourOpen(!ColourOpen) }} /> : <AiOutlineMinus fontSize={'22px'} onClick={() => { setColourOpen(!ColourOpen) }} />}</h3>
                                         <ul className={`${ColourOpen ? 'block' : 'hidden'} Colour-list-filter px-3 my-2`}>
@@ -176,14 +222,8 @@ export default function ProductSearch() {
                                             <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Mahroon</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
                                         </ul>
                                     </div>
-                                    {/* <div className='Size my-3 border-b border-gray-400 pb-2'>
-                                        <h3 className='Size-text flex w-full  justify-between items-center'><span>Size</span> {!SizeOpen ? <BsPlus fontSize={'22px'} onClick={() => { setSizeOpen(!SizeOpen) }} /> : <AiOutlineMinus fontSize={'22px'} onClick={() => { setSizeOpen(!SizeOpen) }} />} </h3>
-                                        <ul className={`${SizeOpen ? 'block' : 'hidden'} Size-list-filter px-3 my-2`}>
-                                            <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Small</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
-                                            <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Medium</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
-                                            <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Large</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
-                                        </ul>
-                                    </div> */}
+
+                                    {/* ------------------- price handling ----------------- */}
                                     <div className='Price my-3 border-b border-gray-400 pb-2'>
                                         <h3 className='Price-text flex w-full  justify-between items-center'><span>Price</span> {!PriceOpne ? <BsPlus fontSize={'22px'} onClick={() => { setPriceOpen(!PriceOpne) }} /> : <AiOutlineMinus fontSize={'22px'} onClick={() => { setPriceOpen(!setPriceOpen) }} />} </h3>
                                         <div className={`${PriceOpne ? 'block' : 'hidden'}
@@ -204,47 +244,20 @@ export default function ProductSearch() {
                             </aside>
                         </article>
                     </section >
-                    <section section className='filter&sort-medium-large-screen hidden md:block' >
-                        <article className='sort rounded-md bg-white'>
-                            <h3 className='flex font-[500] justify-between items-center py-3 rounded-md mx-3 bg-white '>Sort By {isSortOpen ? <AiOutlineMinus className='mx-2' onClick={() => { setisSortOpen(!setisSortOpen) }} fontSize={'20px'} /> : <BsPlus onClick={() => { setisSortOpen(!isSortOpen) }} className='mx-2' fontSize={'22px'} />}</h3>
-                            <aside className={` ${isSortOpen ? 'visible' : 'hidden'} side-sort-menu z-2 bg-white px-5`}>
-                                <form className='sort-form my-3 space-y-3'>
-                                    <div className='input-field flex items-center justify-between text-center'>
-                                        <label htmlFor='relevance'>Relevance</label>
-                                        <input type={'checkbox'} id='relevance' className='' />
-                                    </div>
-                                    <div className='input-field flex items-center justify-between text-center'>
-                                        <label htmlFor='low-to-high'>Price low-to-high</label>
-                                        <input type={'checkbox'} id='low-to-high' className='' />
-                                    </div>
-                                    <div className='input-field flex items-center justify-between text-center'>
-                                        <label htmlFor='high-to-low'>Price high-to-low</label>
-                                        <input type={'checkbox'} id='high-to-low' className='' />
-                                    </div>
-                                    <div className='input-field flex items-center justify-between text-center'>
-                                        <label htmlFor='new-arrivals'>New Arrivals</label>
-                                        <input type={'checkbox'} id='new-arrivals' className='' />
-                                    </div>
-                                    <div className='input-field flex items-center justify-between text-center'>
-                                        <label htmlFor='discount'>Discount</label>
-                                        <input type={'checkbox'} id='discount' className='' />
-                                    </div>
-                                    <div className='input-field flex items-center justify-between text-center'>
-                                        <label htmlFor='tranding'>Tranding</label>
-                                        <input type={'checkbox'} id='tranding' className='' />
-                                    </div>
-                                </form>
-                            </aside>
-                        </article>
 
-                        {/* for filter */}
+                    {/* --------------------------- filter box for large screeen ----------------- */}
+                    <section section className='filter&sort-medium-large-screen hidden md:block' >
                         <article className='filter rounded'>
                             <h3 className='flex items-center md:hidden  md:float-left float-right font-[500]'> Filter <FiFilter className='mx-2' fontSize={'20px'} onClick={() => {
                                 setfilterOpen(!isFilterOpen)
                             }} /></h3>
+
+                            {/*  ------------------- facet search -------------------- */}
                             <aside className={` bg-white px-5 z-2 filter-aside rounded-md pb-5 `}>
                                 <h3 className='filter-text flex  border-b pb-3 border-gray-400 font-[500] text-xl justify-between items-center'><span className='pr-2'> Filter</span><AiOutlineClose className='md:hidden ' onClick={() => { setfilterOpen(!filterOpne) }} fontSize={'20px'} /></h3>
                                 <form className='filter-form my-4'>
+
+                                    {/*  ---------------------- category facet------------------- */}
                                     <div className='category border-b border-gray-400 pb-2'>
                                         <h3 className='Category-text flex w-full  justify-between items-center'><span> Category</span>{!categoryOpen ? < BsPlus fontSize={'22px'} onClick={() => { setcategoryOpen(!categoryOpen) }} /> : <AiOutlineMinus fontSize={'22px'} onClick={() => { setcategoryOpen(!categoryOpen) }} />} </h3>
                                         <ul className={`${categoryOpen ? 'block' : 'hidden'} category-list-filter px-3 my-2`}>
@@ -254,6 +267,8 @@ export default function ProductSearch() {
                                             <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Tops</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
                                         </ul>
                                     </div>
+
+                                    {/*  ------------------ color facet -------------------- */}
                                     <div className='Colour my-3 border-b border-gray-400 pb-2'>
                                         <h3 className='Colour-text flex w-full  justify-between items-center'><span> Colour</span> {!ColourOpen ? < BsPlus fontSize={'22px'} onClick={() => { setColourOpen(!ColourOpen) }} /> : <AiOutlineMinus fontSize={'22px'} onClick={() => { setColourOpen(!ColourOpen) }} />}</h3>
                                         <ul className={`${ColourOpen ? 'block' : 'hidden'} Colour-list-filter px-3 my-2`}>
@@ -265,6 +280,9 @@ export default function ProductSearch() {
                                             <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Mahroon</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
                                         </ul>
                                     </div>
+
+
+                                    {/*  ------------------------- size facet --------------------- */}
                                     <div className='Size my-3 border-b border-gray-400 pb-2'>
                                         <h3 className='Size-text flex w-full  justify-between items-center'><span>Size</span> {!SizeOpen ? <BsPlus fontSize={'22px'} onClick={() => { setSizeOpen(!SizeOpen) }} /> : <AiOutlineMinus fontSize={'22px'} onClick={() => { setSizeOpen(!SizeOpen) }} />} </h3>
                                         <ul className={`${SizeOpen ? 'block' : 'hidden'} Size-list-filter px-3 my-2`}>
@@ -273,10 +291,12 @@ export default function ProductSearch() {
                                             <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Large</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
                                         </ul>
                                     </div>
+
+                                    {/* ------------------ price handling filter ------------------ */}
                                     <div className='Price my-3 border-b border-gray-400 pb-2'>
                                         <h3 className='Price-text flex w-full  justify-between items-center'><span>Price</span> {!PriceOpne ? <BsPlus fontSize={'22px'} onClick={() => { setPriceOpen(!PriceOpne) }} /> : <AiOutlineMinus fontSize={'22px'} onClick={() => { setPriceOpen(!setPriceOpen) }} />} </h3>
                                         <div className={`${PriceOpne ? 'block' : 'hidden'}
-                                        Price-list-filter px-3 my-2`}>
+                                        Price-list-filter px-3 my-10`}>
                                             <Slider
                                                 aria-label="Always visible"
                                                 value={price}
@@ -289,12 +309,16 @@ export default function ProductSearch() {
                                             />
                                         </div>
                                     </div>
+                                    {/* ------------------------- end of price handling filter */}
                                 </form>
                             </aside>
                         </article>
+
+                        {/*  --------------------------- end of filter box ------------------------- */}
                     </section >
                 </section >
 
+                {/*  -------------------------- product show ------------------- */}
                 <section className='md:col-span-3 mx-5 lg:col-span-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5'>
                     {
                         products.length > 0 ? products.map(item => (
@@ -319,6 +343,7 @@ export default function ProductSearch() {
                             </div>
 
                         )) : <Fragment>
+                            {/*  ----------------------- no result found------------------ */}
                             <div className="no-serach-result col-span-5  mx-auto">
                                 <figure className='no-search-result-image-container'>
                                     <img src={NoResult} alt=""
@@ -339,6 +364,8 @@ export default function ProductSearch() {
 
 
             </main >
+
+            {/*  -------------------- pagination container -------------------- */}
             {
                 totalProduct > 10 ? <div className='paginations my-16'>
                     <section className='pagination_container my-5'>
@@ -380,7 +407,7 @@ export default function ProductSearch() {
                     </section>
                 </div > : ''
             }
-
+            {/* ----------------------- end of pagination contianer ------------------- */}
             <Footer />
         </Fragment >
     )
