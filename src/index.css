@@ -68,7 +68,7 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-[type=radio] {
+.payment_container [type=radio] {
   position: absolute;
   opacity: 0;
   width: 0;
@@ -89,11 +89,11 @@ input[type=number] {
 }
 
 /* CHECKED STYLES */
-[type=radio]:checked+div {
+.payment_container [type=radio]:checked+div {
   border: 1px solid indigo;
 }
 
 /* CHECKED STYLES */
-[type=radio]:checked+div .checked_btn {
+.payment_container [type=radio]:checked+div .checked_btn {
   visibility: visible;
 }
