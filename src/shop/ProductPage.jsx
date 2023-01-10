@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { Fragment, useState, useEffect, lazy, Suspense } from 'react'
 import Navbar from '../UsableComponent/Navbar';
 import { BsArrowLeftCircle, BsArrowRightCircle } from 'react-icons/bs'
 import { useParams } from 'react-router-dom'
@@ -7,10 +7,11 @@ import { BiPlus } from 'react-icons/bi'
 import { AiOutlineMinus } from 'react-icons/ai'
 import { ADD_TO_CART_ACTION } from '../Context/Actions/CartActions';
 import { toast } from 'react-toastify'
-
+const SimilarProducts = lazy(() => import('./SimilarProducts'))
+const Footer = lazy(() => import('../UsableComponent/Footer'))
 
 export default function ProductPage() {
-    const { id, category } = useParams();
+    const { id } = useParams();
     const [quantity, setquantity] = useState(10)
     const [image_value, setimage_value] = useState(0)
     const [slideindex, setslidindex] = useState(1)
@@ -323,6 +324,15 @@ export default function ProductPage() {
             ))
             }
 
+
+            {/*  ------------------ similar products show --------------- */}
+            <Suspense fallback={<p>loading....</p>}>
+                <SimilarProducts />
+            </Suspense>
+
+            <Suspense fallback={<p>loading....</p>}>
+                <Footer />
+            </Suspense>
         </Fragment >
     )
 }
