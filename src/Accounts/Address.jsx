@@ -1,8 +1,9 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, lazy, Suspense, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
 import { CREATEADDRESS } from '../Context/Actions/ActionType'
-import Navbar from '../UsableComponent/Navbar'
+const Navbar = lazy(() => import('../UsableComponent/Navbar'))
+import NavbarSkeleton from '../Skeleton/NavbarSkeleton'
 
 export default function Address({ smWidth, lgWidth, mdWidth, xlWidth, title }) {
     const { user_address } = useSelector(state => state.Address)
@@ -66,13 +67,16 @@ export default function Address({ smWidth, lgWidth, mdWidth, xlWidth, title }) {
 
     return (
         <Fragment>
+            <Suspense fallback={<NavbarSkeleton />}>
+                <Navbar />
+            </Suspense>
             {/* <Navbar /> */}
-            <div className='address-container'>
+            <div className='address-container mx-5'>
                 <div className='text-center page-text mb-5'>
-                    <h3 className='mx-4 py-1 text-3xl mt-3 font-[1000]'>{title}</h3>
+                    <h3 className='mx-4 py-1 text-3xl mt-3 font-[1000]'>Your shipping address</h3>
                 </div>
                 <div className={`address-form mx-auto border border-gray-300 shadow-lg 
-                    rounded-md px-4 mb-2`}>
+                    rounded-md px-4 mb-2 sm:w-5/6 md:w-2/4 lg:w-[30%]`}>
                     <form onSubmit={(e) => {
                         e.preventDefault();
                         SubmitHandler();
