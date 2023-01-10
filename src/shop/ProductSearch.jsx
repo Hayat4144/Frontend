@@ -329,7 +329,7 @@ export default function ProductSearch() {
                                         className='w-full h-56 rounded-md hover:scale-125  transition ease-in-out duration-500' />
                                 </figure>
                                 <div className='product_details my-2' onClick={() => {
-                                    navigate(`/V2/shop/product/${item._id}/${item.name}`)
+                                    navigate(`/V2/shop/product/${item._id}/${item.name}/${item.category}`)
                                 }}>
                                     <p className='product_name capitalize w-full 
                                     text-[17px] hover:text-indigo-700'>
