@@ -48,18 +48,19 @@ export default function AccountContainer() {
                         </div>
                     </Link>
 
-
-                    <div className='account_box border hover:bg-gray-100 border-gray-300 rounded-md px-5 py-2 flex  space-x-5 cursor-pointer'>
-                        <figure className='w-[80px] h-[30px]'>
-                            <img src={OrderImage} className="rounded-full" />
-                        </figure>
-                        <div className='profile_text'>
-                            <h3 className='text-bold'>Your Orders</h3>
-                            <p className='text-gray-700 text-sm'>
-                                Track your orders, buy things again
-                            </p>
+                    <Link to={'/V2/user/account/order/history'}>
+                        <div className='account_box border hover:bg-gray-100 border-gray-300 rounded-md px-5 py-2 flex  space-x-5 cursor-pointer'>
+                            <figure className='w-[80px] h-[30px]'>
+                                <img src={OrderImage} className="rounded-full" />
+                            </figure>
+                            <div className='profile_text'>
+                                <h3 className='text-bold'>Your Orders</h3>
+                                <p className='text-gray-700 text-sm'>
+                                    Track your orders, buy things again
+                                </p>
+                            </div>
                         </div>
-                    </div>
+                    </Link>
                     <Link to={'/V2/account/profile'}>
                         <div className='account_box border hover:bg-gray-100 border-gray-300 rounded-md px-5 py-2 flex  space-x-5'>
                             <figure>
