@@ -21,6 +21,8 @@ const Payment = lazy(() => import('./shop/Checkout/Payment'))
 const UserOrdersHistory = lazy(() => import('./Accounts/Order'))
 const ForgetPassword = lazy(() => import('./Accounts/ForgetPassword'))
 const ForgetPasswordRequest = lazy(() => import('./Accounts/RequestForgetpassword'))
+const EmailChangeRequest = lazy(() => import('./Accounts/EmailchangeRequest'))
+const VerifyEmailChnage = lazy(() => import('./Accounts/VerifyEmailChnage'))
 
 function App() {
 
@@ -37,6 +39,8 @@ function App() {
           <Route path="/V2/user/account/order/history" element={<Suspense fallback={<p>laoding</p>}><UserOrdersHistory /></Suspense>} />
           <Route path="/v2/auth/user/change/password/link/verify/:user/:token" element={<Suspense fallback={<p>laoding</p>}><ForgetPassword /></Suspense>} />
           <Route path="/V2/forget/password/request" element={<Suspense fallback={<p>laoding</p>}><ForgetPasswordRequest /></Suspense>} />
+          <Route path="/V2/email/change/request" element={<Suspense fallback={<p>laoding</p>}><EmailChangeRequest /></Suspense>} />
+          <Route path="/v2/auth/user/change/email/link/verify/:user/:token" element={<Suspense fallback={<p>laoding</p>}><VerifyEmailChnage /></Suspense>} />
           <Route path="/V2/user/account" element={<AccountContainer />} />
           <Route path="/V2/account/profile" element={<Profile />} />
           <Route path="/V2/account/address" element={<Address />} />
