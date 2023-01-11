@@ -36,10 +36,18 @@ export default function Account_List_Modal({ Modalopen, AccountModalToggle }) {
                     <div className='account-details text-black'>
                         <h3 className='font-bold '>Account Details</h3>
                         <ul className='space-y-1 my-3 text-slate-800'>
-                            <li className='text-sm hover:text-indigo-800 cursor-pointer hover:underline'>Account</li>
-                            <li className='text-sm hover:text-indigo-800 cursor-pointer hover:underline'>Order & order history</li>
-                            <li className='text-sm hover:text-indigo-800 cursor-pointer hover:underline'>Purchase</li>
-                            <li className='text-sm hover:text-indigo-800 cursor-pointer hover:underline'>Settings</li>
+                            <li className='text-sm hover:text-indigo-800 cursor-pointer hover:underline'>
+                                <Link to={'/V2/user/account'}>
+                                    Account
+                                </Link>
+                            </li>
+                            <li className='text-sm hover:text-indigo-800 cursor-pointer hover:underline'>
+                                <Link to={'/V2/user/account/order/history'}>
+                                    Order & order history
+                                </Link>
+                            </li>
+                            {/* <li className='text-sm hover:text-indigo-800 cursor-pointer hover:underline'>Purchase</li>
+                            <li className='text-sm hover:text-indigo-800 cursor-pointer hover:underline'>Settings</li> */}
                         </ul>
                     </div>
                 </section>
