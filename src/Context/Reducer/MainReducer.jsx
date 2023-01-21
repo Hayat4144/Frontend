@@ -6,6 +6,7 @@ import address_reducer from "./UserAddressReducer";
 import CategoryReducer from "./CategoryReducer";
 import UserReducer from "./UserReducer";
 import CartReducer from "./CartRedecure";
+import StripePaymentReducer from "./StripePaymentReducer";
 
 
 
@@ -15,7 +16,8 @@ const MainReducer = combineReducers({
     Address: address_reducer,
     Category: CategoryReducer,
     User: UserReducer,
-    Cart: CartReducer
+    Cart: CartReducer,
+    Stripe:StripePaymentReducer
 
 })
 
