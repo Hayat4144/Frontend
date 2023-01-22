@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import React, { Fragment, useState } from "react";
 import { toast } from "react-toastify";
 import { useRef } from "react";
+import { REMOVE_ALL_ITEM_FROM_CART } from "../../Context/Actions/ActionType";
 
 export default function CardPayment() {
   //   ---------------- All state goes here  ---------------------------- //
@@ -17,7 +18,7 @@ export default function CardPayment() {
   const [CardNumberError, setCardNumberError] = useState('')
   const [CardExpirydateError, setCardExpirydateError] = useState('')
   const [cvvError, setCvvError] = useState('')
-
+  const dispatch = useDispatch();
   const products = [];
   productItems.forEach((element) => {
     products.push({
@@ -28,10 +29,10 @@ export default function CardPayment() {
   const elements = useElements();
   const stripe = useStripe();
   const StripeState = useSelector((state) => state.Stripe);
-  const payment_btn = useRef(null) ;
+  const payment_btn = useRef(null);
   const SubmitHandler = async () => {
     try {
-      payment_btn.current.disabled = true ;
+      payment_btn.current.disabled = true;
       if (!stripe || !elements) return;
       setIsLoading(!isLoading)
       const paymentIntent = await fetch('http://localhost:5000/v3/api/user/shop/order', {
@@ -57,8 +58,8 @@ export default function CardPayment() {
           progress: undefined,
           theme: "dark",
         })
-        setIsLoading(!isLoading)
-        payment_btn.current.disabled= false;
+        setIsLoading(false);
+        payment_btn.current.disabled = false;
         return;
       }
       const result = await stripe.createToken(elements.getElement(CardNumberElement))
@@ -74,8 +75,8 @@ export default function CardPayment() {
           progress: undefined,
           theme: "dark",
         })
-        setIsLoading(!isLoading)
-        payment_btn.current.disabled= false;
+        setIsLoading(false)
+        payment_btn.current.disabled = false;
         return;
       }
       await fetch('http://localhost:5000/v3/api/user/shop/confirm/payment', {
@@ -103,9 +104,10 @@ export default function CardPayment() {
             progress: undefined,
             theme: "dark",
           })
-          payment_btn.current.disabled= false;
+          payment_btn.current.disabled = false;
         }
-        else{
+        else {
+          dispatch({ type: REMOVE_ALL_ITEM_FROM_CART })
           setIsLoading(false)
           toast.success(confirmOrder.data, {
             position: "bottom-center",
@@ -117,11 +119,11 @@ export default function CardPayment() {
             progress: undefined,
             theme: "dark",
           })
-          payment_btn.current.disabled= false;
+          payment_btn.current.disabled = false;
         }
-        
+
       })
-     
+
     } catch (error) {
       console.log(error)
     }
@@ -139,48 +141,48 @@ export default function CardPayment() {
         <div className="card_number_field my-2">
           <label className="text-sm block font-medium">Card Number</label>
           <CardNumberElement
-            onChange={(event) => { 
-              if(event.error){
+            onChange={(event) => {
+              if (event.error) {
                 setCardNumberError(event.error.message)
               }
-              else{
+              else {
                 setCardNumberError('')
               }
             }}
             className="border border-gray-500 px-4 py-3 rounded-md"
           />
-          {CardNumberError.length> 0 ?  <span style={{color:'red'}} role={'alert'}>{CardNumberError}</span> :null }
+          {CardNumberError.length > 0 ? <span style={{ color: 'red' }} role={'alert'}>{CardNumberError}</span> : null}
         </div>
         <div className="expiry_date_field my-2">
           <label className="text-sm block font-medium">Valid thru</label>
           <CardExpiryElement
             onChange={(event) => {
-              if(event.error){
+              if (event.error) {
                 setCardExpirydateError(event.error.message)
               }
-              else{
+              else {
                 setCardExpirydateError('')
               }
             }}
             className="border border-gray-500 px-4 py-3 rounded-md"
           />
-          {CardExpirydateError.length > 0 ?  <span style={{color:'red'}} role={'alert'}>{CardExpirydateError}</span> :null }
+          {CardExpirydateError.length > 0 ? <span style={{ color: 'red' }} role={'alert'}>{CardExpirydateError}</span> : null}
         </div>
         <div className="cvv_field my-2">
           <label className="text-sm block font-medium">Cvv Number</label>
           <CardCvcElement
             onChange={(event) => {
-              if(event.error){
+              if (event.error) {
                 setCvvError(event.error.message)
               }
-              else{
+              else {
                 setCvvError('')
               }
-             }}
+            }}
             className="border border-gray-500 px-4 py-3 rounded-md"
           />
-          {cvvError.length > 0 ?  <span style={{color:'red'}} role={'alert'}>{cvvError}</span> :null }
-         
+          {cvvError.length > 0 ? <span style={{ color: 'red' }} role={'alert'}>{cvvError}</span> : null}
+
         </div>
         <div className="submit_btn my-6 ">
           {!isLoading ? (
