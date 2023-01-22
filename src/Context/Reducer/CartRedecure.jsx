@@ -1,5 +1,5 @@
 
-import { ADD_TO_CART, DECREASE_QUANTITY, INCREASE_QUANTITY, REMOVE_ITEM_FROM_CART }
+import { ADD_TO_CART, DECREASE_QUANTITY, INCREASE_QUANTITY, REMOVE_ALL_ITEM_FROM_CART, REMOVE_ITEM_FROM_CART }
     from "../Actions/ActionType";
 
 const initialState = {
@@ -39,6 +39,10 @@ const CartReducer = (state = initialState, action) => {
         case DECREASE_QUANTITY:
             return {
                 ...state, productItems: state.productItems.map((i) => i._id === action.payload._id ? { ...i, quantity: action.payload.quantity } : i)
+            }
+        case REMOVE_ALL_ITEM_FROM_CART:
+            return {
+                ...state , productItems: []
             }
         default:
             return state;

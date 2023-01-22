@@ -1,4 +1,4 @@
-import { ADD_TO_CART, INCREASE_QUANTITY, DECREASE_QUANTITY } from "./ActionType"
+import { ADD_TO_CART, INCREASE_QUANTITY, DECREASE_QUANTITY, REMOVE_ALL_ITEM_FROM_CART } from "./ActionType"
 
 export const ADD_TO_CART_ACTION = (data) => {
     return {
@@ -29,4 +29,8 @@ export const DECREASE_QUANTITY_ACTION = (quantity) => {
     }
 }
 
-
+export const REMOVE_ALL_ITEM_FROM_CART_ACTION = ()=>{
+    return {
+        type:REMOVE_ALL_ITEM_FROM_CART
+    }
+}
