@@ -45,7 +45,7 @@ export default function CardPayment() {
         }),
         credentials: 'include'
       })
-      const { error, data } = await paymentIntent.json();
+      const { error, data,orderId } = await paymentIntent.json();
       console.log(error, data)
       if (paymentIntent.status !== 200) {
         toast.error(error, {
@@ -86,7 +86,8 @@ export default function CardPayment() {
         },
         body: JSON.stringify({
           payment_intentId: data,
-          token: result.token
+          token: result.token,
+          orderId
         }),
         credentials: 'include'
       }).then(async (res) => {
