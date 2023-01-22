@@ -1,78 +1,194 @@
-import React, { Fragment ,useState ,useEffect  } from 'react'
+import {
+  CardCvcElement,
+  CardExpiryElement,
+  CardNumberElement,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
+import { useSelector, useDispatch } from "react-redux";
+import React, { Fragment, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function CardPayment() {
-    //  all state goes here 
-    const [isLoading, setIsLoading] = useState(false)
-
-
-    // submit Handler for form 
-    const SubmitHandler = ()=>{
-        console.log('submit handler');
+  //   ---------------- All state goes here  ---------------------------- //
+  const [isLoading, setIsLoading] = useState(false);
+  const { productItems } = useSelector((state) => state.Cart);
+  const products = [];
+  productItems.forEach((element) => {
+    products.push({
+      varientId: element._id,
+      quantity: element.quantity,
+    });
+  });
+  const elements = useElements();
+  const stripe = useStripe();
+  const StripeState = useSelector((state) => state.Stripe);
+  const SubmitHandler = async () => {
+    try {
+      if (!stripe || !elements) return;
+      setIsLoading(!isLoading)
+      const paymentIntent = await fetch('http://localhost:5000/v3/api/user/shop/order', {
+        method: "POST",
+        headers: {
+          'Content-Type': "application/json"
+        },
+        body: JSON.stringify({
+          products
+        }),
+        credentials: 'include'
+      })
+      const { error, data } = await paymentIntent.json();
+      console.log(error, data)
+      if (paymentIntent.status !== 200) {
+        toast.error(error, {
+          position: 'bottom-center',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        })
+        setIsLoading(!isLoading)
+        return;
+      }
+      const result = await stripe.createToken(elements.getElement(CardNumberElement))
+      console.log(result.token)
+      if (result.error) {
+        toast.error(result.error.message, {
+          position: 'bottom-center',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        })
+        setIsLoading(!isLoading)
+        return;
+      }
+      await fetch('http://localhost:5000/v3/api/user/shop/confirm/payment', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          payment_intentId: data,
+          token: result.token
+        }),
+        credentials: 'include'
+      }).then(async (res) => {
+        const confirmOrder = await res.json();
+        console.log(confirmOrder)
+        setIsLoading(!isLoading)
+        if (res.status !== 200) {
+          toast.error(confirmOrder.error, {
+            position: 'bottom-center',
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          })
+        }
+        return;
+      })
+      console.log(confrimOrder.data, confrimOrder)
+      toast.success(confrimOrder.data, {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      })
+    } catch (error) {
+      console.log(error)
     }
+  };
+
   return (
     <Fragment>
-              <form action="" onSubmit={(e) => {
-                                    e.preventDefault();
-                                    // submitHandler()
-                                }} className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-                                    <div className='card_number_field'>
-                                        <label className='text-sm font-medium block'>Card Number</label>
-                                        <input type="number" required
-                                            placeholder='Enter your card number'
-                                            max={'16'}
-                                            className='border border-gray-500 
-                                            rounded-md my-2 py-3  focus:border-indigo-600
-                                             focus:ring-indigo-700 bg-inherit focus:border  px-3 w-full outline-none 
-                                             text-sm text-gray-700 placeholder:text-gray-500 ' />
-                                    </div>
-                                    <div className="account_holder_name">
-                                        <label className='text-sm font-medium block'>Account Holder name</label>
-                                        <input type="text" required
-                                            placeholder='Enter Account holder name'
-                                            className='border border-gray-500 
-                                            rounded-md my-2 py-3 focus:border-indigo-600
-                                             focus:ring-indigo-700 bg-inherit focus:border w-full px-3 outline-none 
-                                             text-sm text-gray-700 placeholder:text-gray-500' />
-                                    </div>
-                                    <div className="valid_thru">
-                                        <label className='text-sm font-medium block '>Valid thru</label>
-                                        <input type="date" required
-                                            placeholder='valid thru'
-                                            className='border border-gray-500 
-                                            rounded-md my-2 py-3 focus:border-indigo-600
-                                             focus:ring-indigo-700 bg-inherit focus:border w-full px-3 outline-none 
-                                             text-sm text-gray-700 placeholder:text-gray-500' />
-                                    </div>
-                                    <div className="CVV">
-                                        <label className='text-sm font-medium block '>CVV</label>
-                                        <input type="number" required
-                                            placeholder='Enter your cvv number'
-                                            className='border border-gray-500 
-                                            rounded-md my-2 py-3 focus:border-indigo-600
-                                             focus:ring-indigo-700 bg-inherit focus:border w-full px-3 outline-none 
-                                             text-sm text-gray-700 placeholder:text-gray-500' />
-                                    </div>
-                                    <div className='sumbit-btn my-2'>
-                                        {!isLoading ? <button type='submit' className='w-full h-10 py-2 text-center
-                             text-white outline-none text-bold bg-indigo-800 rounded-md
-                              hover:bg-indigo-700'>Pay</button> : <button type="button"
-                                            className="inline-flex items-center justify-center py-2  leading-4 
+      <form
+        className="grid grid-cols-1 md:grid-cols-2 gap-5"
+        onSubmit={(e) => {
+          e.preventDefault();
+          SubmitHandler();
+        }}
+      >
+        <div className="card_number_field my-2">
+          <label className="text-sm block font-medium">Card Number</label>
+          <CardNumberElement
+            onChange={(event) => { }}
+            className="border border-gray-500 px-4 py-3 rounded-md"
+          />
+        </div>
+        <div className="expiry_date_field my-2">
+          <label className="text-sm block font-medium">Valid thru</label>
+          <CardExpiryElement
+            onChange={(event) => {
+              console.log(event);
+            }}
+            className="border border-gray-500 px-4 py-3 rounded-md"
+          />
+        </div>
+        <div className="cvv_field my-2">
+          <label className="text-sm block font-medium">Cvv Number</label>
+          <CardCvcElement
+            onChange={(event) => { }}
+            className="border border-gray-500 px-4 py-3 rounded-md"
+          />
+        </div>
+        <div className="submit_btn my-6 ">
+          {!isLoading ? (
+            <button
+              type="submit"
+              className="px-4 py-3 bg-indigo-800 hover:bg-indigo-900
+          rounded-md w-full text-white font-bold"
+            >
+              Pay
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="inline-flex items-center justify-center py-2  leading-4 
                               text-sm shadow rounded-md text-white bg-indigo-800 hover:bg-indigo-900
                                w-full text-center transition ease-in-out duration-150 cursor-not-allowed"
-                                            disabled="">
-                                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-slate-500"
-                                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                <circle className="pacity-25 text-white" cx="12" cy="12" r="10"
-                                                    stroke="currentColor" strokeWidth="4"></circle>
-                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 
+              disabled=""
+            >
+              <svg
+                className="animate-spin -ml-1 mr-3 h-5 w-5 text-slate-500"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="pacity-25 text-white"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 
                                     018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 
-                                    3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                            </svg>
-                                            Processing ...
-                                        </button>
-                                        }
-                                    </div>
-                                </form>
+                                    3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              Processing ...
+            </button>
+          )}
+        </div>
+      </form>
     </Fragment>
-  )
+  );
 }
