@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux'
 import { BsFillCheckCircleFill } from 'react-icons/bs'
 import { FcProcess } from 'react-icons/fc'
 import NoOrderImage from '../assets/images/NoOrder.webp'
-import OrderSkeleton from '../Skeleton/OrderSkeleton'
+import OrderLoading from '../Skeleton/OrderLoading'
 
 export default function Order() {
     //  -------------------- All states --------------------- //
@@ -93,10 +93,11 @@ export default function Order() {
             <Suspense fallback={<NavbarSkeleton />}>
                 <Navbar />
             </Suspense>
-            <OrderSkeleton />
             <section className="order_history_container my-10 mx-5 md:mx-auto md:w-[80%]">
                 {
-                    isLoading ? <p className='w-full h-screen'>loading....</p> : Orderdata.length > 0 ?
+                    isLoading ? <section className='w-full h-screen'>
+                        <OrderLoading />
+                    </section> : Orderdata.length > 0 ?
                         Orderdata.map(item => (
                             <div key={item._id} className="order_history_box border my-10 border-gray-300 shadow-sm rounded-md">
                                 <div className='order_history_box_header border-b border-gray-300 flex justify-between items-center px-5 h-24 py-10 '>
