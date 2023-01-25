@@ -5,7 +5,8 @@ import { toast } from 'react-toastify'
 
 
 export default function Signup() {
-    const [full_name, setfull_name] = useState('')
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
     const [mobile_no, setmobile_no] = useState('')
     const [email, setemail] = useState('')
     const [password, setpassword] = useState('')
@@ -24,7 +25,8 @@ export default function Signup() {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: full_name,
+                firstName,
+                lastName,
                 email,
                 password,
                 confirmpassword,
@@ -77,15 +79,27 @@ export default function Signup() {
                         e.preventDefault();
                         SignupFunc();
                     }}>
-                        {/* Name field */}
+                        {/* first Name field */}
                         <div className='mx-5 lg:mx-4 mt-[1em]'>
                             <label htmlFor='Name' className='text-sm font-bold text-gray-700'>
-                                Name</label>
-                            <input type={'text'} required value={full_name}
-                                onChange={(e) => { setfull_name(e.target.value) }}
+                                First Name</label>
+                            <input type={'text'} required value={firstName}
+                                onChange={(e) => { setFirstName(e.target.value) }}
                                 className="border border-gray-300 rounded-md my-2 py-[8px] 
                                 w-full focus:border-indigo-600 focus:ring-indigo-700 bg-inherit 
                                 \focus:border  px-2 outline-none text-sm text-gray-700
+                                placeholder:text-gray-500" placeholder='Enter your full name' />
+
+                        </div>
+                        {/* last Name field */}
+                        <div className='mx-5 lg:mx-4 mt-[1em]'>
+                            <label htmlFor='Name' className='text-sm font-bold text-gray-700'>
+                                Last Name</label>
+                            <input type={'text'} required value={lastName}
+                                onChange={(e) => { setLastName(e.target.value) }}
+                                className="border border-gray-300 rounded-md my-2 py-[8px] 
+                                w-full focus:border-indigo-600 focus:ring-indigo-700 bg-inherit 
+                                focus:border  px-2 outline-none text-sm text-gray-700
                                 placeholder:text-gray-500" placeholder='Enter your full name' />
 
                         </div>
@@ -141,7 +155,7 @@ export default function Signup() {
 
                         {/* submit button */}
                         <div className='mx-5 mb-0 mt-5 lg:mx-4 W-[20em]'>
-                            {!isLoading ? <button type='submit' className='w-full  px-6 py-1  
+                            {!isLoading ? <button type='submit' className='w-full  px-6 py-1.5 
                             mb-5 text-center text-white outline-none text-bold bg-indigo-800 rounded-md
                             hover:bg-indigo-700'>
                                 Create an account</button> : <button type="button" className="inline-flex 
@@ -162,15 +176,15 @@ export default function Signup() {
                             }
                         </div>
                     </form>
-                    <div className='mx-2 text-[15px]'>
-                        <small>By creating an account, you agree to Taj's
-                            <a className='text-blue-700 underline 
-                             hover:text-indigo-700 cursor-pointer'> Conditions</a> of Use and Privacy
+                    <div className='mx-3 text-[15px]'>
+                        <small>By creating an account, you agree to Taj's 
+                            <Link to="/terms-and-conditions" className='text-blue-700 underline 
+                             hover:text-indigo-700 cursor-pointer px-2'>Terms and Conditions</Link> of Use and Privacy
                             Notice. </small>
                     </div>
 
-                    <div className='sigin_link mx-2  mb-4'>
-                        <h4 className='text-sm'>Already have an account ? <a href='/'
+                    <div className='sigin_link mx-3  mb-4'>
+                        <h4 className='text-sm'>Already have an account ? <a href='/V2/auth/sign_in'
                             className='underline text-blue-700  hover:text-indigo-700 '>
                             Signin</a></h4>
                     </div>
