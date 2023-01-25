@@ -9,6 +9,8 @@ import { ADD_TO_CART_ACTION } from '../Context/Actions/CartActions';
 import { toast } from 'react-toastify'
 const SimilarProducts = lazy(() => import('./SimilarProducts'))
 const Footer = lazy(() => import('../UsableComponent/Footer'))
+const UserReview = lazy(() => import('./Review/UserReview'))
+const CreateUserReview = lazy(() => import('./Review/CreateUserReview'))
 
 export default function ProductPage() {
     const { id } = useParams();
@@ -19,6 +21,7 @@ export default function ProductPage() {
     const [product_varient, setProduct_varient] = useState([])
     const [selectedSize, setSelectedSize] = useState('Choose a size');
     const [selectedColor, setSelectedColor] = useState('Choose a color');
+    const [ratingModal, setRatingModal] = useState(false)
 
     const dispatch = useDispatch();
 
@@ -144,9 +147,16 @@ export default function ProductPage() {
 
     }
 
+    const RatingModalToggle = (state) => {
+        setRatingModal(!state)
+    }
+
     return (
         <Fragment>
+            {/* ----------------------- create user reviews ----------------------- */}
+
             <Navbar />
+
             {product_detail.map((item, index) => (
                 <section key={item._id}
                     className='proudct-parent my-16 px-2 grid
@@ -191,12 +201,12 @@ export default function ProductPage() {
                                     ))
                                 }
                             </aside>
+
                             <figure className='w-full overflow-hidden rounded-lg  col-span-4'>
                                 <img src={item.assets.images[image_value]}
                                     className=" w-full h-96 hover:scale-125  
                                     transition ease-in-out duration-500  rounded-lg" />
                             </figure>
-
                         </main>
                     </div>
 
@@ -319,15 +329,34 @@ export default function ProductPage() {
                                 Buy Now
                             </button>
                         </div>
+
+                        <div className='product_rating_reviews my-10'>
+                            <div className='ratings flex item-center justify-between '>
+                                <h3 className='font-bold text-xl mb-5'>Ratings and Reviews</h3>
+                                <button className='bg-indigo-700 hover:bg-indigo8900 text-white
+                            rounded-md focus:outline-none focus:bg-transparent focus:text-black focus:border  focus:border-gray-500 
+                            px-2' onClick={()=> setRatingModal(true)}>
+                                    Rate Product
+                                </button>
+                            </div>
+
+                            <Suspense fallback={<p>loading...</p>}>
+                                <UserReview rating_review={item.ratings_review} averge_rating={item.averge_rating} />
+                            </Suspense>
+
+
+                        </div>
                     </div>
                 </section>
             ))
             }
-
+            <Suspense fallback={<p>loading...</p>}>
+                <CreateUserReview isModalOpen={ratingModal} RatingModalToggle={RatingModalToggle} />
+            </Suspense>
 
             {/*  ------------------ similar products show --------------- */}
             <Suspense fallback={<p>loading....</p>}>
-                <SimilarProducts />
+                <SimilarProducts  />
             </Suspense>
 
             <Suspense fallback={<p>loading....</p>}>
