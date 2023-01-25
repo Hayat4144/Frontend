@@ -1,28 +1,15 @@
 import React, { Fragment, lazy, Suspense, useState } from 'react'
-import { BsCart } from 'react-icons/bs'
-import { AiOutlineCloseCircle } from 'react-icons/ai'
-import { FaUserCircle } from 'react-icons/fa'
-import { BiCategory, BiSearch } from 'react-icons/bi'
-import { MdArrowDropDown } from 'react-icons/md'
 import { BsHandbag } from 'react-icons/bs';
 import { CiUser } from 'react-icons/ci'
+import { BiCategory, BiSearch } from 'react-icons/bi'
 import { createSearchParams, Link, Navigate, useNavigate } from 'react-router-dom'
-import FetchCategory from '../shop/Category/FetchCategory'
-import { AiOutlineHome } from 'react-icons/ai'
-import { AiOutlineUser } from 'react-icons/ai'
-import { AiOutlineHeart } from 'react-icons/ai'
-import { BsCartCheck } from 'react-icons/bs'
-import { AiOutlineSetting } from 'react-icons/ai'
-import { HiOutlineShoppingBag } from 'react-icons/hi'
-import { AiOutlineSearch } from 'react-icons/ai'
-import { MdOutlineSell } from 'react-icons/md'
 import { useSelector } from 'react-redux'
 const Account_List_Modal = lazy(() => import('./Account_List_Modal'))
+const MobileSideModal = lazy(() => import('./MobileSideModal'))
 
 
 export default function Navbar() {
     const [isMobileViewOpen, setIsMobileViewOpen] = useState(false);
-    const [Islogding, setIslogding] = useState(false)
     const [IsAccountModalOpen, SetIsAccountModalOpen] = useState(false)
     const [keyword, setKeyword] = useState('')
     const navigate = useNavigate();
@@ -33,12 +20,15 @@ export default function Navbar() {
     // MobileViewOpen Function
     const OpenMobileeView = () => {
         setIsMobileViewOpen(!isMobileViewOpen)
-        console.log(isMobileViewOpen)
     }
 
     // pass this function to child component to change the state of this state 
     const AccountModalToggle = (state) => {
         SetIsAccountModalOpen(!state)
+    }
+
+    const MobileSideModalToggle = (state) => {
+        setIsMobileViewOpen(!state)
     }
 
     const SubmitHandler = () => {
@@ -115,6 +105,8 @@ export default function Navbar() {
                         </form>
                     </div>
 
+
+
                     {/* ---- User Icon  ---- */}
                     <div className="user_icon hidden md:block text-center cursor-pointer
                     hover:text-indigo-700" onMouseEnter={() => AccountModalToggle(IsAccountModalOpen)}>
@@ -137,119 +129,11 @@ export default function Navbar() {
                 </div>
             </nav>
 
-            {/* ---- Mobile Menu ----- */}
-            <div className={`mobile_menu_dialog_model fixed md:hidden bg-black w-full
-             opacity-100 bg-opacity-30 inset-0 z-50 ${isMobileViewOpen ? 'flex' : 'hidden'}`}
-            >
-                {/* ---- Mobile link Menu white background */}
-                <div className='w-3/4 h-screen bg-white'>
-                    <div className='user_header text-white h-20 px-5 space-x-5 flex 
-                    items-center bg-gray-700'>
-                        <div className='user_avtar'>
-                            <FaUserCircle fontSize={'28px'} className="cursor-pointer" />
-                        </div>
-                        <div className='user_name '>
-                            <h2 className='user_name_text'>
-                                Hello , {Islogding ? 'Hayat ilyas' : 'Signin'}
-                            </h2>
-                        </div>
-                    </div>
-                    {/* ---- Navigations Menu for mobile */}
-                    <div className='mobile_view_link '>
-                        <ul className=' cursor-pointer px-5  py-5'>
-                            <Link to="/">
-                                <li className='flex items-center pb-5 space-x-5'>
-                                    <AiOutlineHome className='text-2xl' />
-                                    <span className='font-bold'>Home</span>
-                                </li>
-                            </Link>
+            <Suspense fallback={<p>loading...</p>}>
+                <MobileSideModal  mobileModal={isMobileViewOpen} MobileSideModalToggle={MobileSideModalToggle} />
+            </Suspense>
 
-                            <Link to="/">
-                                <li className='flex items-center pb-5 space-x-5'>
-                                    <AiOutlineHeart className='text-2xl' />
-                                    <span className='font-bold'>Whishlist</span>
-                                </li>
-                            </Link>
 
-                            <Link to="/V2/user/cart">
-                                <li className='flex items-center pb-5  space-x-5'>
-                                    <BsCartCheck className='text-2xl' />
-                                    <span className='font-bold'>Cart</span>
-                                </li>
-                            </Link>
-
-                            <Link to="/">
-                                <li className='flex items-center  pb-5 space-x-5'>
-                                    <BiCategory className='text-2xl' />
-                                    <span className='font-bold'>Category</span>
-                                </li>
-                            </Link>
-
-                            <Link to="/V2/user/account/order/history">
-                                <li className='flex items- pb-5 space-x-5'>
-                                    <HiOutlineShoppingBag className='text-2xl' />
-                                    <span className='font-bold'>Order & History</span>
-                                </li>
-                            </Link>
-
-                            <Link to="/V2/user/account">
-                                <li className='flex items-center pb-5 space-x-5'>
-                                    <AiOutlineUser className='text-2xl' />
-                                    <span className='font-bold'>Account</span>
-                                </li>
-                            </Link>
-
-                            <Link to="/">
-                                <li className='flex items-center pb-5 space-x-5'>
-                                    <MdOutlineSell className='text-2xl' />
-                                    <span className='font-bold'>Sell on Taj</span>
-                                </li>
-                            </Link>
-
-                            <Link to="/">
-                                <li className='flex items-center pb-5 space-x-5'>
-                                    <AiOutlineSearch className='text-2xl' />
-                                    <span className='font-bold'>Search products</span>
-                                </li>
-                            </Link>
-
-                            <Link to="/">
-                                <li className='flex items-center pb-5 space-x-5'>
-                                    <AiOutlineSetting className='text-2xl' />
-                                    <span className='font-bold'>Settings</span>
-                                </li>
-                            </Link>
-
-                        </ul>
-                        <section className='login_logout_btn absolute bottom-5 px-5'>
-                            {Islogding ? <div className='button_group'>
-                                <button className='focus:border focus:border-gray-500 px-10 py-1.5
-                            rounded-md bg-indigo-700 focus:bg-transparent text-white
-                            focus:text-black w-full'>Log out</button>
-                            </div> :
-                                <div className='space-x-5'>
-                                    <Link to={'/V2/auth/sign_in'}>
-                                        <button className='focus:border focus:border-gray-500 px-10 py-1.5
-                                        rounded-md bg-indigo-700 focus:bg-transparent text-white
-                                      focus:text-black '>Sign in</button>
-                                    </Link>
-                                    <Link to="/V2/auth/sign_up">
-                                        <button className='focus:border focus:border-gray-500 px-10 py-1.5
-                                        rounded-md bg-indigo-700 focus:bg-transparent text-white
-                                     focus:text-black'>Sign up</button>
-                                    </Link>
-
-                                </div>}
-
-                        </section>
-                    </div>
-                </div>
-
-                {/*  ---- Close Mobile Menu Button */}
-                <div className='close_icon ml-5 mt-5 text-white'>
-                    <AiOutlineCloseCircle className='text-4xl cursor-pointer' onClick={OpenMobileeView} />
-                </div>
-            </div>
 
             <Suspense fallback={<p>loading...</p>}>
                 <Account_List_Modal
