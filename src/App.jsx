@@ -23,6 +23,7 @@ const ForgetPassword = lazy(() => import('./Accounts/ForgetPassword'))
 const ForgetPasswordRequest = lazy(() => import('./Accounts/RequestForgetpassword'))
 const EmailChangeRequest = lazy(() => import('./Accounts/EmailchangeRequest'))
 const VerifyEmailChnage = lazy(() => import('./Accounts/VerifyEmailChnage'))
+const Term_Conditions = lazy(() => import('./UsableComponent/Term_Conditions'))
 
 function App() {
 
@@ -50,6 +51,9 @@ function App() {
           <Route path="/V2/shop/product/:id/:name/:category" element={<ProductPage />} />
           <Route path="/V2/shop/search" element={<ProductSearch />} />
           <Route path="/V2/shop/products" element={<Products />} />
+          <Route path="/terms-and-conditions" element={<Suspense fallback={<p>loading..</p>}>
+            <Term_Conditions />
+          </Suspense>} />
           <Route path='*' element={<NotFound />} />
         </Routes>
       </Router>
