@@ -91,7 +91,7 @@ export default function ChangePassword() {
                         </div>
                         {/* forgot passsword link */}
                         <div className='mx-4 mb-5'>
-                            <Link to={'/V2/forget/password/request'}>
+                            <Link to={'/V2/forget/password/request  '}>
                                 <h3 className='relative left-6 float-right mb-5 text-sm text-indigo-700 hover:text-indigo-900 
                         hover:underline cursor-pointer'>Forgot Password ?</h3>
                             </Link>
