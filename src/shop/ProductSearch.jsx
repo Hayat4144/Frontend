@@ -141,7 +141,7 @@ export default function ProductSearch() {
             <Suspense fallback={<NavbarSkeleton />}>
                 <Navbar />
             </Suspense>
-            
+
             {/*  ----------------------product count --------------------------  */}
             {products.length > 0 ?
                 <div className='product_search_total_value_show border-b border-gray-400 
