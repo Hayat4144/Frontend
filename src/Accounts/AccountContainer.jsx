@@ -3,6 +3,9 @@ import AccoutnImage from '../assets/images/account.png'
 import SecurityImage from '../assets/images/security.png'
 import OrderImage from '../assets/images/Order.webp'
 import WishlistImage from '../assets/images/Wishlist.png'
+import PasswordImage from '../assets/images/passwordProtect.webp'
+import EmailImage from '../assets/images/mail.webp'
+import CartImage from '../assets/images/Cart1.jpg'
 import { Link } from 'react-router-dom'
 import NavbarSkeleton from '../Skeleton/NavbarSkeleton'
 import Footer from '../UsableComponent/Footer'
@@ -50,8 +53,12 @@ export default function AccountContainer() {
 
                     <Link to={'/V2/user/account/order/history'}>
                         <div className='account_box border hover:bg-gray-100 border-gray-300 rounded-md px-5 py-2 flex  space-x-5 cursor-pointer'>
-                            <figure className='w-[80px] h-[30px]'>
+                            {/* <figure className='w-[80px] h-[25px] overflow-hidden'>
                                 <img src={OrderImage} className="rounded-full" />
+                            </figure>
+                            */}
+                            <figure>
+                                <img src={OrderImage} className="rounded-full w-[80px] h-[80px]" />
                             </figure>
                             <div className='profile_text'>
                                 <h3 className='text-bold'>Your Orders</h3>
@@ -74,22 +81,63 @@ export default function AccountContainer() {
                             </div>
                         </div>
                     </Link>
-                    <div className='whishlist_box border hover:bg-gray-100 border-gray-300 rounded-md px-5 py-2 flex  space-x-5'>
-                        <figure>
-                            <img src={WishlistImage} className="w-[128px]" />
-                        </figure>
-                        <div className='wishlist_text'>
-                            <h3 className='text-bold'>Your Wishlist</h3>
-                            <p className='text-gray-700 text-sm'>
-                                Add your favourite or wish product to wishlist
-                            </p>
+                    <Link to="/">
+                        <div className='whishlist_box border hover:bg-gray-100 border-gray-300 rounded-md px-5 py-2 flex cursor-pointer space-x-5'>
+                            <figure>
+                                <img src={WishlistImage} className="h-[70px] w-[90px]" />
+                            </figure>
+                            <div className='wishlist_text'>
+                                <h3 className='text-bold'>Your Wishlist</h3>
+                                <p className='text-gray-700 text-sm'>
+                                    Add your favourite or wish product to wishlist
+                                </p>
+                            </div>
                         </div>
-                    </div>
+                    </Link>
 
+                    <Link to={'/V2/account/change/password'}>
+                        <div className='password_change border  hover:bg-gray-100 border-gray-300 rounded-md px-5 py-2 flex cursor-pointer space-x-5'>
+                            <figure>
+                                <img src={PasswordImage} className="h-[70px] " />
+                            </figure>
+                            <div className='password_text'>
+                                <h3 className='text-bold'>Change your password</h3>
+                                <p className='text-gray-700 text-sm'>
+                                    you can change your password here.
+                                </p>
+                            </div>
+                        </div>
+                    </Link>
 
+                    <Link to="/V2/email/change/request">
+                        <div className='email_change border  hover:bg-gray-100 border-gray-300 rounded-md px-5 py-2 flex cursor-pointer space-x-5'>
+                            <figure>
+                                <img src={EmailImage} className="h-[70px] " />
+                            </figure>
+                            <div className='password_text'>
+                                <h3 className='text-bold'>Change your email</h3>
+                                <p className='text-gray-700 text-sm'>
+                                    you can change your email here.
+                                </p>
+                            </div>
+                        </div>
+                    </Link>
+                    <Link to="/V2/user/cart">
+                        <div className='your_cart border  hover:bg-gray-100 border-gray-300 rounded-md px-5 py-2 flex cursor-pointer space-x-5'>
+                            <figure>
+                                <img src={CartImage} className="h-[70px] w-[90px] bg-none" />
+                            </figure>
+                            <div className='password_text'>
+                                <h3 className='text-bold'>Your Cart</h3>
+                                <p className='text-gray-700 text-sm'>
+                                    your all shopping product item in one all place .
+                                </p>
+                            </div>
+                        </div>
+                    </Link>
                 </div>
             </div>
-            <div className="absolute bottom-0 w-full">
+            <div className=" w-full">
                 <Footer />
             </div>
 
