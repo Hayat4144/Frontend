@@ -54,12 +54,12 @@ export default function Footer() {
                     <div className=' row-2 informations mx-5 lg:ml-10 mt-10 sm:m-0 space-y-5'>
                         <div className='follow-us-head-text text-xl uppercase'>Information</div>
                         <ul className='ffollow-us-link text-[15px] my-3 space-y-3'>
-                            <li className='hover:text-slate-500 cursor-pointer hover:translate-x-2'><Link  to="/V2/user/accoun"  className='flex items-center space-x-2' ><AiOutlineDoubleRight />My Account</Link></li>
-                            <li className='hover:text-slate-500 cursor-pointer hover:translate-x-2'><Link  to="/V2/user/account/order/history" className='flex items-center space-x-2' ><AiOutlineDoubleRight />My Order</Link></li>
-                            <li className='hover:text-slate-500 cursor-pointer hover:translate-x-2'><Link  to="/V2/user/cart" className='flex items-center space-x-2' ><AiOutlineDoubleRight />Cart</Link></li>
-                            <li className='hover:text-slate-500 cursor-pointer hover:translate-x-2'><Link  to="/" className='flex items-center space-x-2' ><AiOutlineDoubleRight />About us</Link></li>
-                            <li className='hover:text-slate-500 cursor-pointer hover:translate-x-2'><Link  to="/" className='flex items-center space-x-2' ><AiOutlineDoubleRight />Shopping</Link></li>
-                            <li className='hover:text-slate-500 cursor-pointer hover:translate-x-2'><Link  to="/terms-and-conditions" className='flex items-center space-x-2' ><AiOutlineDoubleRight />Terms and Condtions</Link></li>
+                            <li className='hover:text-slate-500 cursor-pointer hover:translate-x-2'><Link to="/V2/user/accoun" className='flex items-center space-x-2' ><AiOutlineDoubleRight />My Account</Link></li>
+                            <li className='hover:text-slate-500 cursor-pointer hover:translate-x-2'><Link to="/V2/user/account/order/history" className='flex items-center space-x-2' ><AiOutlineDoubleRight />My Order</Link></li>
+                            <li className='hover:text-slate-500 cursor-pointer hover:translate-x-2'><Link to="/V2/user/cart" className='flex items-center space-x-2' ><AiOutlineDoubleRight />Cart</Link></li>
+                            <li className='hover:text-slate-500 cursor-pointer hover:translate-x-2'><Link to="/" className='flex items-center space-x-2' ><AiOutlineDoubleRight />About us</Link></li>
+                            <li className='hover:text-slate-500 cursor-pointer hover:translate-x-2'><Link to="/" className='flex items-center space-x-2' ><AiOutlineDoubleRight />Shopping</Link></li>
+                            <li className='hover:text-slate-500 cursor-pointer hover:translate-x-2'><Link to="/terms-and-conditions" className='flex items-center space-x-2' ><AiOutlineDoubleRight />Terms and Condtions</Link></li>
                         </ul>
                     </div>
                 </div>
