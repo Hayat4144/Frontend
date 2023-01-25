@@ -8,13 +8,13 @@ import { MdEmail } from 'react-icons/md'
 export default function Footer() {
     return (
         <Fragment>
-            <footer className='footer lg:justify-around lg:flex bg-slate-800 text-white w-full'>
+            <footer className='footer lg:justify-around lg:flex py-20 bg-slate-800 text-white w-full'>
                 {/* first column */}
                 <div className='column-1 sm:flex sm:items-center sm:justify-around '>
                     {/* first row */}
                     <div className="first-row mx-5  sm:block">
                         {/* contact */}
-                        <div className='Contact py-3'>
+                        <div className='Contact py-3 space-y-5'>
                             <h2 className='text-xl'>Contact info</h2>
                             <div className='address flex items-center'>
                                 <div className='address-logo '>
@@ -50,9 +50,9 @@ export default function Footer() {
                     </div>
 
                     {/* second row  follow us */}
-                    <div className=' row-2 informations mx-5 lg:ml-10 mt-10 sm:m-0'>
+                    <div className=' row-2 informations mx-5 lg:ml-10 mt-10 sm:m-0 space-y-5'>
                         <div className='follow-us-head-text text-xl uppercase'>Information</div>
-                        <ul className='ffollow-us-link text-[15px] my-3'>
+                        <ul className='ffollow-us-link text-[15px] my-3 space-y-3'>
                             <li className='flex items-center hover:text-slate-500 cursor-pointer hover:translate-x-2'><AiOutlineDoubleRight />My Account</li>
                             <li className='flex items-center hover:text-slate-500 cursor-pointer hover:translate-x-2'><AiOutlineDoubleRight />My Order</li>
                             <li className='flex items-center hover:text-slate-500 cursor-pointer hover:translate-x-2'><AiOutlineDoubleRight />Cart</li>
@@ -64,10 +64,10 @@ export default function Footer() {
                 </div>
 
 
-                <div className='column-2 sm:flex sm:justify-around sm:items-center lg:-translate-y-5'>
+                <div className='column-2  sm:flex sm:justify-around sm:items-center lg:-translate-y-5'>
 
                     {/* third row */}
-                    <div className='row-4  news-letter sm:w-72 py-10 mx-7'>
+                    <div className='row-4  news-letter sm:w-72 py-10 space-y-8 mx-7'>
                         <div className='newsletter-head-text text-xl uppercase'>Newsletter</div>
                         <p className=''>Be the first to know about the latest updates & exclusive promotions from us. No spam, we guarantee!</p>
                         <div className='email-input flex items-center justify-between border border-gray-200 rounded-md my-2 py-[2px]'>
@@ -78,9 +78,9 @@ export default function Footer() {
 
                     {/* fourth row */}
                     <div className='row-3 lg:mr-14 lg:order-first mx-5 mt-10 lg:mt-0 mb-2'>
-                        <div className='follow-us mx-5'>
+                        <div className='follow-us mx-5 space-y-5'>
                             <div className='follow-us-head-text text-xl uppercase'>Follow us</div>
-                            <ul className='ffollow-us-link text-[15px] mt-3'>
+                            <ul className='ffollow-us-link text-[15px] mt-3 space-y-5'>
                                 <li className='flex items-center hover:text-slate-500 cursor-pointer hover:translate-x-2'><AiOutlineDoubleRight />Instagram</li>
                                 <li className='flex items-center hover:text-slate-500 cursor-pointer hover:translate-x-2'><AiOutlineDoubleRight />printrest</li>
                                 <li className='flex items-center hover:text-slate-500 cursor-pointer hover:translate-x-2'><AiOutlineDoubleRight />Facebook</li>
