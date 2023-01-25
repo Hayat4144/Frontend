@@ -171,7 +171,7 @@ export default function Navbar() {
                                 </li>
                             </Link>
 
-                            <Link>
+                            <Link to="/V2/user/cart">
                                 <li className='flex items-center pb-5  space-x-5'>
                                     <BsCartCheck className='text-2xl' />
                                     <span className='font-bold'>Cart</span>
@@ -185,14 +185,14 @@ export default function Navbar() {
                                 </li>
                             </Link>
 
-                            <Link to="/">
+                            <Link to="/V2/user/account/order/history">
                                 <li className='flex items- pb-5 space-x-5'>
                                     <HiOutlineShoppingBag className='text-2xl' />
                                     <span className='font-bold'>Order & History</span>
                                 </li>
                             </Link>
 
-                            <Link to="/">
+                            <Link to="/V2/user/account">
                                 <li className='flex items-center pb-5 space-x-5'>
                                     <AiOutlineUser className='text-2xl' />
                                     <span className='font-bold'>Account</span>
