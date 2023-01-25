@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Navbar from '../UsableComponent/Navbar'
 
@@ -87,6 +88,14 @@ export default function ChangePassword() {
                             right-1' onClick={(e) => {
                                     setshowpassword1(!showPassword1)
                                 }}> {showPassword1 ? ' hide' : 'show'} </span>
+                        </div>
+                        {/* forgot passsword link */}
+                        <div className='mx-4 mb-5'>
+                            <Link to={'/V2/forget/password/request'}>
+                                <h3 className='relative left-6 float-right mb-5 text-sm text-indigo-700 hover:text-indigo-900 
+                        hover:underline cursor-pointer'>Forgot Password ?</h3>
+                            </Link>
+
                         </div>
                         <div className='NewPassword_field'>
                             <label className='OldPassword_label text-sm font-medium text-slate-800 block'>
