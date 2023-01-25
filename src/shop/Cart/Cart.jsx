@@ -4,19 +4,19 @@ import { BiShoppingBag } from 'react-icons/bi'
 import { IoIosCloseCircleOutline } from 'react-icons/io'
 import { BiPlus } from 'react-icons/bi'
 import { AiOutlineMinus } from 'react-icons/ai'
-const Navbar = lazy(() => import('../../UsableComponent/Navbar'))
 import { useDispatch, useSelector } from 'react-redux';
 import EmptyCartImage from '../../assets/images/EmptyCart.webp'
 import { DECREASE_QUANTITY, INCREASE_QUANTITY, REMOVE_ITEM_FROM_CART } from '../../Context/Actions/ActionType'
 import { Link } from 'react-router-dom'
+const Navbar = lazy(() => import('../../UsableComponent/Navbar'))
 const OrderSummary = lazy(() => import('./OrderSummary'))
+const Footer = lazy(()=>import('../../UsableComponent/Footer'))
 
 export default function Cart() {
     //  ----- states ---- //
     const Cartdata = useSelector(state => state.Cart.productItems)
     const [minimumquantity, setminimumquantity] = useState(10)
     const [quantityalert, setQuantityalert] = useState(false)
-
     const [IsModalOpen, setIsModalOpen] = useState(false)
     const [isRemovedItem, setIsRemovedItem] = useState(false)
     const dispatch = useDispatch();
@@ -64,7 +64,7 @@ export default function Cart() {
             <Suspense fallback={<NavbarSkeleton />}>
                 <Navbar />
             </Suspense>
-            <div className='cart_container'>
+            <div className='cart_container w-full h-screen'>
 
                 {
                     Cartdata.length == 0 ? <Fragment>
@@ -77,12 +77,12 @@ export default function Cart() {
                                 <h3 className='text-xl my-5'>It's seems like you haven't added any product to your cart.</h3>
                                 <p className='my-3'>Explore our website to purchase your favaourite product and enjoy. </p>
                                 <article className='my-10 md:px-0 w-full '>
-                                    <a className='bg-orange-500 w-full  px-5 py-3   rounded-md
+                                    <Link to="/" className='bg-orange-500 w-full  px-5 py-3   rounded-md
                                     text-white cursor-pointer shadow-2xl hover:text-black 
-                                    hover:border hover:border-orange-400 hover:bg-transparent'>Explore the site</a>
-                                    <a className='bg-orange-500 px-5 mx-10 py-3 w-full  rounded-md
+                                    hover:border hover:border-orange-400 hover:bg-transparent'>Explore the site</Link>
+                                    <Link to="/" className='bg-orange-500 px-5 mx-10 py-3 w-full  rounded-md
                                     text-white cursor-pointer shadow-2xl hover:text-black 
-                                    hover:border hover:border-orange-400 hover:bg-transparent'>Add items to cart</a>
+                                    hover:border hover:border-orange-400 hover:bg-transparent'>Add items to cart</Link>
                                 </article>
                             </section>
 
@@ -96,7 +96,7 @@ export default function Cart() {
                             <span className='Page-title font-semibold
                         text-2xl hover:text-indigo-800'>My Cart</span>
                         </h1>
-                        <main className='grid grid-cols-1 md:grid-cols-3 mx-2 gap-10 md:gap-5'>
+                        <main className='grid grid-cols-1 md:grid-cols-3 mx-2 gap-10 md:gap-5 '>
                             <section className='product-items-details md:col-span-2 rounded-lg'>
                                 <div className='product-top-banner flex text-white bg-indigo-700 h-10 items-center px-2 justify-between'>
                                     <h1 className='product-item cursor-pointer'>Product</h1>
@@ -219,7 +219,9 @@ export default function Cart() {
                     </Fragment>
                 }
             </div>
-
+            <Suspense fallback={<p>loading...</p>}>
+                <Footer />
+            </Suspense>
         </Fragment>
     )
 }
