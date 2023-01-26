@@ -17,7 +17,7 @@ export default function MobileSideModal({ mobileModal ,MobileSideModalToggle }) 
     const [isModalOpen, setIsModalOpen] = useState(mobileModal)
     const { IsLogdin } = useSelector(state => state.Signin)
     useEffect(() => {
-        setIsModalOpen(!isModalOpen)
+        setIsModalOpen(mobileModal)
     } , [mobileModal])
     return (
         <Fragment>
