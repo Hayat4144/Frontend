@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect, lazy, Suspense } from 'react'
 import { MdSort } from 'react-icons/md'
 import { FiFilter } from 'react-icons/fi'
 import { AiOutlineClose, AiOutlineCloseCircle } from 'react-icons/ai'
-import { BsPlus } from 'react-icons/bs'
+import { BsPlus, BsTypeH3 } from 'react-icons/bs'
 import { AiOutlineMinus } from 'react-icons/ai'
 import ProductImage from '../assets/images/thumbnail-1.jpg'
 import NoResult from '../assets/images/no-results.png'
@@ -12,6 +12,7 @@ import NavbarSkeleton from '../Skeleton/NavbarSkeleton'
 import { AiOutlineArrowRight } from 'react-icons/ai'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 import { RiArrowDropDownLine } from 'react-icons/ri'
+import { Rating, Typography } from '@mui/material'
 const Navbar = lazy(() => import('../UsableComponent/Navbar'))
 const Footer = lazy(() => import('../UsableComponent/Footer'))
 
@@ -21,21 +22,23 @@ const Footer = lazy(() => import('../UsableComponent/Footer'))
 export default function ProductSearch() {
     //  ---------------------- All states ---------------------------- //
     const [products, setProducts] = useState([])
+    const [noProduct, setNoProduct] = useState(false)
     const [isSortOpen, setisSortOpen] = useState(false)
     const [isMobilfilter, setisMobilfilter] = useState(false)
     const [categoryOpen, setcategoryOpen] = useState(true)
     const [ColourOpen, setColourOpen] = useState(true)
     const [SizeOpen, setSizeOpen] = useState(true)
     const [PriceOpne, setPriceOpen] = useState(true)
+    const [RatingOpen, setRatingOpen] = useState(true)
     const [price, setprice] = useState([0, 4000])
     const [totalProduct, setTotalProduct] = useState()
     const [showProductPerPage, setShowProductPerPage] = useState(10)
     const [currentPage, setCurrentPage] = useState(1)
-    const [NoProduct, setNoProduct] = useState(false)
     const [sortPriceLowToHigh, setSortPriceLowToHigh] = useState('sortPriceLowToHigh')
     const [sortPriceHighToLow, setSortPriceHightToLow] = useState('sortPriceHighToLow')
     const [sortByName, setSortByName] = useState('name')
     const [sort, setsort] = useState(sortByName)
+    const [Star, setStar] = useState(0)
     const [sortRelevence, setSortRelevence] = useState('Relevence')
 
     const navigate = useNavigate();
@@ -47,58 +50,41 @@ export default function ProductSearch() {
         // change the page number to load the fresh data accoring to the price
         setCurrentPage(1)
     }
+
+    const searchvalue = searchParams.get('keyword')
+
     useEffect(() => {
-
-        //  ---------------- query parameters -------------------    //
-        if (searchParams.get('price[gte]') && searchParams.get('price[lte]') && searchParams.get('page')) {
-            searchParams.delete('price[lte]')
-            searchParams.delete('price[gte]')
-            searchParams.delete('page', currentPage)
-            searchParams.delete('sort', sort)
-        }
-        else {
-            searchParams.append('price[gte]', price[0])
-            searchParams.append('price[lte]', price[1])
-            searchParams.append('page', currentPage)
-            searchParams.append('sort', sort)
-            navigate({
-                pathname: location.pathname,
-                search: `?${createSearchParams(searchParams)}`
-            })
-        }
-
-        //  -------------------- end of qurery paramters --------------------------  //
-
-
         // ------------- Backend product fetch api url ------------------ //
-        const link = `http://localhost:5000/v4/api/get_all/product?search=${searchParams.get('keyword')}&price[gte]=${price[0]}&price[lte]=${price[1]}&page=${currentPage}&sort=${sort === 'sortPriceLowToHigh' ? 'price' : sort === 'sortPriceHighToLow' ? 'price' : sort}${sort === 'sortPriceHighToLow' ? '&orderby=desc' : ''}`;
+
+        const link = `http://localhost:5000/v4/api/get_all/product?search=${searchvalue}&price[gte]=${price[0]}&price[lte]=${price[1]}&page=${currentPage}&sort=${sort === 'sortPriceLowToHigh' ? 'price' : sort === 'sortPriceHighToLow' ? 'price' : sort}${sort === 'sortPriceHighToLow' ? '&orderby=desc' : ''}`;
 
 
-
-
-        async function fetchproducts() {
+        async function fetchProduct() {
             await fetch(link, {
-                method: 'GET',
+                method: "GET",
                 headers: {
-                    'Content-type': 'application/json'
+                    'Content-Type': 'application/json'
                 },
                 credentials: 'include'
-            }).then(async (res) => {
-                if (res.status === 200) {
-                    const { data } = await res.json();
-                    console.log(data)
-                    const { result, total_result } = data[0];
-                    setProducts(result)
-                    setTotalProduct(Number(total_result[0].count))
-                }
-                else {
+            }).then(async res => {
+                // if not found set no products and empty the products array .
+                if (res.status !== 200) {
                     setNoProduct(true)
+                    setProducts([])
+                    return;
                 }
+
+                const { data } = await res.json();
+                console.log(data)
+                const { result, total_result } = data[0];
+                setProducts(result)
+                setTotalProduct(Number(total_result[0].count))
 
             })
         }
-        fetchproducts();
-    }, [price, searchParams, currentPage, setTotalProduct, setProducts, sort, sortPriceHighToLow])
+        fetchProduct();
+    }, [searchvalue, price, sort, currentPage])
+
 
 
     //  ------------------ pagination logic ----------------
@@ -143,7 +129,7 @@ export default function ProductSearch() {
             </Suspense>
 
             {/*  ----------------------product count --------------------------  */}
-            {products.length > 0 ?
+            {!noProduct || products.length > 0 ?
                 <div className='product_search_total_value_show border-b border-gray-400 
                 shadow-md h-10 w-full px-5 flex items-center justify-between'>
                     <h2 className='product_total_info'>Showing <span className='product_count'> {startingProductNumber} - {lastProductNumber} of {totalProduct} </span>
@@ -172,10 +158,10 @@ export default function ProductSearch() {
 
 
             {/*  -------------------- main container for product and filter ---------------------- */}
-            <main className='my-5 md:my-10 grid grid-cols-1 md:grid-cols-5 lg:grid-cols-7 gap-y-5'>
+            <main className='my-5 gap-y-5'>
 
                 {/*  --------------------- filter --------------- */}
-                <section className='sort_filter md:col-span-1'>
+                <section     className='sort_filter'>
                     <section className=' md:hidden filter-sort-for-mobile-only h-10 py-2 grid grid-cols-2 px-5'>
 
                         {/* --------------- sort --------- */}
@@ -320,7 +306,33 @@ export default function ProductSearch() {
                                         </ul>
                                     </div>
 
+                                    {/* -------------------- reviews facet ----------------- */}
+                                    <div className='start my-3 border-b border-gray-300 pb-2'>
+                                        <h3 className='Size-text flex w-full pb-3  justify-between items-center'>
+                                            <span>Size</span>
+                                            {!RatingOpen ?
+                                                <BsPlus
+                                                    fontSize={'22px'}
+                                                    onClick={() => { setRatingOpen(!RatingOpen) }} /> :
+                                                <AiOutlineMinus
+                                                    fontSize={'22px'}
+                                                    onClick={() => { setRatingOpen(!SizeOpen) }} />
+                                            }
+                                        </h3>
+                                        <div className='rating_2_above flex items-center space-x-3'>
+                                            <Rating
+                                                value={Star}
+                                                onChange={(e) => setStar(e.target.value)}
+                                                size="medium"
+                                            />
+                                            <span>2 and above</span>
+                                        </div>
+
+                                    </div>
+
+
                                     {/* ------------------ price handling filter ------------------ */}
+
                                     <div className='Price my-3 border-b border-gray-400 pb-2'>
                                         <h3 className='Price-text flex w-full  justify-between items-center'><span>Price</span> {!PriceOpne ? <BsPlus fontSize={'22px'} onClick={() => { setPriceOpen(!PriceOpne) }} /> : <AiOutlineMinus fontSize={'22px'} onClick={() => { setPriceOpen(!setPriceOpen) }} />} </h3>
                                         <div className={`${PriceOpne ? 'block' : 'hidden'}
@@ -349,7 +361,7 @@ export default function ProductSearch() {
                 {/*  -------------------------- product show ------------------- */}
                 <section className='md:col-span-3 mx-5 lg:col-span-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5'>
                     {
-                        products.length > 0 ? products.map(item => (
+                        !noProduct || products.length > 0 ? products.map(item => (
 
                             <div key={item._id} className="cursor-pointer">
                                 <figure className='overflow-hidden rounded-md'>
