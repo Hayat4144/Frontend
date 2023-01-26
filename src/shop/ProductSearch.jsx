@@ -38,7 +38,11 @@ export default function ProductSearch() {
     const [sortPriceHighToLow, setSortPriceHightToLow] = useState('sortPriceHighToLow')
     const [sortByName, setSortByName] = useState('name')
     const [sort, setsort] = useState(sortByName)
-    const [Star, setStar] = useState(0)
+    const [Star1, setStar1] = useState(1)
+    const [Star2, setStar2] = useState(2)
+    const [Star3, setStar3] = useState(3)
+    const [Star4, setStar4] = useState(4)
+    const [Star, setStar] = useState(Star1)
     const [sortRelevence, setSortRelevence] = useState('Relevence')
 
     const navigate = useNavigate();
@@ -56,7 +60,7 @@ export default function ProductSearch() {
     useEffect(() => {
         // ------------- Backend product fetch api url ------------------ //
 
-        const link = `http://localhost:5000/v4/api/get_all/product?search=${searchvalue}&price[gte]=${price[0]}&price[lte]=${price[1]}&page=${currentPage}&sort=${sort === 'sortPriceLowToHigh' ? 'price' : sort === 'sortPriceHighToLow' ? 'price' : sort}${sort === 'sortPriceHighToLow' ? '&orderby=desc' : ''}`;
+        const link = `http://localhost:5000/v4/api/get_all/product?search=${searchvalue}&price[gte]=${price[0]}&price[lte]=${price[1]}&page=${currentPage}&Star=${Star}&sort=${sort === 'sortPriceLowToHigh' ? 'price' : sort === 'sortPriceHighToLow' ? 'price' : sort}${sort === 'sortPriceHighToLow' ? '&orderby=desc' : ''}`;
 
 
         async function fetchProduct() {
@@ -83,7 +87,7 @@ export default function ProductSearch() {
             })
         }
         fetchProduct();
-    }, [searchvalue, price, sort, currentPage])
+    }, [searchvalue, price, sort, currentPage, Star])
 
 
 
@@ -158,11 +162,12 @@ export default function ProductSearch() {
 
 
             {/*  -------------------- main container for product and filter ---------------------- */}
-            <main className='my-5 gap-y-5'>
+            <main className='my-5 gap-y-5 md:flex space-x-5'>
 
                 {/*  --------------------- filter --------------- */}
-                <section     className='sort_filter'>
-                    <section className=' md:hidden filter-sort-for-mobile-only h-10 py-2 grid grid-cols-2 px-5'>
+                <section className='filter md:w-[30%]'>
+                    {/* filter for small screen */}
+                    <aside className=' md:hidden filter-sort-for-mobile-only h-10 py-2 grid grid-cols-2 px-5'>
 
                         {/* --------------- sort --------- */}
                         <div className="sort_box flex items-center border border-gray-300">
@@ -177,9 +182,6 @@ export default function ProductSearch() {
                                 </option>
                             </select>
                         </div>
-
-                        {/* ------------------ end of sort -----------------------------*/}
-
 
                         {/* ------------------ start of filter for small screen ------------------- */}
                         <article className='filter'>
@@ -258,108 +260,124 @@ export default function ProductSearch() {
                                 </div>
                             </aside>
                         </article>
-                    </section >
+                    </aside>
 
-                    {/* --------------------------- filter box for large screeen ----------------- */}
-                    <section section className='filter&sort-medium-large-screen hidden md:block' >
-                        <article className='filter rounded'>
-                            {/*  ------------------- facet search -------------------- */}
-                            <aside className={` bg-white px-5 z-2 filter-aside rounded-md pb-5 `}>
-                                <h3 className='filter-text flex  border-b pb-3 border-gray-400 font-[500] text-xl 
+                    {/*  ------------------- facet search large screen -------------------- */}
+                    <aside className={` bg-white px-3 z-2 filter-aside hidden md:block rounded-md pb-5 `}>
+                        <h3 className='filter-text flex  border-b pb-3 border-gray-400 font-[500] text-xl 
                                 justify-between items-center'>
-                                    <span className='pr-2'> Filter</span>
+                            <span className='pr-2'> Filter</span>
+                        </h3>
+                        <form className='filter-form my-4'>
+
+                            {/*  ---------------------- category facet------------------- */}
+                            <div className='category border-b border-gray-400 pb-2'>
+                                <h3 className='Category-text flex w-full  justify-between items-center'><span> Category</span>{!categoryOpen ? < BsPlus fontSize={'22px'} onClick={() => { setcategoryOpen(!categoryOpen) }} /> : <AiOutlineMinus fontSize={'22px'} onClick={() => { setcategoryOpen(!categoryOpen) }} />} </h3>
+                                <ul className={`${categoryOpen ? 'block' : 'hidden'} category-list-filter px-3 my-2`}>
+                                    <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Jhumka</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
+                                    <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Bali</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
+                                    <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Necklace</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
+                                    <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Tops</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
+                                </ul>
+                            </div>
+
+                            {/*  ------------------ color facet -------------------- */}
+                            <div className='Colour my-3 border-b border-gray-400 pb-2'>
+                                <h3 className='Colour-text flex w-full  justify-between items-center'><span> Colour</span> {!ColourOpen ? < BsPlus fontSize={'22px'} onClick={() => { setColourOpen(!ColourOpen) }} /> : <AiOutlineMinus fontSize={'22px'} onClick={() => { setColourOpen(!ColourOpen) }} />}</h3>
+                                <ul className={`${ColourOpen ? 'block' : 'hidden'} Colour-list-filter px-3 my-2`}>
+                                    <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Rani</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
+                                    <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Silver</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
+                                    <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Black</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
+                                    <li className='text-sm flex items-center justify-between'><span className='category-list-item'>orange</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
+                                    <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Pink</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
+                                    <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Mahroon</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
+                                </ul>
+                            </div>
+
+
+                            {/*  ------------------------- size facet --------------------- */}
+                            <div className='Size my-3 border-b border-gray-400 pb-2'>
+                                <h3 className='Size-text flex w-full  justify-between items-center'><span>Size</span> {!SizeOpen ? <BsPlus fontSize={'22px'} onClick={() => { setSizeOpen(!SizeOpen) }} /> : <AiOutlineMinus fontSize={'22px'} onClick={() => { setSizeOpen(!SizeOpen) }} />} </h3>
+                                <ul className={`${SizeOpen ? 'block' : 'hidden'} Size-list-filter px-3 my-2`}>
+                                    <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Small</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
+                                    <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Medium</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
+                                    <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Large</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
+                                </ul>
+                            </div>
+
+                            {/* -------------------- reviews facet ----------------- */}
+                            <div className='start my-3 border-b border-gray-300 pb-2'>
+                                <h3 className='Size-text flex w-full pb-3  justify-between items-center'>
+                                    <span>Size</span>
+                                    {!RatingOpen ?
+                                        <BsPlus
+                                            fontSize={'22px'}
+                                            onClick={() => { setRatingOpen(!RatingOpen) }} /> :
+                                        <AiOutlineMinus
+                                            fontSize={'22px'}
+                                            onClick={() => { setRatingOpen(!SizeOpen) }} />
+                                    }
                                 </h3>
-                                <form className='filter-form my-4'>
+                                <div className='rating_2_above flex items-center space-x-3'>
+                                    <Rating
+                                        value={Star4}
+                                        onClick={() => setStar(Star4)}
+                                        size="medium"
+                                    />
+                                    <span>4 and above</span>
+                                </div>
+                                <div className='rating_3_above flex items-center space-x-3'>
+                                    <Rating
+                                        value={Star3}
+                                        onClick={() => setStar(Star3)}
+                                        size="medium"
+                                    />
+                                    <span>3 and above</span>
+                                </div>
+                                <div className='rating_2_above flex items-center space-x-3'>
+                                    <Rating
+                                        value={Star2}
+                                        onClick={() => setStar(Star2)}
+                                        size="medium"
+                                    />
+                                    <span>2 and above</span>
+                                </div>
+                                <div className='rating_1_above flex items-center space-x-3'>
+                                    <Rating
+                                        value={Star1}
+                                        onClick={() => setStar(Star1)}
+                                        size="medium"
+                                    />
+                                    <span>1 and above</span>
+                                </div>
 
-                                    {/*  ---------------------- category facet------------------- */}
-                                    <div className='category border-b border-gray-400 pb-2'>
-                                        <h3 className='Category-text flex w-full  justify-between items-center'><span> Category</span>{!categoryOpen ? < BsPlus fontSize={'22px'} onClick={() => { setcategoryOpen(!categoryOpen) }} /> : <AiOutlineMinus fontSize={'22px'} onClick={() => { setcategoryOpen(!categoryOpen) }} />} </h3>
-                                        <ul className={`${categoryOpen ? 'block' : 'hidden'} category-list-filter px-3 my-2`}>
-                                            <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Jhumka</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
-                                            <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Bali</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
-                                            <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Necklace</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
-                                            <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Tops</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
-                                        </ul>
-                                    </div>
-
-                                    {/*  ------------------ color facet -------------------- */}
-                                    <div className='Colour my-3 border-b border-gray-400 pb-2'>
-                                        <h3 className='Colour-text flex w-full  justify-between items-center'><span> Colour</span> {!ColourOpen ? < BsPlus fontSize={'22px'} onClick={() => { setColourOpen(!ColourOpen) }} /> : <AiOutlineMinus fontSize={'22px'} onClick={() => { setColourOpen(!ColourOpen) }} />}</h3>
-                                        <ul className={`${ColourOpen ? 'block' : 'hidden'} Colour-list-filter px-3 my-2`}>
-                                            <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Rani</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
-                                            <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Silver</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
-                                            <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Black</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
-                                            <li className='text-sm flex items-center justify-between'><span className='category-list-item'>orange</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
-                                            <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Pink</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
-                                            <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Mahroon</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
-                                        </ul>
-                                    </div>
-
-
-                                    {/*  ------------------------- size facet --------------------- */}
-                                    <div className='Size my-3 border-b border-gray-400 pb-2'>
-                                        <h3 className='Size-text flex w-full  justify-between items-center'><span>Size</span> {!SizeOpen ? <BsPlus fontSize={'22px'} onClick={() => { setSizeOpen(!SizeOpen) }} /> : <AiOutlineMinus fontSize={'22px'} onClick={() => { setSizeOpen(!SizeOpen) }} />} </h3>
-                                        <ul className={`${SizeOpen ? 'block' : 'hidden'} Size-list-filter px-3 my-2`}>
-                                            <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Small</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
-                                            <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Medium</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
-                                            <li className='text-sm flex items-center justify-between'><span className='category-list-item'>Large</span> <input type={'checkbox'} className="accent-indigo-800 w-6 h-4" /></li>
-                                        </ul>
-                                    </div>
-
-                                    {/* -------------------- reviews facet ----------------- */}
-                                    <div className='start my-3 border-b border-gray-300 pb-2'>
-                                        <h3 className='Size-text flex w-full pb-3  justify-between items-center'>
-                                            <span>Size</span>
-                                            {!RatingOpen ?
-                                                <BsPlus
-                                                    fontSize={'22px'}
-                                                    onClick={() => { setRatingOpen(!RatingOpen) }} /> :
-                                                <AiOutlineMinus
-                                                    fontSize={'22px'}
-                                                    onClick={() => { setRatingOpen(!SizeOpen) }} />
-                                            }
-                                        </h3>
-                                        <div className='rating_2_above flex items-center space-x-3'>
-                                            <Rating
-                                                value={Star}
-                                                onChange={(e) => setStar(e.target.value)}
-                                                size="medium"
-                                            />
-                                            <span>2 and above</span>
-                                        </div>
-
-                                    </div>
+                            </div>
 
 
-                                    {/* ------------------ price handling filter ------------------ */}
-
-                                    <div className='Price my-3 border-b border-gray-400 pb-2'>
-                                        <h3 className='Price-text flex w-full  justify-between items-center'><span>Price</span> {!PriceOpne ? <BsPlus fontSize={'22px'} onClick={() => { setPriceOpen(!PriceOpne) }} /> : <AiOutlineMinus fontSize={'22px'} onClick={() => { setPriceOpen(!setPriceOpen) }} />} </h3>
-                                        <div className={`${PriceOpne ? 'block' : 'hidden'}
+                            {/* ------------------ price handling filter ------------------ */}
+                            <div className='Price my-3 border-b border-gray-400 pb-2'>
+                                <h3 className='Price-text flex w-full  justify-between items-center'><span>Price</span> {!PriceOpne ? <BsPlus fontSize={'22px'} onClick={() => { setPriceOpen(!PriceOpne) }} /> : <AiOutlineMinus fontSize={'22px'} onClick={() => { setPriceOpen(!setPriceOpen) }} />} </h3>
+                                <div className={`${PriceOpne ? 'block' : 'hidden'}
                                         Price-list-filter px-3 my-10`}>
-                                            <Slider
-                                                aria-label="Always visible"
-                                                value={price}
-                                                onChange={priceHander}
-                                                aria-lableledby="range-slider"
-                                                max={400}
-                                                min={10}
-                                                step={10}
-                                                valueLabelDisplay="on"
-                                            />
-                                        </div>
-                                    </div>
-                                    {/* ------------------------- end of price handling filter */}
-                                </form>
-                            </aside>
-                        </article>
-
-                        {/*  --------------------------- end of filter box ------------------------- */}
-                    </section >
+                                    <Slider
+                                        aria-label="Always visible"
+                                        value={price}
+                                        onChange={priceHander}
+                                        aria-lableledby="range-slider"
+                                        max={400}
+                                        min={10}
+                                        step={10}
+                                        valueLabelDisplay="on"
+                                    />
+                                </div>
+                            </div>
+                            {/* ------------------------- end of price handling filter */}
+                        </form>
+                    </aside>
                 </section >
 
                 {/*  -------------------------- product show ------------------- */}
-                <section className='md:col-span-3 mx-5 lg:col-span-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5'>
+                <section className='md:col-span-3 mx-5  lg:col-span-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5'>
                     {
                         !noProduct || products.length > 0 ? products.map(item => (
 
@@ -372,10 +390,14 @@ export default function ProductSearch() {
                                     navigate(`/V2/shop/product/${item._id}/${item.name}/${item.category}`)
                                 }}>
                                     <p className='product_name capitalize w-full 
-                                    text-[17px] hover:text-indigo-700'>
+                                    text-[17px] font-extrabold hover:text-indigo-700'>
                                         {item.name}
                                     </p>
-                                    <p className='product_price text-[18px]'>
+                                    <p className='product_description'>
+                                        {item.description.length > 80 ? `${item.description.slice(0, 60)} ...` : item.description}
+                                    </p>
+                                    <Rating value={item.average_rating} />
+                                    <p className='product_price text-xl'>
                                         <span className='currency_symbol'> Rs </span>
                                         {item.price}
                                     </p>

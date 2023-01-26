@@ -6,7 +6,7 @@ import { Rating, Typography } from '@mui/material'
 import { useEffect } from 'react'
 
 
-export default function CreateUserReview({isModalOpen ,RatingModalToggle}) {
+export default function CreateUserReview({ isModalOpen, RatingModalToggle }) {
     //  ---------------- all state ---------------- //
     const [isLoading, setIsLoading] = useState(false)
     const [showModal, setShowModal] = useState(isModalOpen)
@@ -14,9 +14,9 @@ export default function CreateUserReview({isModalOpen ,RatingModalToggle}) {
     const [Star, setStar] = useState(0)
     const { id } = useParams();
 
-    useEffect(()=>{
+    useEffect(() => {
         setShowModal(isModalOpen)
-    },[isModalOpen])
+    }, [isModalOpen])
 
     //  -------------------------- Review Submit Handler ------------------- //
 
@@ -29,7 +29,7 @@ export default function CreateUserReview({isModalOpen ,RatingModalToggle}) {
             },
             body: JSON.stringify({
                 comment,
-                Star: 4,
+                Star,
                 product_id: id
             }),
             credentials: 'include'
@@ -50,6 +50,7 @@ export default function CreateUserReview({isModalOpen ,RatingModalToggle}) {
             return;
         }
         setIsLoading(false)
+        console.log(response.data);
         toast.success(response.data, {
             position: "bottom-center",
             autoClose: 5000,
@@ -65,14 +66,16 @@ export default function CreateUserReview({isModalOpen ,RatingModalToggle}) {
 
     // ------------------- star value change ----------- //
     const StarChangeValue = (e) => {
-        setStar(e.target.value)
+        setStar(Number(e.target.value))
+
     }
 
+    console.log(typeof Star)
     return (
         <Fragment>
             <div className={`bg-black w-full fixed h-screen opacity-100 bg-opacity-30 inset-0
-            ${showModal ? 'flex' :'hidden'}  items-center justify-center z-50`}>
-                <div className='user_review_body bg-white w-5/6 md:w-[40%] py-5 md:px-5  rounded-md'>
+            ${showModal ? 'flex' : 'hidden'}  items-center justify-center z-50`}>
+                <div className='user_review_body bg-white w-5/6 md:w-[50%] lg:w-[40%] py-5 px-3 md:px-5  rounded-md'>
                     <h1 className='body_title text-xl font-bold'>
                         Share your feedback
                     </h1>
@@ -80,7 +83,7 @@ export default function CreateUserReview({isModalOpen ,RatingModalToggle}) {
                         e.preventDefault();
                         ReviewSubmitHandler();
                     }}>
-                        <div className="comment_field px-2 ">
+                        <div className="comment_field ">
                             <textarea name="comment" cols="35" rows="5"
                                 className='border border-gray-400 rounded-md my-4
                             outline-none w-full px-5 py-2 focus:border-indigo-600
@@ -90,14 +93,15 @@ export default function CreateUserReview({isModalOpen ,RatingModalToggle}) {
                                 value={comment}
                                 onChange={e => setComment(e.target.value)} />
                         </div>
-                        <div className='star_group_radio_btn flex items-center space-x-3'>
-                            <Typography>How much do you rate this product?</Typography>
+                        <div className='star_group_radio_btn md:flex md:items-center md:space-x-3'>
+                            <p className=''>How much do you rate this product?</p>
                             <Rating
                                 value={Star}
                                 onChange={StarChangeValue}
                                 size="large" />
                         </div>
-                        <div className='sumbit-btn mx-4 my-5 space-x-5'>
+
+                        <div className='sumbit-btn my-5 flex items-center space-x-5'>
                             <button type='button'
                                 onClick={() => RatingModalToggle(showModal)}
                                 className='w-24 px-5 h-10 bg-red-800 text-white py-1
@@ -106,10 +110,10 @@ export default function CreateUserReview({isModalOpen ,RatingModalToggle}) {
                             {!isLoading ? <button type='submit' disabled={Star === 0 || comment.length < 15 ? true : false}
                                 className='h-10 text-center text-white outline-none text-bold bg-indigo-800 rounded-md
                               hover:bg-indigo-700 px-5'>Submit</button> : <button type="button"
-                                className="inline-flex items-center justify-center py-2  leading-4 
-                              text-sm shadow rounded-md text-white bg-indigo-800 hover:bg-indigo-900
+                                className="inline-flex items-center justify-center py-2 
+                              text-sm shadow rounded-md w-36 h-10 text-white bg-indigo-800 hover:bg-indigo-900
                                 text-center transition ease-in-out duration-150 cursor-not-allowed"
-                                disabled="">
+                                disabled={true}>
                                 <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-slate-500"
                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <circle className="pacity-25 text-white" cx="12" cy="12" r="10"

@@ -4,13 +4,16 @@ import { CiUser } from 'react-icons/ci'
 import { BiCategory, BiSearch } from 'react-icons/bi'
 import { createSearchParams, Link, Navigate, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { AiOutlineSearch } from 'react-icons/ai';
 const Account_List_Modal = lazy(() => import('./Account_List_Modal'))
 const MobileSideModal = lazy(() => import('./MobileSideModal'))
+const MobileSearchModal = lazy(() => import('./SearchModal'))
 
 
 export default function Navbar() {
     const [isMobileViewOpen, setIsMobileViewOpen] = useState(false);
     const [IsAccountModalOpen, SetIsAccountModalOpen] = useState(false)
+    const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)
     const [keyword, setKeyword] = useState('')
     const navigate = useNavigate();
 
@@ -20,6 +23,11 @@ export default function Navbar() {
     // MobileViewOpen Function
     const OpenMobileeView = () => {
         setIsMobileViewOpen(!isMobileViewOpen)
+    }
+
+    // ---------------- search modal toggle functions ------------ //
+    const SearchModalToggle = (state) => {
+        setIsSearchModalOpen(!state)
     }
 
     // pass this function to child component to change the state of this state 
@@ -43,11 +51,18 @@ export default function Navbar() {
         <header className='w-full z-10 shadow-lg'>
             <nav className='w-full h-20 flex items-center justify-between px-5 sm:px-4 md:px-6 lg:px-8 '>
                 {/* --- Burger --- menu */}
-                <div className='mobile_view md:hidden' onClick={OpenMobileeView}>
+                <div className='mobile_view md:hidden flex items-center space-x-5'>
                     <div className='burger_menu cursor-pointer' onClick={OpenMobileeView}>
                         <div className='burger_line_1 w-5 h-[2px] bg-black m-1'></div>
                         <div className='burger_line_2 w-5 h-[2px] bg-black m-1'></div>
                         <div className='burger_line_3 w-5 h-[2px] bg-black m-1'></div>
+                    </div>
+                    <div className='search_icon'>
+                        <button className='mx-auto text-2xl py-2 focus:text-indigo-800'
+                            onClick={() => setIsSearchModalOpen(!isSearchModalOpen)}>
+                            <BiSearch className="cursor-pointer" />
+                        </button>
+
                     </div>
                 </div>
 
@@ -117,6 +132,8 @@ export default function Navbar() {
                         </span>
                     </div>
 
+
+
                     {/* ---- Cart Icon */}
                     <Link to="/V2/user/cart" className="cart_icon  hover:text-indigo-700">
 
@@ -130,10 +147,12 @@ export default function Navbar() {
             </nav>
 
             <Suspense fallback={<p>loading...</p>}>
-                <MobileSideModal  mobileModal={isMobileViewOpen} MobileSideModalToggle={MobileSideModalToggle} />
+                <MobileSideModal mobileModal={isMobileViewOpen} MobileSideModalToggle={MobileSideModalToggle} />
             </Suspense>
 
-
+            <Suspense fallback={<p>loading..</p>}>
+                <MobileSearchModal  SearchModal={isSearchModalOpen} SearchModalToggle={SearchModalToggle}/>
+            </Suspense>
 
             <Suspense fallback={<p>loading...</p>}>
                 <Account_List_Modal
