@@ -21,7 +21,7 @@ export default function Account_List_Modal({ Modalopen, AccountModalToggle }) {
                     AccountModalToggle(isModalOpen)
                 }}>
                 <div className='accounts text-black mx-10 w-3/4 text-center py-5 border-b border-gray-300'>
-                    <Link to="/V2/auth/sign_in"><a className='border-2 border-indigo-800 rounded-md shadow-md bg-indigo-800 px-11 w-3/5 py-1 text-white'>Sign in</a></Link>
+                    <Link to="/V2/auth/sign_in"><span className='border-2 border-indigo-800 rounded-md shadow-md bg-indigo-800 px-11 w-3/5 py-1 text-white'>Sign in</span></Link>
                     <h3 className='new-account text-sm my-2'>New customer ? <span className='text-blue-700 px-1 hover:text-blue-900 cursor-pointer'> <Link to='/V2/auth/sign_up'> Start here</Link></span></h3>
                 </div>
                 <section className='grid grid-cols-2 mx-10 my-5'>
