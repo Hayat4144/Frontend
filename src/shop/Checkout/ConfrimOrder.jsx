@@ -28,7 +28,7 @@ export default function ConfrimOrder() {
             <Suspense fallback={<NavbarSkeleton />}>
                 <Navbar />
             </Suspense>
-            <div className="stepper_container">
+            <div className="stepper_container my-10">
                 <Stepper activestep={1} />
             </div>
             <div className="confirm_order_container my-10 grid grid-cols-1 md:grid-cols-3 gap-5">
