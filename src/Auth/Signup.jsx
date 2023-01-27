@@ -80,19 +80,19 @@ export default function Signup() {
                         SignupFunc();
                     }}>
                         {/* first Name field */}
-                        <div className='mx-5 lg:mx-4 mt-[1em]'>
+                        <div className='mx-5 lg:mx-4 mt-2'>
                             <label htmlFor='Name' className='text-sm font-bold text-gray-700'>
                                 First Name</label>
                             <input type={'text'} required value={firstName}
                                 onChange={(e) => { setFirstName(e.target.value) }}
                                 className="border border-gray-300 rounded-md my-2 py-[8px] 
                                 w-full focus:border-indigo-600 focus:ring-indigo-700 bg-inherit 
-                                \focus:border  px-2 outline-none text-sm text-gray-700
+                                focus:border  px-2 outline-none text-sm text-gray-700
                                 placeholder:text-gray-500" placeholder='Enter your full name' />
 
                         </div>
                         {/* last Name field */}
-                        <div className='mx-5 lg:mx-4 mt-[1em]'>
+                        <div className='mx-5 lg:mx-4 mt-2'>
                             <label htmlFor='Name' className='text-sm font-bold text-gray-700'>
                                 Last Name</label>
                             <input type={'text'} required value={lastName}
@@ -126,8 +126,8 @@ export default function Signup() {
                                 onChange={(e) => { setpassword(e.target.value) }} className="border border-gray-300 rounded-md my-2 py-[8px] 
                                 w-full focus:border-indigo-600 focus:ring-indigo-700 bg-inherit 
                                 focus:border  px-2 outline-none text-sm text-gray-700
-                                placeholder:text-gray-500" placeholder='Enter your 
-                            Password' />
+                                placeholder:text-gray-500" 
+                                placeholder='Enter your password' />
                             <span className='text-sm mr-1 cursor-pointer relative float-right bottom-9 
                             right-1' onClick={(e) => {
                                     setshowpassword1(!showPassword1)
@@ -144,7 +144,8 @@ export default function Signup() {
                                 className="border border-gray-300 rounded-md my-2 py-[8px] 
                                 w-full focus:border-indigo-600 focus:ring-indigo-700 bg-inherit 
                                 focus:border  px-2 outline-none text-sm text-gray-700
-                                placeholder:text-gray-500 " placeholder='Re-enter your password' />
+                                placeholder:text-gray-500 " 
+                                placeholder='Re-enter your password' />
                             <span className='text-sm relative float-right bottom-9 right-1 cursor-pointer
                             mr-1' onClick={(e) => {
                                     setshowpassword2(!showPassword2)

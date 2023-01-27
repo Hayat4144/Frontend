@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import DecodeJwtToken from '../utils/DecodeJwtToken'
 
@@ -140,15 +140,14 @@ export default function Signin() {
                     </div>
                 </form>
 
-                <div className='create_new_account sm:mx-auto sm:w-[50%] mt-4 xl:mx-auto xl:w-[30%] 
-                lg:mx-auto lg:w-[25%] text-center mx-4'>
-                    <div className='m-8 border-b border-b-light-white'>
-                        <span className='text-sm  dont-account-text hover:text-indigo-700'>
-                            Don't have an account ?</span>
-                    </div>
-                    <div className='new_accoutn_btn'>
+                <div className='create_new_account sm:mx-auto  sm:w-[50%] mt-4 xl:mx-auto xl:w-[30%] 
+                lg:mx-auto lg:w-[25%]'>
+                    <h3 className='dont_have_account mx-4 before:bg-gray-400 after:bg-gray-400 my-10 text-center relative max-w-[600px]'>Don't have any account ?</h3>
+                    <div className='new_accoutn_btn mx-4 my-10'>
                         <button className='w-full bg-indigo-800 py-2 px-6 rounded-md mb-2
-                         text-white hover:bg-indigo-900'>Create new account</button>
+                         text-white hover:bg-indigo-900'>
+                            <Link to={"/V2/auth/sign_up"}>Create new account</Link>
+                        </button>
 
                     </div>
                 </div>

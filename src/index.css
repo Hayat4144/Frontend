@@ -2,11 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 :root {
-  font-family: 'Noto Sans', sans-serif;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Noto Sans", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 15px;
   line-height: 24px;
   /* font-weight: 400; */
@@ -32,14 +30,11 @@ body {
   border-top-left-radius: 6px;
 } */
 
-
 .home_slider_image {
   z-index: -1;
   height: 100%;
   /* mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)); */
-
 }
-
 
 .home_products {
   z-index: 1;
@@ -56,7 +51,6 @@ body {
   margin-left: 10px;
 }
 
-
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -64,11 +58,11 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
-.payment_container [type=radio] {
+.payment_container [type="radio"] {
   position: absolute;
   opacity: 0;
   width: 0;
@@ -76,28 +70,25 @@ input[type=number] {
 }
 
 /* IMAGE STYLES */
-[type=radio]+.box_container {
+[type="radio"] + .box_container {
   cursor: pointer;
   width: 100%;
   border: 1px solid gray;
-
 }
-
 
 .checked_btn {
   visibility: hidden;
 }
 
 /* CHECKED STYLES */
-.payment_container [type=radio]:checked+div {
+.payment_container [type="radio"]:checked + div {
   border: 1px solid indigo;
 }
 
 /* CHECKED STYLES */
-.payment_container [type=radio]:checked+div .checked_btn {
+.payment_container [type="radio"]:checked + div .checked_btn {
   visibility: visible;
 }
-
 
 .center {
   height: 100vh;
@@ -151,4 +142,27 @@ input[type=number] {
   100% {
     transform: scale(0);
   }
+}
+
+/* dont-account-text  signin */
+
+.dont_have_account::before {
+  content: "";
+  display: block;
+  width: 100px;
+  height: 1px;
+  left: 0;
+  top: 50%;
+  position: absolute;
+
+}
+.dont_have_account::after {
+  content: "";
+  display: block;
+  width: 100px;
+  height: 1px;
+  right: 0;
+  top: 50%;
+  position: absolute;
+
 }
