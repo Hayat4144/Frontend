@@ -13,8 +13,6 @@ export default function Signin() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-
-
     const EmailChange = (e) => {
         setemail(e.target.value)
     }
@@ -83,7 +81,7 @@ export default function Signin() {
                     SigninFunc();
                 }}>
                     <div className='sm:mx-auto sm:w-[50%] mt-4 xl:mx-auto xl:w-[30%]  lg:mx-auto 
-                    lg:w-[25%] signin-form border md:w-[50%] md:m-auto border-gray-300 shadow-lg 
+                    lg:w-[40%] signin-form border md:w-[50%] md:m-auto border-gray-300 shadow-lg 
                     rounded-md  mx-3 mb-2'>
                         <div className='email_fields mx-4 mt-5 mb-2'>
                             <label className='text-sm font-medium text-gray-700 block'>Email</label>
@@ -140,9 +138,11 @@ export default function Signin() {
                     </div>
                 </form>
 
-                <div className='create_new_account sm:mx-auto  sm:w-[50%] mt-4 xl:mx-auto xl:w-[30%] 
-                lg:mx-auto lg:w-[25%]'>
-                    <h3 className='dont_have_account mx-4 before:bg-gray-400 after:bg-gray-400 my-10 text-center relative max-w-[600px]'>Don't have any account ?</h3>
+                <div className='create_new_account sm:mx-auto  sm:w-[50%] mt-4 xl:mx-auto  
+                lg:mx-auto lg:w-[40%] md:w-[50%] xl:w-[30%]'>
+                    <h3 className='dont_have_account  mx-4 before:bg-gray-400 before:lg:w-[100px]
+                    after:lg:w-[100px] after:bg-gray-400 my-10 text-center relative 
+                    ax-w-[600px] before:md:w-[80px] after:md:w-[80px] before:sm:w-[75px] after:sm:w-[75px]'>Don't have any account ?</h3>
                     <div className='new_accoutn_btn mx-4 my-10'>
                         <button className='w-full bg-indigo-800 py-2 px-6 rounded-md mb-2
                          text-white hover:bg-indigo-900'>
