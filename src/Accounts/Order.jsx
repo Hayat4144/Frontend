@@ -88,6 +88,8 @@ export default function Order() {
         FetchOrderHistory()
     }, [])
 
+    console.log(Orderdata)
+
     return (
         <Fragment>
             <Suspense fallback={<NavbarSkeleton />}>
@@ -114,7 +116,7 @@ export default function Order() {
                                         <span className='order_OrderDate text-gray-600'>{item.created_at}</span>
                                     </div>
                                 </div>
-                                <div className="order_products_display_area my-5 mx-5">
+                                {/* <div className="order_products_display_area my-5 mx-5">
                                     {produceVarient.map((product, index) => (
                                         <div className="order_product border-b border-gray-300 my-5 pb-5" key={index}>
                                             <div className='product_image_container flex space-x-6'>
@@ -157,7 +159,7 @@ export default function Order() {
                                             </section>
                                         </div>
                                     ))}
-                                </div>
+                                </div> */}
 
                             </div>
                         )) :

@@ -10,14 +10,17 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import CardPayment from "./CardPayment";
 import { toast } from "react-toastify";
-const CashOnDelivary = lazy(()=>import('./CashOnDelivary'))
+import { useNavigate, createSearchParams, useLocation, useSearchParams } from 'react-router-dom'
+const CashOnDelivary = lazy(() => import('./CashOnDelivary'))
+
 
 export default function Payment() {
   const { IsLogdin } = useSelector((state) => state.Signin);
   const [CARD, setCARD] = useState("CARDOPTION");
   const [CashOnDelivery, setCashOnDelivery] = useState("cashondelivery");
   const [selectedoption, setSelectedoption] = useState(null);
-
+  const navigate = useNavigate();
+  const Location = useLocation()
 
   useEffect(() => {
     !IsLogdin ? navigate({
@@ -26,7 +29,7 @@ export default function Payment() {
     }) : null;
   }, [])
 
- 
+
 
 
   return (
@@ -90,9 +93,9 @@ export default function Payment() {
                 className={`form_container my-5 ${selectedoption === CashOnDelivery ? "visible" : "hidden"
                   }`}
               >
-               <Suspense fallback={<p>loading...</p>}>
+                <Suspense fallback={<p>loading...</p>}>
                   <CashOnDelivary />
-               </Suspense>
+                </Suspense>
               </section>
             </div>
           </label>

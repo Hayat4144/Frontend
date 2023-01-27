@@ -10,6 +10,7 @@ import React, { Fragment, useState } from "react";
 import { toast } from "react-toastify";
 import { useRef } from "react";
 import { REMOVE_ALL_ITEM_FROM_CART } from "../../Context/Actions/ActionType";
+import { useNavigate } from "react-router-dom";
 
 export default function CardPayment() {
   //   ---------------- All state goes here  ---------------------------- //
@@ -18,6 +19,8 @@ export default function CardPayment() {
   const [CardNumberError, setCardNumberError] = useState('')
   const [CardExpirydateError, setCardExpirydateError] = useState('')
   const [cvvError, setCvvError] = useState('')
+  const [payment_type, setPayment_type] = useState('CARD')
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const products = [];
   productItems.forEach((element) => {
@@ -87,7 +90,8 @@ export default function CardPayment() {
         body: JSON.stringify({
           payment_intentId: data,
           token: result.token,
-          orderId
+          orderId,
+          payment_type
         }),
         credentials: 'include'
       }).then(async (res) => {
@@ -121,6 +125,7 @@ export default function CardPayment() {
             theme: "dark",
           })
           payment_btn.current.disabled = false;
+          navigate('/V2/user/account/order/history')
         }
 
       })

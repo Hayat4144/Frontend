@@ -1,13 +1,20 @@
 import React, { Fragment, useRef, useState } from 'react'
 import ReCAPTCHA from "react-google-recaptcha";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { REMOVE_ALL_ITEM_FROM_CART } from '../../Context/Actions/ActionType';
 
 export default function CashOnDelivary() {
     const recaptchaRef = useRef(null)
+    const submitButtonRef = useRef(null);
     const [isLoading, setisLoading] = useState(false)
     const SITE_KEY = import.meta.env.VITE_GOOGLE_SITE_KEY;
     const { productItems } = useSelector((state) => state.Cart);
+    const [payment_type, setPayment_type] = useState('CASHONDELIVARY')
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    
 
     const products = [];
     productItems.forEach((element) => {
@@ -16,6 +23,14 @@ export default function CashOnDelivary() {
             quantity: element.quantity,
         });
     });
+
+    console.log(products)
+
+    // validate the captcha 
+    const handleRecaptchaChange = (value)=>{
+        console.log(value)
+        value ? submitButtonRef.current.disabled = false : submitButtonRef.current.disabled = true ;
+    }
 
     // Call Google's API to get score
     // const res = await axios.post(
@@ -32,14 +47,15 @@ export default function CashOnDelivary() {
             return;
         }
 
-        await fetch('http://localhost:5000/v3/api/user/order/?type="cashondelivary', {
+        await fetch('http://localhost:5000/v3/api/user/shop/confirm/payment', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
                 products,
-                captchaToken
+                captchaToken,
+                payment_type
             }),
             credentials: 'include'
         }).then(async res => {
@@ -58,6 +74,7 @@ export default function CashOnDelivary() {
                 })
                 return ;
             }
+            dispatch({ type: REMOVE_ALL_ITEM_FROM_CART })
             setisLoading(false)
             toast.success(data, {
                 position: 'bottom-center',
@@ -69,6 +86,7 @@ export default function CashOnDelivary() {
                 progress: undefined,
                 theme: "dark",
             })
+            navigate('/V2/user/account/order/history')
 
         })
 
@@ -84,16 +102,20 @@ export default function CashOnDelivary() {
                 }}
             >
                 <ReCAPTCHA
+                    onChange={handleRecaptchaChange}
                     ref={recaptchaRef}
                     sitekey={SITE_KEY}
+                    execute={() => recaptchaRef.current.execute()}
                 />
                 <div className="sumbit-btn my-5">
                     {!isLoading ? (
                         <button
+                            ref={submitButtonRef}
                             type="submit"
                             className="w-72 h-14 text-center
                              text-white outline-none text-bold bg-indigo-800 rounded-md
                               hover:bg-indigo-700"
+                            disabled
                         >
                             Submit
                         </button>
