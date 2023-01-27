@@ -70,20 +70,20 @@ export default function Cart() {
                     Cartdata.length == 0 ? <Fragment>
                         {/*  ---- If No Cart Item is found */}
                         <div className='empty-cart md:mx-auto lg:flex md:justify-center lg:items-center md:mt-24'>
-                            <figure className='empty-cart-image mt-32 md:mt-3'>
+                            <figure className='empty-cart-image mt-20  md:mt-3'>
                                 <img src={EmptyCartImage} alt='empty-cart-image' className='w-full h-full' />
                             </figure>
                             <section className='info-area pb-5 px-5'>
                                 <h3 className='text-xl my-5'>It's seems like you haven't added any product to your cart.</h3>
                                 <p className='my-3'>Explore our website to purchase your favaourite product and enjoy. </p>
-                                <article className='my-10 md:px-0 w-full '>
-                                    <Link to="/" className='bg-orange-500 w-full  px-5 py-3   rounded-md
+                                <div className='my-10 md:px-0 w-full flex gap-5  items-center  md:justify-start md:gap-10 '>
+                                    <Link to="/" className='bg-orange-500 px-5 py-3   rounded-md
                                     text-white cursor-pointer shadow-2xl hover:text-black 
                                     hover:border hover:border-orange-400 hover:bg-transparent'>Explore the site</Link>
-                                    <Link to="/" className='bg-orange-500 px-5 mx-10 py-3 w-full  rounded-md
+                                    <Link to="/" className='bg-orange-500 px-5  py-3   rounded-md
                                     text-white cursor-pointer shadow-2xl hover:text-black 
                                     hover:border hover:border-orange-400 hover:bg-transparent'>Add items to cart</Link>
-                                </article>
+                                </div>
                             </section>
 
 
