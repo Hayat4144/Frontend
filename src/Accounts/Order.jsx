@@ -15,7 +15,6 @@ import OrderLoading from '../Skeleton/OrderLoading'
 export default function Order() {
     //  -------------------- All states --------------------- //
     const [Orderdata, setOrderdata] = useState([])
-    const [produceVarient, setProduceVarient] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const { IsLogdin } = useSelector(state => state.Signin)
     const Location = useLocation();
@@ -64,31 +63,14 @@ export default function Order() {
                         varients.push(vairentitem.varientId)
                     });
                 });
+                setIsLoading(false)
                 setOrderdata(result)
-
-                //  ----------- fetch products data --------------------- //
-                await fetch('http://localhost:5000/v4/api/get/products/varients/order/history', {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': "application/json"
-                    },
-                    body: JSON.stringify({ varients }),
-                    credentials: "include"
-                }).then(async response => {
-                    const result = await response.json();
-                    if (response.status !== 200) return setIsLoading(false)
-                    setProduceVarient(result.data)
-                    setIsLoading(false)
-
-                }).catch(error => console.log(error))
-
             }).catch(err => console.log(err))
     }
     useEffect(() => {
         FetchOrderHistory()
     }, [])
 
-    console.log(Orderdata)
 
     return (
         <Fragment>
@@ -116,20 +98,20 @@ export default function Order() {
                                         <span className='order_OrderDate text-gray-600'>{item.created_at}</span>
                                     </div>
                                 </div>
-                                {/* <div className="order_products_display_area my-5 mx-5">
-                                    {produceVarient.map((product, index) => (
+                                <div className="order_products_display_area my-5 mx-5">
+                                    {item.products.map((varient, index) => (
                                         <div className="order_product border-b border-gray-300 my-5 pb-5" key={index}>
                                             <div className='product_image_container flex space-x-6'>
                                                 <figure className='w-28 sm:w-56 bg-red-500'>
-                                                    <img src={product.product.assets.images[0]} alt="product_pic"
+                                                    <img src={varient.varientId.product.assets.images[0]} alt="product_pic"
                                                         className='h-28 rounded-sm' />
                                                 </figure>
                                                 <div className='product_name_description px-2'>
                                                     <div className='product_name_price sm:flex justify-between items-center'>
-                                                        <h2 className='product_name text-xl font-bold capitalize'>{product.product.name}</h2>
+                                                        <h2 className='product_name text-xl font-bold capitalize'>{varient.varientId.product.name}</h2>
                                                         <h2 className='product_varient_price text-xl font-bold md:space-x-5 space-x-2'>
                                                             <span className='currency_symbol'>Rs</span>
-                                                            <span className='amount_value'>{product.price}</span>
+                                                            <span className='amount_value'>{varient.varientId.price}</span>
                                                         </h2>
                                                     </div>
                                                     <div className='product_description hidden sm:block'>
@@ -159,7 +141,7 @@ export default function Order() {
                                             </section>
                                         </div>
                                     ))}
-                                </div> */}
+                                </div>
 
                             </div>
                         )) :
