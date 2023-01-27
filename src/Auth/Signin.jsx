@@ -12,7 +12,7 @@ export default function Signin() {
     const [searchParams] = useSearchParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    
     const EmailChange = (e) => {
         setemail(e.target.value)
     }
@@ -24,7 +24,7 @@ export default function Signin() {
 
     const SigninFunc = async () => {
         setIsLoading(!isLoading)
-        const result = await fetch('http://localhost:5000/v3/api/user/signin/', {
+        const result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/v3/api/user/signin`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
