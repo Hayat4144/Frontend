@@ -12,7 +12,7 @@ export default function HomeSlider() {
     const [slideIndex, setSlideIndex] = useState(0)
     const [SliderImage, setSliderImage] = useState([])
     useEffect(() => {
-        fetch('http://localhost:5000/v4/api/read/banner', {
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/v4/api/read/banner`, {
             method: "GET",
             credentials: 'include',
             headers: {

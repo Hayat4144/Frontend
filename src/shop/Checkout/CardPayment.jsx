@@ -38,7 +38,7 @@ export default function CardPayment() {
       payment_btn.current.disabled = true;
       if (!stripe || !elements) return;
       setIsLoading(!isLoading)
-      const paymentIntent = await fetch('http://localhost:5000/v3/api/user/shop/order', {
+      const paymentIntent = await fetch(`${import.meta.env.VITE_BACKEND_URL}/v3/api/user/shop/order`, {
         method: "POST",
         headers: {
           'Content-Type': "application/json"
@@ -82,7 +82,7 @@ export default function CardPayment() {
         payment_btn.current.disabled = false;
         return;
       }
-      await fetch('http://localhost:5000/v3/api/user/shop/confirm/payment', {
+      await fetch(`${import.meta.env.VITE_BACKEND_URL}/v3/api/user/shop/confirm/payment`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json'

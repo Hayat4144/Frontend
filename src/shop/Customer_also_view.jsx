@@ -9,7 +9,7 @@ export default function Customer_also_view(props) {
     const navigate = useNavigate();
 
     const data = async () => {
-        const mt = await fetch(`http://localhost:8000/product/api/get_product_by_category/${props.category_name}/`, {
+        const mt = await fetch(`${import.meta.env.VITE_BACKEND_URL}/product/api/get_product_by_category/${props.category_name}/`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

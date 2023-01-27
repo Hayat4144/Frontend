@@ -32,7 +32,7 @@ export default function Order() {
 
     //  ---------------------- fetch order of user --------------------- //
     const FetchOrderHistory = async () => {
-        await fetch('http://localhost:5000/v3/api/user/orders/history', {
+        await fetch(`${import.meta.env.VITE_BACKEND_URL}/v3/api/user/orders/history`, {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",

@@ -62,7 +62,7 @@ export default function ProductSearch() {
     useEffect(() => {
         // ------------- Backend product fetch api url ------------------ //
 
-        const link = `http://localhost:5000/v4/api/get_all/product?search=${searchvalue}&price[gte]=${price[0]}&price[lte]=${price[1]}&page=${currentPage}&Star=${Star}&sort=${sort === 'sortPriceLowToHigh' ? 'price' : sort === 'sortPriceHighToLow' ? 'price' : sort}${sort === 'sortPriceHighToLow' ? '&orderby=desc' : ''}`;
+        const link = `${import.meta.env.VITE_BACKEND_URL}/v4/api/get_all/product?search=${searchvalue}&price[gte]=${price[0]}&price[lte]=${price[1]}&page=${currentPage}&Star=${Star}&sort=${sort === 'sortPriceLowToHigh' ? 'price' : sort === 'sortPriceHighToLow' ? 'price' : sort}${sort === 'sortPriceHighToLow' ? '&orderby=desc' : ''}`;
 
 
         async function fetchProduct() {

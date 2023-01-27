@@ -16,7 +16,7 @@ export default function Profile() {
 
     const submitHandler = async () => {
         const formdata = new FormData();
-        fetch('http://localhost:5000/api/user/profile', {
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/profile`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

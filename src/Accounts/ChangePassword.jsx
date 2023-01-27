@@ -15,7 +15,7 @@ export default function ChangePassword() {
     // submitHandler 
     const SubmitHandler = async () => {
         setIsLoading(!isLoading)
-        const result = await fetch('http://localhost:5000/v3/api/user/change/password', {
+        const result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/v3/api/user/change/password`, {
             method: 'PUT',
             headers: {
                 "Content-Type": "application/json",

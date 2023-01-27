@@ -47,7 +47,7 @@ export default function CashOnDelivary() {
             return;
         }
 
-        await fetch('http://localhost:5000/v3/api/user/shop/confirm/payment', {
+        await fetch(`${import.meta.env.VITE_BACKEND_URL}/v3/api/user/shop/confirm/payment`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

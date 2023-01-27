@@ -19,7 +19,7 @@ export default function Address({ smWidth, lgWidth, mdWidth, xlWidth, title }) {
     // submitHandler 
     const SubmitHandler = async () => {
         setIsLoading(!isLoading)
-        const result = await fetch('http://localhost:5000/v3/api/user/create/address', {
+        const result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/v3/api/user/create/address`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",

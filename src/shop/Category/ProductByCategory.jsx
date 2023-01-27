@@ -10,7 +10,7 @@ export default function ProductByCategory() {
     const [productData, setProductData] = useState([])
 
     const CategoryHandler = () => {
-        fetch('http://localhost:5000/v4/api/get_all_categories', {
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/v4/api/get_all_categories`, {
             method: "GET",
             credentials: 'include',
             headers: {

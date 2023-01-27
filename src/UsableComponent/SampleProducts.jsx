@@ -8,7 +8,7 @@ export default function SampleProducts({ name }) {
 
     // --------- fetching products ----------------- //
     const fetchData = () => {
-        fetch(`http://localhost:5000/v4/api/get/sample/product?search=${name}`, {
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/v4/api/get/sample/product?search=${name}`, {
             method: "GET",
             credentials: 'include',
         }).then(async (res) => {

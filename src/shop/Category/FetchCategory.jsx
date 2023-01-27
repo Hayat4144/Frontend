@@ -9,7 +9,7 @@ export default function FetchCategory() {
     const { data } = useSelector(state => state.Category)
     console.log(data)
     const FetchCate = async () => {
-        await fetch('http://localhost:5000/v4/api/get_all_categories', {
+        await fetch(`${import.meta.env.VITE_BACKEND_URL}/v4/api/get_all_categories`, {
             method: 'GET',
             credentials: 'include'
         })

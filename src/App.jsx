@@ -5,21 +5,21 @@ import 'react-toastify/dist/ReactToastify.css';
 import { lazy, Suspense } from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-const Signin = lazy(()=>import('./Auth/Signin'))
-const Signup = lazy(()=>import('./Auth/Signup'))
-const Cart = lazy(()=>import('./shop/Cart/Cart'))
-const Address = lazy(()=>import('./Accounts/Address'))
-const Profile = lazy(()=>import('./Accounts/Profile'))
-const ChangePassword = lazy(()=>import('./Accounts/ChangePassword'))
-const AccountContainer = lazy(()=>import('./Accounts/AccountContainer'))
-const Home = lazy(()=>import('./UsableComponent/Home'))
-const NotFound = lazy(()=>import('./UsableComponent/NotFound'))
-const ProductPage = lazy(()=>import('./shop/ProductPage'))
-const Products = lazy(()=>import('./shop/AllProducts'))
-const Checkout = lazy(()=>import('./shop/Checkout/Checkout'))
-const ConfrimOrder = lazy(()=>import('./shop/Checkout/ConfrimOrder'))
-const ProductSearch = lazy(()=>import('./shop/ProductSearch'))
-const ProductByCategory = lazy(()=>import('./shop/Category/ProductByCategory'))
+const Signin = lazy(() => import('./Auth/Signin'))
+const Signup = lazy(() => import('./Auth/Signup'))
+const Cart = lazy(() => import('./shop/Cart/Cart'))
+const Address = lazy(() => import('./Accounts/Address'))
+const Profile = lazy(() => import('./Accounts/Profile'))
+const ChangePassword = lazy(() => import('./Accounts/ChangePassword'))
+const AccountContainer = lazy(() => import('./Accounts/AccountContainer'))
+const Home = lazy(() => import('./UsableComponent/Home'))
+const NotFound = lazy(() => import('./UsableComponent/NotFound'))
+const ProductPage = lazy(() => import('./shop/ProductPage'))
+const Products = lazy(() => import('./shop/AllProducts'))
+const Checkout = lazy(() => import('./shop/Checkout/Checkout'))
+const ConfrimOrder = lazy(() => import('./shop/Checkout/ConfrimOrder'))
+const ProductSearch = lazy(() => import('./shop/ProductSearch'))
+const ProductByCategory = lazy(() => import('./shop/Category/ProductByCategory'))
 const Payment = lazy(() => import('./shop/Checkout/Payment'))
 const UserOrdersHistory = lazy(() => import('./Accounts/Order'))
 const ForgetPassword = lazy(() => import('./Accounts/ForgetPassword'))
@@ -32,9 +32,9 @@ const Term_Conditions = lazy(() => import('./UsableComponent/Term_Conditions'))
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
-    const jwt_token = Cookies.get('token') ;
-    if(jwt_token === undefined || jwt_token === null){
-      dispatch({type:"LOGOUT"})
+    const jwt_token = Cookies.get('token');
+    if (jwt_token === undefined || jwt_token === null) {
+      dispatch({ type: "LOGOUT" })
     }
   }, [])
   return (
@@ -67,7 +67,11 @@ function App() {
           <Route path='*' element={<Suspense fallback={<p>laoding</p>}><NotFound /></Suspense>} />
         </Routes>
       </Router>
+
+      
       <ToastContainer />
+    
+
     </div>
   )
 }
