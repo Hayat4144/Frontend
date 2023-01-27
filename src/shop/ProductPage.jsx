@@ -49,7 +49,7 @@ export default function ProductPage() {
                     }
                 })
         ])
-    }, [])
+    }, [id])
 
     // ---- products attributes ---- //
     const colors = Array.from(new Set(product_varient.map(item => item.product_attribute.color)))
@@ -167,19 +167,19 @@ export default function ProductPage() {
                              md:hidden mb-10`} key={index} >
                                 <img alt='product-img' src={images} className='w-full rounded-lg h-[20em] lg:h-[38em] ' />
                                 <div className='md:hidden w-[90%] justify-between  
-                                absolute top-40 text-white font-bold text-2xl flex 
+                                absolute top-40 text-white font-bold text-4xl flex 
                                 mx-2'>
                                     <h3 className='mx-2 cursor-pointer'
                                         onClick={() => {
                                             backslide(item.assets.images);
                                         }}>
-                                        <BsArrowLeftCircle />
+                                        <BsArrowLeftCircle className='' />
                                     </h3>
                                     <h3 className='mx-5 cursor-pointer'
                                         onClick={() => {
                                             nextSlide(item.assets.images);
                                         }}>
-                                        <BsArrowRightCircle />
+                                        <BsArrowRightCircle className='' />
                                     </h3>
                                 </div>
                             </figure>

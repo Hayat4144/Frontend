@@ -22,7 +22,7 @@ export default function CreateUserReview({ isModalOpen, RatingModalToggle }) {
 
     const ReviewSubmitHandler = async () => {
         setIsLoading(!isLoading)
-        const result = await fetch('http://localhost:5000/v4/api/product/reviews', {
+        const result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/v4/api/product/reviews`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",

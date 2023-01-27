@@ -3,6 +3,8 @@ const Navbar = lazy(() => import('../../UsableComponent/Navbar'))
 import NavbarSkeleton from '../../Skeleton/NavbarSkeleton'
 import ProductImage from '../../assets/images/thumbnail_2.jpg'
 import { BsFillStarFill } from 'react-icons/bs'
+import { Link } from 'react-router-dom'
+import { Rating } from '@mui/material'
 
 export default function ProductByCategory() {
     const [category, setCategory] = useState([])
@@ -29,7 +31,7 @@ export default function ProductByCategory() {
     }
 
     const productsHandler = () => {
-        fetch(`http://localhost:5000/v4/api/getproduct_by_category?category_id=${categoryId}`, {
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/v4/api/getproduct_by_category?category_id=${categoryId}`, {
             method: "GET",
             credentials: 'include',
             headers: {
@@ -89,16 +91,15 @@ export default function ProductByCategory() {
                                         hover:my-3 transition ease-in-out duration-300' />
                                     </figure>
                                     <div className='product_info'>
-                                        <h3 className='product_name text-xl'>{item.name}</h3>
-                                        <h3 className='product_price text-xl'><span className='currency_symbol'>
-                                            Rs</span> {item.price}</h3>
+                                        <Link to={`/V2/shop/product/${item._id}/${item.name}/${item.category}`}>
+                                            <h3 className='product_name text-xl'>{item.name}</h3>
+                                            <h3 className='product_price text-xl'><span className='currency_symbol'>
+                                                Rs</span> {item.price}</h3>
+                                        </Link>
+
                                     </div>
                                     <div className="products_ratings flex items-center mt-2 space-x-1">
-                                        <BsFillStarFill className='text-yellow-500' />
-                                        <BsFillStarFill className='text-yellow-500' />
-                                        <BsFillStarFill className='text-yellow-500' />
-                                        <BsFillStarFill className='text-yellow-500' />
-                                        <BsFillStarFill className='text-yellow-500' />
+                                        <Rating value={item.average_rating} />
                                     </div>
                                 </div>
                             ))

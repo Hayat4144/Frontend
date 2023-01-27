@@ -16,7 +16,7 @@ export default function UserReview({ rating_review }) {
 
 
             setIsLoading(!isLoading)
-            await fetch(`http://localhost:5000/v4/api/products/ratings/review?product_id=${id}`, {
+            await fetch(`${import.meta.env.VITE_BACKEND_URL}/v4/api/products/ratings/review?product_id=${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
