@@ -102,14 +102,14 @@ export default function Order() {
                                     {item.products.map((varient, index) => (
                                         <div className="order_product border-b border-gray-300 my-5 pb-5" key={index}>
                                             <div className='product_image_container flex space-x-6'>
-                                                <figure className='w-28 sm:w-56 bg-red-500'>
+                                                <figure className='w-28 sm:w-56'>
                                                     <img src={varient.varientId.product.assets.images[0]} alt="product_pic"
-                                                        className='h-28 rounded-sm' />
+                                                        className='h-28 w-full rounded-sm' />
                                                 </figure>
                                                 <div className='product_name_description px-2'>
-                                                    <div className='product_name_price sm:flex justify-between items-center'>
+                                                    <div className='product_name_price sm:flex space-y-4 sm:space-y-0 sm:items-center sm:justify-between sm:space-x-16'>
                                                         <h2 className='product_name text-xl font-bold capitalize'>{varient.varientId.product.name}</h2>
-                                                        <h2 className='product_varient_price text-xl font-bold md:space-x-5 space-x-2'>
+                                                        <h2 className='product_varient_price text-xl font-bold space-x-2'>
                                                             <span className='currency_symbol'>Rs</span>
                                                             <span className='amount_value'>{varient.varientId.price}</span>
                                                         </h2>
