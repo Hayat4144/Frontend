@@ -64,7 +64,7 @@ export default function Cart() {
             <Suspense fallback={<NavbarSkeleton />}>
                 <Navbar />
             </Suspense>
-            <div className='cart_container w-full h-screen'>
+            <div className='cart_container w-full mt-10 mb-20'>
 
                 {
                     Cartdata.length == 0 ? <Fragment>
@@ -91,7 +91,7 @@ export default function Cart() {
                     </Fragment> : <Fragment>
                         <h1
                             className='page-indicator flex 
-                        justify-center my-5 space-x-5 cursor-pointer tracking-tight'>
+                        justify-center my-10 space-x-5 cursor-pointer tracking-tight'>
                             <BiShoppingBag fontSize={'30px'} className='hover:text-indigo-700' />
                             <span className='Page-title font-semibold
                         text-2xl hover:text-indigo-800'>My Cart</span>
