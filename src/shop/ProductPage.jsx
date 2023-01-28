@@ -1,5 +1,4 @@
 import React, { Fragment, useState, useEffect, lazy, Suspense } from 'react'
-import Navbar from '../UsableComponent/Navbar';
 import { BsArrowLeftCircle, BsArrowRightCircle } from 'react-icons/bs'
 import { useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
@@ -7,10 +6,13 @@ import { BiPlus } from 'react-icons/bi'
 import { AiOutlineMinus } from 'react-icons/ai'
 import { ADD_TO_CART_ACTION } from '../Context/Actions/CartActions';
 import { toast } from 'react-toastify'
+const Navbar = lazy(() => import('../UsableComponent/Navbar'))
 const SimilarProducts = lazy(() => import('./SimilarProducts'))
 const Footer = lazy(() => import('../UsableComponent/Footer'))
 const UserReview = lazy(() => import('./Review/UserReview'))
 const CreateUserReview = lazy(() => import('./Review/CreateUserReview'))
+import NavbarSkeleton from '../Skeleton/NavbarSkeleton'
+import ProductPageSkeleton from '../Skeleton/ProductPageSkeleton'
 
 export default function ProductPage() {
     const { id } = useParams();
@@ -22,11 +24,13 @@ export default function ProductPage() {
     const [selectedSize, setSelectedSize] = useState('Choose a size');
     const [selectedColor, setSelectedColor] = useState('Choose a color');
     const [ratingModal, setRatingModal] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     const dispatch = useDispatch();
 
 
     useEffect(() => {
+        setIsLoading(true)
         Promise.all([
             fetch(`${import.meta.env.VITE_BACKEND_URL}/v4/api/product/${id}`, {
                 method: "GET",
@@ -46,6 +50,7 @@ export default function ProductPage() {
                     if (res.status === 200) {
                         const { data } = await res.json();
                         setProduct_varient(data)
+                        setIsLoading(false)
                     }
                 })
         ])
@@ -153,11 +158,13 @@ export default function ProductPage() {
 
     return (
         <Fragment>
-            {/* ----------------------- create user reviews ----------------------- */}
+            <Suspense fallback={<NavbarSkeleton />}>
+                <Navbar />
+            </Suspense>
 
-            <Navbar />
+            {/* <ProductPageSkeleton /> */}
 
-            {product_detail.map((item, index) => (
+            {isLoading ? <ProductPageSkeleton /> : product_detail.map((item, index) => (
                 <section key={item._id}
                     className='proudct-parent my-16 px-2 grid
                     grid-cols-1 md:grid-cols-7 md:gap-5 '>
@@ -258,8 +265,6 @@ export default function ProductPage() {
                             ) : null
                         }
 
-
-
                         {
                             item.varients && product_varient.length > 0 ? (
                                 <div className='product-size flex items-center space-x-5'>
@@ -285,8 +290,6 @@ export default function ProductPage() {
                                 </div>
                             ) : null
                         }
-
-
 
                         <div className='product-quantity my-4'>
                             <div className='quantity-value flex 
@@ -335,7 +338,7 @@ export default function ProductPage() {
                                 <h3 className='font-bold text-xl mb-5'>Ratings and Reviews</h3>
                                 <button className='bg-indigo-700 hover:bg-indigo8900 text-white
                             rounded-md focus:outline-none focus:bg-transparent focus:text-black focus:border  focus:border-gray-500 
-                            px-2' onClick={()=> setRatingModal(true)}>
+                            px-2' onClick={() => setRatingModal(true)}>
                                     Rate Product
                                 </button>
                             </div>
@@ -348,15 +351,15 @@ export default function ProductPage() {
                         </div>
                     </div>
                 </section>
-            ))
-            }
+            )) }
+            
             <Suspense fallback={<p>loading...</p>}>
                 <CreateUserReview isModalOpen={ratingModal} RatingModalToggle={RatingModalToggle} />
             </Suspense>
 
             {/*  ------------------ similar products show --------------- */}
             <Suspense fallback={<p>loading....</p>}>
-                <SimilarProducts  />
+                <SimilarProducts />
             </Suspense>
 
             <Suspense fallback={<p>loading....</p>}>

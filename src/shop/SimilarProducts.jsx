@@ -34,8 +34,6 @@ export default function SimilarProducts() {
     useEffect(() => {
         fetchData();
     }, [])
-    console.log(product_detail)
-    console.log(isLoading);
     return (
         <Fragment>
             <div className="similar_products_box mx-5 md:mx-10 my-10">
