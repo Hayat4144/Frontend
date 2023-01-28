@@ -4,6 +4,7 @@ const Footer = lazy(() => import('./Footer'))
 const HomeSlider = lazy(() => import('./HomeSlider'))
 const Navbar = lazy(() => import('./Navbar'))
 const SampleProducts = lazy(() => import('./SampleProducts'))
+import SampleProductSkeleton from '../Skeleton/SampleProductSkeleton'
 
 
 
@@ -13,15 +14,21 @@ export default function Home() {
             <Suspense fallback={<NavbarSkeleton />}>
                 <Navbar />
             </Suspense>
-            <section className='bg-gray-200'>
-                <Suspense fallback={<p>loadding</p>}>
+            {/* <div className='my-10'>
+            <Suspense fallback={<SampleProductSkeleton />}>
+                <SampleProducts />
+            </Suspense>
+            </div> */}
+            
+            <main className='bg-gray-200'>
+                <Suspense fallback={<SampleProductSkeleton />}>
                     <HomeSlider />
                 </Suspense>
                 <section className='sample_product_show bg-white mx-2'>
                     <div className='product_show_title px-5 py-5'>
                         <h4 className='text-xl font-bold hover:text-indigo-700'>Top shoes for Men and women</h4>
                     </div>
-                    <Suspense fallback={<p>loadig....</p>}>
+                    <Suspense fallback={<SampleProductSkeleton />}>
                         <SampleProducts name="shoes" />
                     </Suspense>
                 </section>
@@ -29,7 +36,7 @@ export default function Home() {
                     <div className='product_show_title px-5 py-5'>
                         <h4 className='text-xl font-bold hover:text-indigo-700'>Latest Jhumka designed for collage girl</h4>
                     </div>
-                    <Suspense fallback={<p>loadig....</p>}>
+                    <Suspense fallback={<SampleProductSkeleton />}>
                         <SampleProducts name="jhumka" />
                     </Suspense>
                 </section>
@@ -38,7 +45,7 @@ export default function Home() {
                         <Footer />
                     </Suspense>
                 </div >
-            </section>
+            </main>
 
         </Fragment >
     )
