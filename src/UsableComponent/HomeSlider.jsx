@@ -6,25 +6,37 @@ import ImageThumbnail_4 from '../assets/SliderImage/Slider_4.jpg'
 import { BsArrowLeftCircle, BsArrowRightCircle } from 'react-icons/bs'
 import '../index.css'
 import SlidersProducts from '../shop/SlidersProducts'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 
 export default function HomeSlider() {
     const [slideIndex, setSlideIndex] = useState(0)
     const [SliderImage, setSliderImage] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
+    const [noProduct, setNoProduct] = useState(false)
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_BACKEND_URL}/v4/api/read/banner`, {
-            method: "GET",
-            credentials: 'include',
-            headers: {
-                'content-type': 'application/json'
-            }
-        }).then(async (res) => {
-            if (res.status === 200) {
+        async function fetchBanner() {
+            setIsLoading(true)
+            await fetch(`${import.meta.env.VITE_BACKEND_URL}/v4/api/read/banner`, {
+                method: "GET",
+                credentials: 'include',
+                headers: {
+                    'content-type': 'application/json'
+                }
+            }).then(async (res) => {
                 const { data } = await res.json();
-                setSliderImage(data)
-            }
-        })
-            .catch(error => console.log(error))
+                if (data.length < 1) {
+                    setNoProduct(true)
+                    setIsLoading(false)
+                    return;
+                }
+                setSliderImage(data);
+                setIsLoading(false)
+            })
+                .catch(error => console.log(error))
+        }
+        fetchBanner();
     }, [])
 
     // next slide
@@ -49,27 +61,30 @@ export default function HomeSlider() {
     }
     return (
         <Fragment>
-            <section className='hero_section_slider_container w-full h-[80%]'>
-                <figure className='slider_image_container w-full  -mb-20 md:-mb-52'>
-                    <img className='home_slider_image w-full h-full'
-                        src={SliderImage[slideIndex]?.image} />
-                </figure>
-                <div className='w-full px-5 justify-between   
-                        font-bold text-4xl flex absolute top-36 md:top-48'>
-                    <h3 className='cursor-pointer' onClick={() => {
-                        backslide();
-                    }}><BsArrowLeftCircle /></h3>
-                    <h3 className='cursor-pointer' onClick={() => {
-                        nextSlide();
-                    }}><BsArrowRightCircle /></h3>
-                </div>
-            </section>
+            {
+                isLoading ? <div className='w-full'>
+                    <Skeleton className='w-full md:h-[400px] lg:h-[550px] '/>
+                </div> : noProduct ? <div>no product found</div> : <section className='hero_section_slider_container w-full'>
+                    <figure className='slider_image_container'>
+                        <img className='home_slider_image w-full md:h-[400px] lg:h-[550px]'
+                            src={SliderImage[slideIndex]?.image} />
+                    </figure>
+                    <div className='w-full px-5 justify-between  text-white 
+                        font-bold text-4xl md:text-6xl flex absolute top-36  sm:top-48 
+                        md:top-56 lg:top-80'>
+                        <h3 className='cursor-pointer' onClick={() => {
+                            backslide();
+                        }}><BsArrowLeftCircle /></h3>
+                        <h3 className='cursor-pointer' onClick={() => {
+                            nextSlide();
+                        }}><BsArrowRightCircle /></h3>
+                    </div>
+                </section>
+            }
+
             <div className='slider_products mx-5'>
                 <SlidersProducts />
             </div>
-
-            {/* <Dummy data={product} /> */}
-
         </Fragment >
     )
 }
