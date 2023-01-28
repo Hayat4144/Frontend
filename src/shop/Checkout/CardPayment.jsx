@@ -49,7 +49,6 @@ export default function CardPayment() {
         credentials: 'include'
       })
       const { error, data,orderId } = await paymentIntent.json();
-      console.log(error, data)
       if (paymentIntent.status !== 200) {
         toast.error(error, {
           position: 'bottom-center',
@@ -66,7 +65,6 @@ export default function CardPayment() {
         return;
       }
       const result = await stripe.createToken(elements.getElement(CardNumberElement))
-      console.log(result.token)
       if (result.error) {
         toast.error(result.error.message, {
           position: 'bottom-center',
@@ -96,7 +94,6 @@ export default function CardPayment() {
         credentials: 'include'
       }).then(async (res) => {
         const confirmOrder = await res.json();
-        console.log(confirmOrder)
         setIsLoading(!isLoading)
         if (res.status !== 200) {
           toast.error(confirmOrder.error, {
@@ -124,8 +121,9 @@ export default function CardPayment() {
             progress: undefined,
             theme: "dark",
           })
-          payment_btn.current.disabled = false;
           navigate('/V2/user/account/order/history')
+          payment_btn.current.disabled = false;
+         
         }
 
       })
