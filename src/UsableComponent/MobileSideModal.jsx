@@ -10,15 +10,55 @@ import { AiOutlineSearch } from 'react-icons/ai'
 import { MdOutlineSell } from 'react-icons/md'
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 import { FaUserCircle } from 'react-icons/fa'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { BiCategory, BiSearch } from 'react-icons/bi'
+import { toast } from 'react-toastify'
 
 export default function MobileSideModal({ mobileModal ,MobileSideModalToggle }) {
     const [isModalOpen, setIsModalOpen] = useState(mobileModal)
     const { IsLogdin } = useSelector(state => state.Signin)
+    const dispatch = useDispatch();
     useEffect(() => {
         setIsModalOpen(mobileModal)
     } , [mobileModal])
+
+
+    const logoutFunc  = async()=>{
+        await fetch(`${import.meta.env.VITE_BACKEND_URL}/v3/api/user/logout` , {
+            method:"GET",
+            headers:{
+                'Content-Type':"application/json"
+            },
+            credentials:'include'
+        }).then(async res=>{
+            const {data,error} = await res.json();
+            if(res.status !== 200){
+                toast.error(error, {
+                    position: "bottom-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
+                return ;
+            }
+            dispatch({type:"LOGOUT"})
+            toast.success(data, {
+                position: "bottom-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+        })
+        
+    }
     return (
         <Fragment>
             {/* ---- Mobile Menu ----- */}
@@ -107,7 +147,7 @@ export default function MobileSideModal({ mobileModal ,MobileSideModalToggle }) 
                         </ul>
                         <section className='login_logout_btn absolute bottom-5 px-5'>
                             {IsLogdin ? <div className='button_group'>
-                                <button className='focus:border focus:border-gray-500 px-10 py-1.5
+                                <button onClick={logoutFunc} className='focus:border focus:border-gray-500 px-10 py-1.5
                             rounded-md bg-indigo-700 focus:bg-transparent text-white
                             focus:text-black w-full'>Log out</button>
                             </div> :
