@@ -27,7 +27,8 @@ const ForgetPasswordRequest = lazy(() => import('./Accounts/RequestForgetpasswor
 const EmailChangeRequest = lazy(() => import('./Accounts/EmailchangeRequest'))
 const VerifyEmailChnage = lazy(() => import('./Accounts/VerifyEmailChnage'))
 const Term_Conditions = lazy(() => import('./UsableComponent/Term_Conditions'))
-
+import ProductPageSkeleton from "./Skeleton/ProductPageSkeleton";
+import WholeProductpage from "./Skeleton/WholeProductpage";
 
 function App() {
   const dispatch = useDispatch();
@@ -58,7 +59,7 @@ function App() {
           <Route path="/V2/account/change/password" element={<Suspense fallback={<p>laoding</p>}><ChangePassword /></Suspense>} />
           <Route path="/V2/auth/sign_up" element={<Suspense fallback={<p>laoding</p>}><Signup /></Suspense>} />
           <Route path="/V2/auth/sign_in" element={<Suspense fallback={<p>laoding</p>}><Signin /></Suspense>} />
-          <Route path="/V2/shop/product/:id/:name/:category" element={<Suspense fallback={<p>laoding</p>}><ProductPage /></Suspense>} />
+          <Route path="/V2/shop/product/:id/:name/:category" element={<Suspense fallback={<WholeProductpage />}><ProductPage /></Suspense>} />
           <Route path="/V2/shop/search" element={<Suspense fallback={<p>laoding</p>}><ProductSearch /></Suspense>} />
           <Route path="/V2/shop/products" element={<Suspense fallback={<p>laoding</p>}><Products /></Suspense>} />
           <Route path="/terms-and-conditions" element={<Suspense fallback={<p>loading..</p>}>
