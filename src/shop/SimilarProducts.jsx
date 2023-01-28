@@ -26,7 +26,7 @@ export default function SimilarProducts() {
                 setIsLoading(false);
                 return;
             }
-            setIsLoading(!isLoading);
+            setIsLoading(false);
             setProduct_detail(data)
         })
             .catch(error => console.log(error))
@@ -35,6 +35,7 @@ export default function SimilarProducts() {
         fetchData();
     }, [])
     console.log(product_detail)
+    console.log(isLoading);
     return (
         <Fragment>
             <div className="similar_products_box mx-5 md:mx-10 my-10">
