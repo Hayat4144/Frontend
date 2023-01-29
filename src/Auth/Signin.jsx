@@ -19,12 +19,11 @@ export default function Signin() {
     const PasswordChange = (e) => {
         setpassword(e.target.value)
     }
-    console.log(searchParams.get('next'))
 
 
     const SigninFunc = async () => {
         setIsLoading(!isLoading)
-        const result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/v3/api/user/signin`, {
+        const result = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/api/user/signin`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",

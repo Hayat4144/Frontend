@@ -19,7 +19,7 @@ export default function Signup() {
 
     const SignupFunc = async () => {
         setisLoading(!isLoading)
-        await fetch(`${import.meta.env.VITE_BACKEND_URL}/v3/api/user/signup/`, {
+        await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/api/user/signup/`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
