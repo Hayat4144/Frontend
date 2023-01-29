@@ -32,7 +32,7 @@ export default function ProductSearch() {
     const [SizeOpen, setSizeOpen] = useState(true)
     const [PriceOpne, setPriceOpen] = useState(true)
     const [RatingOpen, setRatingOpen] = useState(true)
-    const [price, setprice] = useState([0, 4000])
+    const [price, setprice] = useState([0, 8000])
     const [totalProduct, setTotalProduct] = useState()
     const [showProductPerPage, setShowProductPerPage] = useState(10)
     const [currentPage, setCurrentPage] = useState(1)
@@ -62,7 +62,7 @@ export default function ProductSearch() {
     useEffect(() => {
         // ------------- Backend product fetch api url ------------------ //
 
-        const link = `${import.meta.env.VITE_BACKEND_URL}/v4/api/get_all/product?search=${searchvalue}&price[gte]=${price[0]}&price[lte]=${price[1]}&page=${currentPage}&Star=${Star}&sort=${sort === 'sortPriceLowToHigh' ? 'price' : sort === 'sortPriceHighToLow' ? 'price' : sort}${sort === 'sortPriceHighToLow' ? '&orderby=desc' : ''}`;
+        const link = `${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/get_all/product?search=${searchvalue}&price[gte]=${price[0]}&price[lte]=${price[1]}&page=${currentPage}&Star=${Star}&sort=${sort === 'sortPriceLowToHigh' ? 'price' : sort === 'sortPriceHighToLow' ? 'price' : sort}${sort === 'sortPriceHighToLow' ? '&orderby=desc' : ''}`;
 
 
         async function fetchProduct() {
@@ -143,10 +143,10 @@ export default function ProductSearch() {
                     {/*  ----------------------product count --------------------------  */}
                     {!noProduct || products.length > 0 ?
                         <div className='product_search_total_value_show border-b border-gray-400 
-                shadow-md h-10 w-full px-5 flex items-center justify-between'>
+                            shadow-md h-10 w-full px-5 flex items-center justify-between'>
                             <h2 className='product_total_info'>Showing <span className='product_count'> {startingProductNumber} - {lastProductNumber} of {totalProduct} </span>
-                                for result <span className='text-indigo-700 hover:cursor-pointer
-                    hover:text-indigo-900'>
+                                for result 
+                                <span className='text-indigo-700 hover:cursor-pointer hover:text-indigo-900'>
                                     "{searchParams.get('keyword')}"
                                 </span>
                             </h2>
@@ -173,7 +173,7 @@ export default function ProductSearch() {
                     <main className='my-5 gap-y-5 md:flex space-x-5'>
 
                         {/*  --------------------- filter --------------- */}
-                        <section className='filter md:w-[30%]'>
+                        <section className='filter md:w-[30%] mb-10'>
                             {/* filter for small screen */}
                             <aside className=' md:hidden filter-sort-for-mobile-only h-10 py-2 grid grid-cols-2 px-5'>
 
@@ -252,9 +252,9 @@ export default function ProductSearch() {
                                                             value={price}
                                                             onChange={priceHander}
                                                             aria-lableledby="range-slider"
-                                                            max={400}
+                                                            max={2000}
                                                             min={10}
-                                                            step={10}
+                                                            step={20}
                                                             valueLabelDisplay="on"
                                                         />
                                                     </div>
@@ -375,9 +375,9 @@ export default function ProductSearch() {
                                                 value={price}
                                                 onChange={priceHander}
                                                 aria-lableledby="range-slider"
-                                                max={400}
+                                                max={2000}
                                                 min={10}
-                                                step={10}
+                                                step={20}
                                                 valueLabelDisplay="on"
                                             />
                                         </div>
