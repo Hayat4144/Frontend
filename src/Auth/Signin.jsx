@@ -36,6 +36,7 @@ export default function Signin() {
         })
         const data = await result.json();
         if (result.status === 200) {
+            console.log(document.cookie)
             setIsLoading(false)
             toast.success(data.data, {
                 position: "bottom-center",
