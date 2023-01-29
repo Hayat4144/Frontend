@@ -13,7 +13,7 @@ export default function SampleProducts({ name }) {
     // --------- fetching products ----------------- //
     const fetchData = async () => {
         setIsLoading(!isLoading)
-        await fetch(`${import.meta.env.VITE_BACKEND_URL}/v4/api/get/sample/product?search=${name}`, {
+        await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/get/sample/product?search=${name}`, {
             method: "GET",
             credentials: 'include',
         }).then(async (res) => {

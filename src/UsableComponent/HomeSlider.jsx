@@ -18,7 +18,7 @@ export default function HomeSlider() {
     useEffect(() => {
         async function fetchBanner() {
             setIsLoading(true)
-            await fetch(`${import.meta.env.VITE_BACKEND_URL}/v4/api/read/banner`, {
+            await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/read/banner`, {
                 method: "GET",
                 credentials: 'include',
                 headers: {
