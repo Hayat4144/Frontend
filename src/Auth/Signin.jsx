@@ -35,6 +35,7 @@ export default function Signin() {
             })
         }).then(async res => {
             const data = await res.json();
+            console.log(document.cookie)
             setIsLoading(false)
             if (res.status !== 200) {
                 toast.error(data.error, {

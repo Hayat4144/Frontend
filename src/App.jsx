@@ -33,9 +33,10 @@ import WholeProductpage from "./Skeleton/WholeProductpage";
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
-    const jwt_token = Cookies.get(import.meta.env.DEV ? 'token_dev' :'token_production');
+    const jwt_token = Cookies.get(import.meta.env.DEV ? 'token_dev' : 'token_production');
     if (jwt_token === undefined || jwt_token === null) {
-      dispatch({ type: "LOGOUT" })
+      const l = dispatch({ type: "LOGOUT" })
+      console.log(l)
     }
   }, [])
   return (
@@ -69,9 +70,9 @@ function App() {
         </Routes>
       </Router>
 
-      
+
       <ToastContainer />
-    
+
 
     </div>
   )
