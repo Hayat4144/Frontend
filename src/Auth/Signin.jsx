@@ -36,6 +36,14 @@ export default function Signin() {
         })
         const data = await result.json();
         if (result.status === 200) {
+             // Check if the response has the Set-Cookie header
+    const setCookie = response.headers.get('Set-Cookie');
+    if (setCookie) {
+      // Parse the Set-Cookie header and extract the cookie
+      const cookie = setCookie.split(';')[0];
+      // Store the cookie in the browser
+      document.cookie = cookie;
+    }
             console.log(document.cookie)
             setIsLoading(false)
             toast.success(data.data, {
