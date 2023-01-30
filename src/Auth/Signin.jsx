@@ -23,7 +23,7 @@ export default function Signin() {
 
     const SigninFunc = async () => {
         setIsLoading(!isLoading)
-        const result = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/api/user/signin`, {
+        await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/api/user/signin`, {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -33,20 +33,22 @@ export default function Signin() {
                 email,
                 password
             })
-        })
-        const data = await result.json();
-        if (result.status === 200) {
-            // Check if the response has the Set-Cookie header
-            const setCookie = result.headers.get('set-Cookie');
-            console.log(setCookie)
-            if (setCookie) {
-                // Parse the Set-Cookie header and extract the cookie
-                const cookie = setCookie.split(';')[0];
-                // Store the cookie in the browser
-                document.cookie = cookie;
-            }
-            console.log(document.cookie)
+        }).then(async res => {
+            const data = await res.json();
             setIsLoading(false)
+            if (res.status !== 200) {
+                toast.error(data.error, {
+                    position: 'bottom-center',
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                })
+                return;
+            }
             toast.success(data.data, {
                 position: "bottom-center",
                 autoClose: 5000,
@@ -60,20 +62,7 @@ export default function Signin() {
             DecodeJwtToken(dispatch);
             searchParams.get('next') ? navigate(searchParams.get('next')) : navigate('/')
 
-        }
-        else {
-            setIsLoading(false)
-            toast.error(data.error, {
-                position: 'bottom-center',
-                autoClose: 5000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            })
-        }
+        }).catch(err=>console.log(err))
     }
 
     return (
