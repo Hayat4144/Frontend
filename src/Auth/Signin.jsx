@@ -12,7 +12,7 @@ export default function Signin() {
     const [searchParams] = useSearchParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    
+
     const EmailChange = (e) => {
         setemail(e.target.value)
     }
@@ -25,7 +25,7 @@ export default function Signin() {
         setIsLoading(!isLoading)
         const result = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/api/user/signin`, {
             method: 'POST',
-            credentials:'include',
+            credentials: 'include',
             headers: {
                 "Content-Type": "application/json",
             },
@@ -36,14 +36,14 @@ export default function Signin() {
         })
         const data = await result.json();
         if (result.status === 200) {
-             // Check if the response has the Set-Cookie header
-    const setCookie = response.headers.get('Set-Cookie');
-    if (setCookie) {
-      // Parse the Set-Cookie header and extract the cookie
-      const cookie = setCookie.split(';')[0];
-      // Store the cookie in the browser
-      document.cookie = cookie;
-    }
+            // Check if the response has the Set-Cookie header
+            const setCookie = result.headers.get('Set-Cookie');
+            if (setCookie) {
+                // Parse the Set-Cookie header and extract the cookie
+                const cookie = setCookie.split(';')[0];
+                // Store the cookie in the browser
+                document.cookie = cookie;
+            }
             console.log(document.cookie)
             setIsLoading(false)
             toast.success(data.data, {
