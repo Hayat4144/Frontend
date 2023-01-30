@@ -31,6 +31,7 @@ import ProductPageSkeleton from "./Skeleton/ProductPageSkeleton";
 import WholeProductpage from "./Skeleton/WholeProductpage";
 
 function App() {
+  console.log(import.meta.env.PROD)
   const dispatch = useDispatch();
   useEffect(() => {
     const jwt_token = Cookies.get(import.meta.env.DEV ? 'token_dev' : 'token_production');
