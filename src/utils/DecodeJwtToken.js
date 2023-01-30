@@ -3,7 +3,8 @@ import jwt_decode from "jwt-decode";
 import { SIGNIN, USERINFO } from "../Context/Actions/ActionType";
 const DecodeJwtToken = (dispatch) => {
   const jwt_token = Cookies.get(import.meta.env.DEV ? "token_dev" : "token");
-  console.log(jwt_token);
+  console.log(document.cookie)
+  console.log('token',jwt_token);
   if (jwt_token) {
     const decoded_token = jwt_decode(jwt_token);
     const m = dispatch({ type: SIGNIN });
