@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import Cookies from "js-cookie";
+import Cookies from "js-cookie";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { lazy, Suspense } from "react";
@@ -33,10 +33,10 @@ import WholeProductpage from "./Skeleton/WholeProductpage";
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
-    // const jwt_token = Cookies.get('token');
-    // if (jwt_token === undefined || jwt_token === null) {
-    //   dispatch({ type: "LOGOUT" })
-    // }
+    const jwt_token = Cookies.get(import.meta.env.DEV ? 'token_dev' :'token_production');
+    if (jwt_token === undefined || jwt_token === null) {
+      dispatch({ type: "LOGOUT" })
+    }
   }, [])
   return (
     <div className="App">
