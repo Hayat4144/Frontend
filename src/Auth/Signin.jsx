@@ -37,7 +37,7 @@ export default function Signin() {
         const data = await result.json();
         if (result.status === 200) {
             // Check if the response has the Set-Cookie header
-            const setCookie = result.headers.get('Set-Cookie');
+            const setCookie = result.headers.get('set-Cookie');
             if (setCookie) {
                 // Parse the Set-Cookie header and extract the cookie
                 const cookie = setCookie.split(';')[0];
