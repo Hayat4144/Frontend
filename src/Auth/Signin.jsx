@@ -34,11 +34,10 @@ export default function Signin() {
                 password
             })
         }).then(async res => {
-            const data = await res.json();
-            // console.log(document.cookie)
+            const {data ,error,token} = await res.json();
             setIsLoading(false)
             if (res.status !== 200) {
-                toast.error(data.error, {
+                toast.error(error, {
                     position: 'bottom-center',
                     autoClose: 5000,
                     hideProgressBar: true,
@@ -50,18 +49,8 @@ export default function Signin() {
                 })
                 return;
             }
-            toast.success(data.data, {
-                position: "bottom-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
-            DecodeJwtToken(dispatch);
-            searchParams.get('next') ? navigate(searchParams.get('next')) : navigate('/')
+            DecodeJwtToken(dispatch,navigate,token,data,searchParams ,error);
+           
 
         }).catch(err=>console.log(err))
     }
