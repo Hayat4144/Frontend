@@ -39,7 +39,7 @@ export default function Profile() {
 
     return (
         <Fragment>
-            <div className='profile_page bg-gray-100 w-screen h-screen'>
+            <div className='profile_page bg-gray-100 w-full h-full'>
                 <Suspense fallback={<NavbarSkeleton />}>
                     <div className='bg-slate-700 text-white'>
                         <Navbar />
