@@ -47,7 +47,6 @@ export default function ProductSearch() {
     const [Star, setStar] = useState(Star1)
     const [sortRelevence, setSortRelevence] = useState('Relevence')
 
-    console.log(sort)
 
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
@@ -183,7 +182,7 @@ export default function ProductSearch() {
                                 <div className="sort_box flex items-center border border-gray-300">
                                     <h4>Sort:</h4>
                                     <select
-                                        defaultValue={sortByName}
+                                        value={sort}
                                         onChange={(e) => setsort(e.target.value)}
                                         className='px-[6px] py-1 rounded-md bg-inherit text-sm'>
                                         <option value={sortByName}> Name</option>
