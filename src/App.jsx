@@ -29,16 +29,23 @@ const VerifyEmailChnage = lazy(() => import('./Accounts/VerifyEmailChnage'))
 const Term_Conditions = lazy(() => import('./UsableComponent/Term_Conditions'))
 import ProductPageSkeleton from "./Skeleton/ProductPageSkeleton";
 import WholeProductpage from "./Skeleton/WholeProductpage";
+import { LOGOUT } from "./Context/Actions/ActionType";
 
 function App() {
   console.log(import.meta.env.PROD)
   const dispatch = useDispatch();
   useEffect(() => {
-    const jwt_token = Cookies.get(import.meta.env.DEV ? 'token_dev' : 'token_production');
-    if (jwt_token === undefined || jwt_token === null) {
-      const l = dispatch({ type: "LOGOUT" })
-      console.log(l)
-    }
+    fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/is/user/authenticate`, {
+      method: "GET",
+      credentials:'include',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => {
+      if (res.status !== 200) {
+        dispatch({ type: LOGOUT })
+      }
+    }).catch(err => console.log(err))
   }, [])
   return (
     <div className="App">
