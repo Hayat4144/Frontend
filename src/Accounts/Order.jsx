@@ -32,7 +32,7 @@ export default function Order() {
 
     //  ---------------------- fetch order of user --------------------- //
     const FetchOrderHistory = async () => {
-        await fetch(`${import.meta.env.VITE_BACKEND_URL}/v3/api/user/orders/history`, {
+        await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/api/user/orders/history`, {
             method: 'GET',
             headers: {
                 "Content-Type": "application/json",
@@ -84,7 +84,7 @@ export default function Order() {
                     </section> : Orderdata.length > 0 ?
                         Orderdata.map(item => (
                             <div key={item._id} className="order_history_box border my-10 border-gray-300 shadow-sm rounded-md">
-                                <div className='order_history_box_header border-b border-gray-300 flex justify-between items-center px-5 h-24 py-10 '>
+                                <div className='order_history_box_header border-b border-gray-300 flex justify-between items-center px-2 md:px-5 h-24 py-10 '>
                                     <div className='order_id'>
                                         <h3 className='orderId_text font-extrabold'>Order Id</h3>
                                         <span className='order_number text-gray-600'>{item._id}</span>
@@ -93,7 +93,7 @@ export default function Order() {
                                         <h3 className='ordertotalPrice_text font-extrabold'>Total Amount</h3>
                                         <span className='order_totalpriceValue text-gray-600'>{item.totalPrice}</span>
                                     </div>
-                                    <div className='order_date hidden md:block'>
+                                    <div className='order_date hidden sm:block'>
                                         <h3 className='orderDate_text font-extrabold'>Order Date</h3>
                                         <span className='order_OrderDate text-gray-600'>{item.created_at}</span>
                                     </div>
