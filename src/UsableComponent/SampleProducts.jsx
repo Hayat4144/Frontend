@@ -33,7 +33,7 @@ export default function SampleProducts({ name }) {
     useEffect(() => {
         fetchData();
     }, [])
-    
+
     return (
         <Fragment>
 
@@ -57,10 +57,10 @@ export default function SampleProducts({ name }) {
                                         <div className='product_details my-2' onClick={() => {
                                             navigate(`/V2/shop/product/${item._id}/${item.name}/${item.category}`)
                                         }}>
-                                            <p className='product_name capitalize w-full justify-between cursor-pointer
-                                    text-xl hover:text-indigo-700 flex items-center  font-extrabold'>
-                                                <span>{item.name}</span>
-                                                <span className='currency_symbol'> Rs {item.price} </span>
+                                            <p className='product_name capitalize w-full sm:justify-between cursor-pointer
+                                    text-xl hover:text-indigo-700 sm:flex items-center  sm:font-extrabold'>
+                                                <span className='product_name block'>{item.name.length > 20 ? `${item.name.substring(0,20)}...` : item.name}</span>
+                                                <span className='currency_symbol block'> Rs {item.price} </span>
                                             </p>
                                             <h1 className='product_rating my-2  text-[18px]'>
                                                 <Rating value={item.average_rating} />
