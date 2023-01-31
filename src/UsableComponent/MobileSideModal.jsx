@@ -14,25 +14,27 @@ import { useDispatch, useSelector } from 'react-redux'
 import { BiCategory, BiSearch } from 'react-icons/bi'
 import { toast } from 'react-toastify'
 
-export default function MobileSideModal({ mobileModal ,MobileSideModalToggle }) {
+export default function MobileSideModal({ mobileModal, MobileSideModalToggle }) {
     const [isModalOpen, setIsModalOpen] = useState(mobileModal)
     const { IsLogdin } = useSelector(state => state.Signin)
+    const { user_data } = useSelector(state => state.User)
     const dispatch = useDispatch();
     useEffect(() => {
         setIsModalOpen(mobileModal)
-    } , [mobileModal])
+    }, [mobileModal])
 
+   
 
-    const logoutFunc  = async()=>{
-        await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/api/user/logout` , {
-            method:"GET",
-            headers:{
-                'Content-Type':"application/json"
+    const logoutFunc = async () => {
+        await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/api/user/logout`, {
+            method: "GET",
+            headers: {
+                'Content-Type': "application/json"
             },
-            credentials:'include'
-        }).then(async res=>{
-            const {data,error} = await res.json();
-            if(res.status !== 200){
+            credentials: 'include'
+        }).then(async res => {
+            const { data, error } = await res.json();
+            if (res.status !== 200) {
                 toast.error(error, {
                     position: "bottom-center",
                     autoClose: 5000,
@@ -43,9 +45,9 @@ export default function MobileSideModal({ mobileModal ,MobileSideModalToggle }) 
                     progress: undefined,
                     theme: "dark",
                 });
-                return ;
+                return;
             }
-            dispatch({type:"LOGOUT"})
+            dispatch({ type: "LOGOUT" })
             toast.success(data, {
                 position: "bottom-center",
                 autoClose: 5000,
@@ -57,16 +59,16 @@ export default function MobileSideModal({ mobileModal ,MobileSideModalToggle }) 
                 theme: "dark",
             });
         })
-        
+
     }
     return (
         <Fragment>
             {/* ---- Mobile Menu ----- */}
-            <div className={`mobile_menu_dialog_model fixed md:hidden bg-black w-full
-             opacity-100 bg-opacity-30 inset-0 z-50 ${isModalOpen ? 'flex' : 'hidden'}`}
+            <div className={`mobile_menu_dialog_model  fixed md:hidden bg-black w-full
+             opacity-100 bg-opacity-30 inset-0 z-50 ${isModalOpen ? 'flex  overscroll-none' : 'hidden'}`}
             >
                 {/* ---- Mobile link Menu white background */}
-                <div className='w-3/4 h-screen bg-white'>
+                <div className='w-3/4 h-screen  bg-white'>
                     <div className='user_header text-white h-20 px-5 space-x-5 flex 
                     items-center bg-gray-700'>
                         <div className='user_avtar'>
@@ -74,12 +76,12 @@ export default function MobileSideModal({ mobileModal ,MobileSideModalToggle }) 
                         </div>
                         <div className='user_name '>
                             <h2 className='user_name_text'>
-                                Hello , {IsLogdin ? 'Hayat ilyas' : 'Signin'}
+                                Hello , {IsLogdin ? user_data.name : 'Signin'}
                             </h2>
                         </div>
                     </div>
                     {/* ---- Navigations Menu for mobile */}
-                    <div className='mobile_view_link '>
+                    <div className='mobile_view_link  w-full h-full'>
                         <ul className=' cursor-pointer px-5  py-5'>
                             <Link to="/">
                                 <li className='flex items-center pb-5 space-x-5'>
@@ -145,20 +147,26 @@ export default function MobileSideModal({ mobileModal ,MobileSideModalToggle }) 
                             </Link>
 
                         </ul>
-                        <section className='login_logout_btn absolute bottom-5 px-5'>
-                            {IsLogdin ? <div className='button_group'>
-                                <button onClick={logoutFunc} className='focus:border focus:border-gray-500 px-10 py-1.5
+                        <section className='login_logout_btn absolute bottom-5 '>
+                            {IsLogdin ? <div className='logout_btn flex space-x-2 px-2'>
+                                <button onClick={logoutFunc} className='focus:border focus:border-gray-500 py-2 px-10
                             rounded-md bg-indigo-700 focus:bg-transparent text-white
-                            focus:text-black w-full'>Log out</button>
+                            focus:text-black'>Log out</button>
+                                <Link to="/V2/auth/sign_up">
+                                    <button className='focus:border focus:border-gray-500 px-10 py-2
+                                        rounded-md bg-indigo-700 focus:bg-transparent text-white
+                                     focus:text-black'>Sign up</button>
+                                </Link>
+
                             </div> :
-                                <div className='space-x-5'>
+                                <div className='flex w-full items-center justify-between space-x-2 px-2'>
                                     <Link to={'/V2/auth/sign_in'}>
-                                        <button className='focus:border focus:border-gray-500 px-10 py-1.5
+                                        <button className='focus:border focus:border-gray-500 px-10 py-2
                                         rounded-md bg-indigo-700 focus:bg-transparent text-white
                                       focus:text-black '>Sign in</button>
                                     </Link>
                                     <Link to="/V2/auth/sign_up">
-                                        <button className='focus:border focus:border-gray-500 px-10 py-1.5
+                                        <button className='focus:border focus:border-gray-500 px-10 py-2
                                         rounded-md bg-indigo-700 focus:bg-transparent text-white
                                      focus:text-black'>Sign up</button>
                                     </Link>
@@ -171,8 +179,8 @@ export default function MobileSideModal({ mobileModal ,MobileSideModalToggle }) 
 
                 {/*  ---- Close Mobile Menu Button */}
                 <div className='close_icon ml-5 mt-5 text-white'>
-                    <AiOutlineCloseCircle className='text-4xl cursor-pointer' 
-                    onClick={()=> MobileSideModalToggle(isModalOpen)} />
+                    <AiOutlineCloseCircle className='text-4xl cursor-pointer'
+                        onClick={() => MobileSideModalToggle(isModalOpen)} />
                 </div>
             </div>
         </Fragment>

@@ -17,6 +17,14 @@ export default function Navbar() {
     const [keyword, setKeyword] = useState('')
     const navigate = useNavigate();
 
+    // ----------------- stop scrolling if the modal is open ------------------- //
+    if(isMobileViewOpen){
+        document.body.classList.toggle('modal-open');
+    }
+    else{
+        document.body.classList.remove('modal-open')
+    }
+
     // ---- cart data ----- //
     const { productItems } = useSelector(state => state.Cart)
 
