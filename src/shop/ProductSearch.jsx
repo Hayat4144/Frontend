@@ -156,7 +156,8 @@ export default function ProductSearch() {
                                 <span className='sortby_text text-sm font-extrabold px-1'>Sort By:</span>
                                 <select name="sort"
                                     id="sort"
-                                    defaultValue={sortByName}
+                                    // defaultValue={sortByName}
+                                    value={sort}
                                     onChange={(e) => setsort(e.target.value)}
                                     className='px-2 py-1 rounded-md bg-inherit'>
                                     <option value={sortByName}> Name</option>
