@@ -1,12 +1,14 @@
+import { LOGOUT, SIGNIN } from "../Actions/ActionType";
+
 const initialstate = {
     IsLogdin: false,
 }
 
 const SigninReducer = (state = initialstate, action) => {
     switch (action.type) {
-        case 'SIGNIN':
+        case SIGNIN:
             return { ...state, IsLogdin: true };
-        case 'LOGOUT':
+        case LOGOUT:
             return { ...state, IsLogdin: false };
         default:
             return state;
