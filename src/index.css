@@ -15,10 +15,16 @@
   -webkit-text-size-adjust: 100%;
 }
 
+body.modal-open {
+  overflow: hidden;
+}
+
+
 body {
   min-width: 320px;
   min-height: 100vh;
 }
+
 
 .nav_search_btn {
   border-bottom-right-radius: 6px;
