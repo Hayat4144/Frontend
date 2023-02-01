@@ -15,7 +15,7 @@ export default function ChangePassword() {
     // submitHandler 
     const SubmitHandler = async () => {
         setIsLoading(!isLoading)
-        const result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/v3/api/user/change/password`, {
+        const result = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/api/user/change/password`, {
             method: 'PUT',
             headers: {
                 "Content-Type": "application/json",
@@ -138,23 +138,28 @@ export default function ChangePassword() {
                                 {showPassword3 ? ' hide' : 'show'} </span>
                         </div>
                         <div className='submit_btn my-5'>
-                            {!isLoading ? <button type='submit' className='w-full h-10 text-center
+                            {!isLoading ? <button type='submit' className={`w-full h-10 text-center
                              text-white outline-none  text-bold bg-indigo-800 rounded-md
-                              hover:bg-indigo-700'>Change password</button> : <button type="button"
-                                className="inline-flex items-center justify-center py-2  leading-4 
-                              text-sm shadow rounded-md text-white bg-indigo-800 hover:bg-indigo-900
-                               w-24 text-center transition ease-in-out duration-150 cursor-not-allowed"
-                                disabled="">
-                                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-slate-500"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle className="pacity-25 text-white" cx="12" cy="12" r="10"
-                                        stroke="currentColor" strokeWidth="4"></circle>
-                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 
+                              hover:bg-indigo-700 ${currentpassword.length < 1 || confirmpassword.length < 1 ||
+                                    currentpassword.length < 1 ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                                disabled={currentpassword.length < 1 || confirmpassword.length < 1 ||
+                                    currentpassword.length < 1 ? true : false}
+                            >
+                                Change password</button> :
+                                <button type="button"
+                                    className={`inline-flex items-center justify-center py-2  leading-4 
+                                text-sm shadow rounded-md text-white bg-indigo-800 hover:bg-indigo-900
+                                w-full text-center transition ease-in-out duration-150 cursor-not-allowed`}>
+                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-slate-500"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="pacity-25 text-white" cx="12" cy="12" r="10"
+                                            stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 
                                     018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 
                                     3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
-                                Processing ...
-                            </button>
+                                    </svg>
+                                    Processing ...
+                                </button>
                             }
                         </div>
                     </form>
