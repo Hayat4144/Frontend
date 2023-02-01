@@ -32,7 +32,7 @@ export default function ProductPage() {
     useEffect(() => {
         setIsLoading(true)
         Promise.all([
-            fetch(`${import.meta.env.VITE_BACKEND_URL}/v4/api/product/${id}`, {
+            fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/product/${id}`, {
                 method: "GET",
                 credentials: 'include'
             }).then(async (res) => {
@@ -42,7 +42,7 @@ export default function ProductPage() {
                 }
             })
                 .catch(error => console.log(error)),
-            fetch(`${import.meta.env.VITE_BACKEND_URL}/v3/api/product/varientById/${id}`, {
+            fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/api/product/varientById/${id}`, {
                 method: "GET",
                 credentials: 'include'
             })
