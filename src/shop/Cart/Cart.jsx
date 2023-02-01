@@ -10,7 +10,7 @@ import { DECREASE_QUANTITY, INCREASE_QUANTITY, REMOVE_ITEM_FROM_CART } from '../
 import { Link } from 'react-router-dom'
 const Navbar = lazy(() => import('../../UsableComponent/Navbar'))
 const OrderSummary = lazy(() => import('./OrderSummary'))
-const Footer = lazy(()=>import('../../UsableComponent/Footer'))
+const Footer = lazy(() => import('../../UsableComponent/Footer'))
 
 export default function Cart() {
     //  ----- states ---- //
@@ -22,7 +22,13 @@ export default function Cart() {
     const dispatch = useDispatch();
 
 
-
+    if (IsModalOpen) {
+        document.body.classList.toggle('cancel-modal');
+    }
+    else{
+        document.body.classList.remove('cancel-modal')
+    }
+   
 
 
     //  ---- Increase qunatity of cart item ---- //
@@ -158,10 +164,10 @@ export default function Cart() {
 
                                             {/* ----- Confirm Modal ----- */}
                                             <div className={`Modal_container fixed inset-0 bg-black bg-opacity-20 ${IsModalOpen ? 'grid' : 'hidden'} h-screen place-items-center`}>
-                                                <div className='modal_body mx-auto h-36 bg-white rounded-md  px-5'>
+                                                <div className='modal_body sm:mx-auto mx-2 h-36 bg-white rounded-md px-2 md:px-5'>
                                                     <div className='modal_title my-5'>
-                                                        <h3 className='modal_title_text text-xl font-bold'>Do you really want to remove this item?</h3>
-                                                        <div className="button_groups flex items-center space-x-10 my-8">
+                                                        <h3 className='modal_title_text text-[16px] font-bold'>Do you really want to remove this item?</h3>
+                                                        <div className="button_groups flex items-center space-x-10 relative top-10">
                                                             <button
                                                                 onClick={() => setIsModalOpen(!IsModalOpen)}
                                                                 className='cancel_button px-5 py-2 cursor-pointer rounded-md bg-red-700  text-white

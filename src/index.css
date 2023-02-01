@@ -19,6 +19,9 @@ body.modal-open {
   overflow: hidden;
 }
 
+body.cancel-modal{
+  overflow: hidden;
+}
 
 body {
   min-width: 320px;
