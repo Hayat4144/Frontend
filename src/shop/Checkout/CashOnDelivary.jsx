@@ -14,7 +14,7 @@ export default function CashOnDelivary() {
     const [payment_type, setPayment_type] = useState('CASHONDELIVARY')
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    
+
 
     const products = [];
     productItems.forEach((element) => {
@@ -27,9 +27,9 @@ export default function CashOnDelivary() {
     console.log(products)
 
     // validate the captcha 
-    const handleRecaptchaChange = (value)=>{
+    const handleRecaptchaChange = (value) => {
         console.log(value)
-        value ? submitButtonRef.current.disabled = false : submitButtonRef.current.disabled = true ;
+        value ? submitButtonRef.current.disabled = false : submitButtonRef.current.disabled = true;
     }
 
     // Call Google's API to get score
@@ -47,7 +47,7 @@ export default function CashOnDelivary() {
             return;
         }
 
-        await fetch(`${import.meta.env.VITE_BACKEND_URL}/v3/api/user/shop/confirm/payment`, {
+        await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/api/user/shop/confirm/payment`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -72,7 +72,7 @@ export default function CashOnDelivary() {
                     progress: undefined,
                     theme: "dark",
                 })
-                return ;
+                return;
             }
             dispatch({ type: REMOVE_ALL_ITEM_FROM_CART })
             setisLoading(false)
@@ -90,7 +90,7 @@ export default function CashOnDelivary() {
 
         })
 
-        
+
     }
     return (
         <Fragment>

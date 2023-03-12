@@ -22,7 +22,7 @@ export default function AddressCheckout() {
     // submitHandler 
     const SubmitHandler = async () => {
         setIsLoading(!isLoading)
-        const result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/v3/api/user/create/address`, {
+        const result = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/api/user/create/address`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",

@@ -15,43 +15,29 @@ export default function Address({ smWidth, lgWidth, mdWidth, xlWidth, title }) {
     const [Country, setCountry] = useState(user_address.Country)
     const [isLoading, setIsLoading] = useState(false)
     const dispatch = useDispatch();
+    console.log(import.meta.env.DEV);
 
     // submitHandler 
     const SubmitHandler = async () => {
         setIsLoading(!isLoading)
-        const result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/v3/api/user/create/address`, {
-            method: 'POST',
+        const response = await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/api/user/create/address`, {
+            method: "POST",
+            credentials: 'include',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                Street,
-                Area,
-                city,
+                Country,
                 State,
+                city,
                 pincode,
-                Country
-            }),
-            credentials: 'include'
+                Area,
+                Street,
+            })
         })
-        const data = await result.json();
+        const data = await response.json();
         setIsLoading(false)
-        if (result.status === 200) {
-            console.log(data.doc)
-            const m = dispatch({ type: CREATEADDRESS, payload: data.doc })
-            console.log(m)
-            toast.success(data.data, {
-                position: "bottom-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
-        }
-        else {
+        if (response.status !== 200) {
             toast.error(data.error, {
                 position: 'bottom-center',
                 autoClose: 5000,
@@ -62,7 +48,19 @@ export default function Address({ smWidth, lgWidth, mdWidth, xlWidth, title }) {
                 progress: undefined,
                 theme: "dark",
             })
+            return;
         }
+        dispatch({ type: CREATEADDRESS, payload: data.doc })
+        toast.success(data.data, {
+            position: "bottom-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+        });
     }
 
     return (
