@@ -32,21 +32,6 @@ import WholeProductpage from "./Skeleton/WholeProductpage";
 import { LOGOUT } from "./Context/Actions/ActionType";
 
 function App() {
-  console.log(import.meta.env.PROD)
-  const dispatch = useDispatch();
-  useEffect(() => {
-    fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/is/user/authenticate`, {
-      method: "GET",
-      credentials:'include',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(res => {
-      if (res.status !== 200) {
-        dispatch({ type: LOGOUT })
-      }
-    }).catch(err => console.log(err))
-  }, [])
   return (
     <div className="App">
       <Router>
