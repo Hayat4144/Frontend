@@ -32,6 +32,7 @@ import WholeProductpage from "./Skeleton/WholeProductpage";
 import { LOGOUT } from "./Context/Actions/ActionType";
 
 function App() {
+  console.clear();
   return (
     <div className="App">
       <Router>
