@@ -96,9 +96,6 @@ npm install
 
 5. Open your browser and navigate to http://localhost:3000 to view the app
 
-## Contributing
-
-Contributions are always welcome! If you find a bug or want to suggest a new feature, please open an issue or submit a pull request.
 
 ## Environment Variables
 
@@ -113,6 +110,11 @@ To run this project, you will need to add the following environment variables to
 `VITE_GOOGLE_SECRET_KEY`
 
 `VITE_BACKEND_DEV_URL` for development
+
+
+## Contributing
+
+Contributions are always welcome! If you find a bug or want to suggest a new feature, please open an issue or submit a pull request.
 
 ## License
 
