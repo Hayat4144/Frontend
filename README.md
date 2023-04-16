@@ -67,3 +67,53 @@ Overall, this e-commerce frontend application provides a robust set of features 
 ![App Screenshot](/assets/Screenshot11.png?raw=true)
 
 ![App Screenshot](/assets/Screenshot10.png?raw=true)
+
+## Installation
+
+1. Clone this repository to your local machine using the below command.
+
+```bash
+ git clone https://github.com/Hayat4144/Frontend.git
+```
+
+2. Navigate to the project directory using the following command.
+
+```bash
+cd Frontend
+```
+
+3. Install the project dependencies using the command
+
+```bash
+npm install
+```
+
+4. Start the development server using the command.
+
+```bash
+npm install
+```
+
+5. Open your browser and navigate to http://localhost:3000 to view the app
+
+## Contributing
+
+Contributions are always welcome! If you find a bug or want to suggest a new feature, please open an issue or submit a pull request.
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+`VITE_BACKEND_URL` for production
+
+`VITE_STRIPE_PUBLISHABLE_KEY`
+
+`VITE_GOOGLE_SITE_KEY`
+
+`VITE_GOOGLE_SECRET_KEY`
+
+`VITE_BACKEND_DEV_URL` for development
+
+## License
+
+This app is licensed under the MIT License. Feel free to use it for your own projects.
