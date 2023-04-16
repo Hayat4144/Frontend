@@ -34,8 +34,6 @@ Overall, this e-commerce frontend application provides a robust set of features 
 
 ![App Screenshot](/assets/Screenshot1.png?raw=true)
 
-<<<<<<< HEAD
-
 ![App Screenshot](/Frontend/assets/Screenshot8.png?raw=true)
 
 ![App Screenshot](/Frontend/assets/Screenshot7.png?raw=true)
@@ -68,8 +66,4 @@ Overall, this e-commerce frontend application provides a robust set of features 
 
 ![App Screenshot](/Frontend/assets/Screenshot11.png?raw=true)
 
-# ![App Screenshot](/Frontend/assets/Screenshot10.png?raw=true)
-
-![App Screenshot](/assets/Screenshot1.png?raw=true)
-
-> > > > > > > 98767fbd1726e2ff0ff28c1535f28956b9ef8747
+![App Screenshot](/Frontend/assets/Screenshot10.png?raw=true)
