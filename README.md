@@ -34,36 +34,36 @@ Overall, this e-commerce frontend application provides a robust set of features 
 
 ![App Screenshot](/assets/Screenshot1.png?raw=true)
 
-![App Screenshot](/Frontend/assets/Screenshot8.png?raw=true)
+![App Screenshot](/assets/Screenshot8.png?raw=true)
 
-![App Screenshot](/Frontend/assets/Screenshot7.png?raw=true)
+![App Screenshot](/assets/Screenshot7.png?raw=true)
 
-![App Screenshot](/Frontend/assets/Screenshot6.png?raw=true)
+![App Screenshot](/assets/Screenshot6.png?raw=true)
 
-![App Screenshot](/Frontend/assets/Screenshot5.png?raw=true)
+![App Screenshot](/assets/Screenshot5.png?raw=true)
 
-![App Screenshot](/Frontend/assets/Screenshot4.png?raw=true)
+![App Screenshot](/assets/Screenshot4.png?raw=true)
 
-![App Screenshot](/Frontend/assets/Screenshot3.png?raw=true)
+![App Screenshot](/assets/Screenshot3.png?raw=true)
 
-![App Screenshot](/Frontend/assets/Screenshot2.png?raw=true)
+![App Screenshot](/assets/Screenshot2.png?raw=true)
 
-![App Screenshot](/Frontend/assets/Screenshot19.png?raw=true)
+![App Screenshot](/assets/Screenshot19.png?raw=true)
 
-![App Screenshot](/Frontend/assets/Screenshot18.png?raw=true)
+![App Screenshot](assets/Screenshot18.png?raw=true)
 
-![App Screenshot](/Frontend/assets/Screenshot17.png?raw=true)
+![App Screenshot](/assets/Screenshot17.png?raw=true)
 
-![App Screenshot](/Frontend/assets/Screenshot16.png?raw=true)
+![App Screenshot](/assets/Screenshot16.png?raw=true)
 
-![App Screenshot](/Frontend/assets/Screenshot15.png?raw=true)
+![App Screenshot](/assets/Screenshot15.png?raw=true)
 
-![App Screenshot](/Frontend/assets/Screenshot14.png?raw=true)
+![App Screenshot](/assets/Screenshot14.png?raw=true)
 
-![App Screenshot](/Frontend/assets/Screenshot13.png?raw=true)
+![App Screenshot](/assets/Screenshot13.png?raw=true)
 
-![App Screenshot](/Frontend/assets/Screenshot12.png?raw=true)
+![App Screenshot](/assets/Screenshot12.png?raw=true)
 
-![App Screenshot](/Frontend/assets/Screenshot11.png?raw=true)
+![App Screenshot](/assets/Screenshot11.png?raw=true)
 
-![App Screenshot](/Frontend/assets/Screenshot10.png?raw=true)
+![App Screenshot](/assets/Screenshot10.png?raw=true)
