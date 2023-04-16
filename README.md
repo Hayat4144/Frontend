@@ -33,8 +33,8 @@ This is a frontend application for an e-commerce website built using modern web 
 Overall, this e-commerce frontend application provides a robust set of features for browsing, filtering, and purchasing products online, with a clean and intuitive user interface that makes the shopping experience enjoyable and effortless.
 ## Screenshots
 
-![App Screenshot](/Frontend/assets/Screenshot.png?raw=true)
+![App Screenshot](/assets/Screenshot.png?raw=true)
 
-![App Screenshot](/Frontend/assets/Screenshot1.png?raw=true)
+![App Screenshot](/assets/Screenshot1.png?raw=true)
 
-![App Screenshot](/Frontend/assets/Screenshot1.png?raw=true)
+![App Screenshot](/assets/Screenshot1.png?raw=true)
