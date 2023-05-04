@@ -42,7 +42,7 @@ export default function SampleProducts({ name }) {
                 : noProduct ?
                     <div className='my-10 h-20 '>
                         <h2 className='text-xl text-center mb-5'>
-                            No product found
+                            No product found has been 
                         </h2>
                     </div>
                     : <Fragment>
@@ -51,7 +51,7 @@ export default function SampleProducts({ name }) {
                                 product_detail.map((item, index) => (
                                     <div className="product_detaiils" key={item._id}>
                                         <figure className='overflow-hidden'>
-                                            <img src={item.assets.images[0]} alt="product-pic"
+                                            <img src={item.assets.images[0].url} alt="product-pic"
                                                 className='w-full h-56  hover:scale-125  transition ease-in-out duration-500' />
                                         </figure>
                                         <div className='product_details my-2' onClick={() => {

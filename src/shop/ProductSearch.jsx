@@ -395,7 +395,7 @@ export default function ProductSearch() {
 
                                     <div key={item._id} className="cursor-pointer">
                                         <figure className='overflow-hidden rounded-md'>
-                                            <img src={item.assets.images[0]} alt="product-pic"
+                                            <img src={item.assets.images[0].url} alt="product-pic"
                                                 className='w-full h-56 rounded-md hover:scale-125  transition ease-in-out duration-500' />
                                         </figure>
                                         <div className='product_details my-2' onClick={() => {

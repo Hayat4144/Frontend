@@ -169,10 +169,10 @@ export default function ProductPage() {
                     className='proudct-parent my-16 px-2 grid
                     grid-cols-1 md:grid-cols-7 md:gap-5 '>
                     <div className='col-span-4 sticky'>
-                        {item.assets.images.map((images, index) => (
+                        {item.assets.images.map((image, index) => (
                             <figure className={`${slideindex === index + 1 ? 'relative' : 'hidden'}
                              md:hidden mb-10`} key={index} >
-                                <img alt='product-img' src={images} className='w-full rounded-lg h-[20em] lg:h-[38em] ' />
+                                <img alt='product-img' src={image.url} className='w-full rounded-lg h-[20em] lg:h-[38em] ' />
                                 <div className='md:hidden w-[90%] justify-between  
                                 absolute top-40 text-white font-bold text-4xl flex 
                                 mx-2'>
@@ -198,7 +198,7 @@ export default function ProductPage() {
                                 {
                                     item.assets.images.map((item, key) => (
                                         <figure key={key} className="overflow-hidden mb-2 rounded-md  ">
-                                            <img src={item}
+                                            <img src={item.url}
                                                 className={`${image_value === key ? 'border-2 shadow-lg  outline-indigo-500 border-indigo-700' :
                                                     'cursor-pointer'} w-[5rem] h-[5rem]`} onClick={(e) => {
                                                         e.preventDefault();
@@ -210,7 +210,8 @@ export default function ProductPage() {
                             </aside>
 
                             <figure className='w-full overflow-hidden rounded-lg  col-span-4'>
-                                <img src={item.assets.images[image_value]}
+                                
+                                <img src={item.assets.images[image_value].url}
                                     className=" w-full h-96 hover:scale-125  
                                     transition ease-in-out duration-500  rounded-lg" />
                             </figure>

@@ -47,7 +47,7 @@ export default function ConfrimOrder() {
                                     <div className='product-image&detailst px-2 my-5' key={item._id}>
                                         <div className='product-details flex space-x-2'>
                                             <figure className='product-imaga-contianer overflow-hidden w-[20%] rounded-md'>
-                                                <img src={item.image} className='h-28 w-full hover:scale-125 rounded-md ' />
+                                                <img src={item.image.url} className='h-28 w-full hover:scale-125 rounded-md ' />
                                             </figure>
                                             <div className='product-name&quantity px-2 w-[60%] grid grid-cols-1 md:grid-cols-2 '>
                                                 <div className='product-info'>
