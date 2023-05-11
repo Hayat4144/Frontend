@@ -2,9 +2,9 @@ import React, { Fragment, lazy, Suspense } from "react";
 import NavbarSkeleton from "../Skeleton/NavbarSkeleton";
 const CartContainer  = lazy(()=>import('../layout/Cart/CartContainer'))
 const NoCartItemFound = lazy(()=> import('../layout/Cart/NoCartItemFound'))
-const Navbar = lazy(() => import("../layout/Navbar"));
-const Footer = lazy(() => import("../layout/Footer"));
-import { useDispatch, useSelector } from "react-redux";
+const Navbar = lazy(() => import("../layout/Nav/Navbar"));
+const Footer = lazy(()=>import('../layout/Footer'))
+import {useSelector } from "react-redux";
 
 export default function Cart() {
   const Cartdata = useSelector((state) => state.Cart.productItems);
@@ -18,6 +18,9 @@ export default function Cart() {
             <NoCartItemFound />
         </Suspense> : <Suspense fallback="loading"><CartContainer/></Suspense>}
       </div>
+      <Suspense fallback={"loading..."}>
+        <Footer />
+      </Suspense>
     </Fragment>
   );
 }
