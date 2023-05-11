@@ -1,6 +1,6 @@
 import React, { Fragment, Suspense, lazy } from "react";
 import NavbarSkeleton from "../Skeleton/NavbarSkeleton";
-const Navbar = lazy(() => import("../layout/Navbar"));
+const Navbar = lazy(() => import("../layout/Nav/Navbar"));
 const Footer = lazy(() => import('../layout/Footer'))
 const HomeSlider = lazy(() => import('../layout/Home/HomeSlider'))
 const SampleProducts = lazy(() => import('../layout/SampleProducts'))
