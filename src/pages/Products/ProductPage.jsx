@@ -1,0 +1,303 @@
+import React, { Fragment, useState, useEffect, lazy, Suspense } from "react";
+import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import NavbarSkeleton from "../../Skeleton/NavbarSkeleton";
+import { ADD_TO_CART_ACTION } from "../../Context/Actions/CartActions";
+import ProductPageSkeleton from "../../Skeleton/ProductPageSkeleton";
+import { Toast_Config_Option } from "../../global/Toast_Config";
+import { BASE_URL } from "../../global/Base_URL";
+import { GetHeaders } from "../../global/GetHeaders";
+const Navbar = lazy(() => import("../../layout/Nav/Navbar"));
+const Footer = lazy(() => import("../../layout/Footer"));
+const SimilarProducts = lazy(()=>import('../../shop/SimilarProducts'))
+const UserReview = lazy(() => import("../../shop/Review/UserReview"));
+const CreateUserReview = lazy(() =>import("../../shop/Review/CreateUserReview"));
+import LargeScreenImages from "../../layout/ShowProduct/LargeScreenImages";
+import SmallScreenImages from "../../layout/ShowProduct/SmallScreenImages";
+import ProductIncrementDecrement from "../../layout/ShowProduct/ProductIncrementDecrement";
+import ProductDetails from "../../layout/ShowProduct/ProductDetails";
+
+export default function ProductPage() {
+  const { id } = useParams();
+  const [quantity, setquantity] = useState(10);
+  const [image_value, setimage_value] = useState(0);
+  const [slideindex, setslidindex] = useState(1);
+  const [product_detail, setProduct_detail] = useState([]);
+  const [product_varient, setProduct_varient] = useState([]);
+  const [selectedSize, setSelectedSize] = useState("Choose a size");
+  const [selectedColor, setSelectedColor] = useState("Choose a color");
+  const [ratingModal, setRatingModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setIsLoading(true);
+    Promise.all([
+      fetch(`${BASE_URL}/v4/api/product/${id}`, GetHeaders)
+        .then(async (res) => {
+          if (res.status === 200) {
+            const { data } = await res.json();
+            setProduct_detail([data]);
+          }
+        })
+        .catch((error) => console.log(error)),
+      fetch(`${BASE_URL}/v3/api/product/varientById/${id}`, GetHeaders).then(
+        async (res) => {
+          if (res.status === 200) {
+            const { data } = await res.json();
+            setProduct_varient(data);
+            setIsLoading(false);
+          }
+        }
+      ),
+    ]);
+  }, [id]);
+
+  // ---- products attributes ---- //
+  const colors = Array.from(
+    new Set(product_varient.map((item) => item.product_attribute.color))
+  );
+  const sizes = Array.from(
+    new Set(product_varient.map((item) => item.product_attribute.size))
+  );
+
+  // ----- get selected varients  ---- //
+  const getSelectedVarients = (varients, seletectedsize, selectedcolor) => {
+    return varients.filter(
+      (item) =>
+        item.product_attribute.size == seletectedsize &&
+        item.product_attribute.color == selectedcolor
+    );
+  };
+
+  //  ----- assing the selected varient ----- //
+  const selectedvarients = getSelectedVarients(
+    product_varient,
+    selectedSize,
+    selectedColor
+  );
+
+  useEffect(() => {
+    if (selectedvarients.length > 0) {
+      const updateState = product_detail.map((obj) => {
+        return { ...obj, price: selectedvarients[0].price };
+      });
+      setProduct_detail(updateState);
+    }
+  }, [selectedSize, selectedColor, product_varient]);
+
+  
+  const Add_TO_CART_FUNC = () => {
+    if (selectedvarients.length > 0) {
+      let data = {
+        ...selectedvarients[0],
+        quantity,
+        name: product_detail[0].name,
+        image: product_detail[0].assets.images[0],
+      };
+      dispatch(ADD_TO_CART_ACTION(data));
+      toast.success(
+        `product has been added successfully to your cart.`,
+        Toast_Config_Option
+      );
+    } else {
+      toast.error("Please select color and size.", Toast_Config_Option);
+    }
+  };
+
+  // next slide
+  const nextSlide = (product_image) => {
+    if (slideindex !== product_image.length) {
+      setslidindex(slideindex + 1);
+    } else if (slideindex === product_image.length) {
+      setslidindex(1);
+    }
+  };
+
+  //  ----- back slide ----- //
+  const backslide = (product_image) => {
+    if (slideindex !== 1) {
+      setslidindex(slideindex - 1);
+    } else if (slideindex === 1) {
+      setslidindex(product_image.length);
+    }
+  };
+
+  const IncreaseQuantity = () => {
+    setquantity(quantity + 1);
+  };
+
+  const DicreaseQuantity = () => {
+    setquantity(quantity - 1);
+  };
+
+  const ManualQuantityChange = (e) => {
+    setquantity(Number(e.target.value));
+  };
+
+  const ColourChange = (e) => {
+    setColourvalue(e.target.value);
+  };
+
+  const RatingModalToggle = (state) => {
+    setRatingModal(!state);
+  };
+
+  return (
+    <Fragment>
+      <Suspense fallback={<NavbarSkeleton />}>
+        <Navbar />
+      </Suspense>
+
+      {isLoading ? (
+        <ProductPageSkeleton />
+      ) : (
+        product_detail.map((item, index) => (
+          <section
+            key={item._id}
+            className="proudct-parent my-16 px-2 grid
+            grid-cols-1 md:grid-cols-7 md:gap-5 "
+          >
+            <div className="col-span-4 sticky">
+              <SmallScreenImages
+                images={item.assets.images}
+                nextSlide={nextSlide}
+                backslide={backslide}
+                slideindex={slideindex}
+              />
+              <LargeScreenImages
+                images={item.assets.images}
+                setimage_value={setimage_value}
+                image_value={image_value}
+              />
+            </div>
+
+            <div className="col-span-3 proudct-info  mx-2 md:mx-5">
+              <ProductDetails product={item} />
+              {/* ----- product varients ----- */}
+
+              {item.varients && product_varient.length > 0 ? (
+                <div className="product-size flex items-center space-x-5 my-5">
+                  <h2 className="product_attribute_name text-xl capitalize">
+                    color
+                  </h2>
+                  <div className="w-full">
+                    <form className="size_form">
+                      <select
+                        defaultValue={selectedColor}
+                        onChange={(e) => setSelectedColor(e.target.value)}
+                        className="px-5 py-2 rounded-md w-full focus:border-2
+                         focus:border-indigo-700 focus:outline-none focus:ring-indigo-700 
+                        border border-gray-500"
+                      >
+                        <option defaultValue={selectedColor}>
+                          Choose a color
+                        </option>
+                        {colors.map((color, index) => (
+                          <option key={index} value={color}>
+                            {color}
+                          </option>
+                        ))}
+                      </select>
+                    </form>
+                  </div>
+                </div>
+              ) : null}
+
+              {item.varients && product_varient.length > 0 ? (
+                <div className="product-size flex items-center space-x-5">
+                  <h2 className="product_attribute_name text-xl capitalize">
+                    size
+                  </h2>
+                  <div className="w-full">
+                    <form className="size_form">
+                      <select
+                        defaultValue={selectedSize}
+                        onChange={(e) => setSelectedSize(e.target.value)}
+                        className="px-5 py-2 rounded-md w-full focus:border-2
+                        focus:border-indigo-700 focus:outline-none focus:ring-indigo-700
+                        border border-gray-500"
+                      >
+                        <option defaultValue={selectedColor}>
+                          Choose a size
+                        </option>
+                        {sizes.map((size, index) => (
+                          <option key={index} value={size}>
+                            {size}
+                          </option>
+                        ))}
+                      </select>
+                    </form>
+                  </div>
+                </div>
+              ) : null}
+
+              <ProductIncrementDecrement
+                IncreaseQuantity={IncreaseQuantity}
+                DicreaseQuantity={DicreaseQuantity}
+                quantity={quantity}
+              />
+              <div className="group-btn lg:flex lg:items-center ">
+                <button
+                  onClick={Add_TO_CART_FUNC}
+                  className="focus:outline-none focus:shadow-lg w-full lg:py-4  my-2
+                 bg-indigo-700 text-white px-3 lg:mr-3 rounded-lg  hover:bg-indigo-800 
+                    cursor-pointer py-3"
+                >
+                  Add to Cart
+                </button>
+                <button
+                  className="focus:outline-none focus:shadow-lg w-full lg:py-4 py-3 
+                   border border-gray-300 focus:text-white focus:bg-indigo-700 
+                   focus:border-none hover:text-white hover:border-none px-3 rounded-lg 
+                    hover:bg-indigo-700 cursor-pointer"
+                >
+                  Buy Now
+                </button>
+              </div>
+
+              <div className="product_rating_reviews my-10">
+                <div className="ratings flex item-center justify-between ">
+                  <h3 className="font-bold text-xl mb-5">
+                    Ratings and Reviews
+                  </h3>
+                  <button
+                    className="bg-indigo-700 hover:bg-indigo8900 text-white
+                    rounded-md focus:outline-none focus:bg-transparent focus:text-black focus:border  focus:border-gray-500 
+                    px-2"
+                    onClick={() => setRatingModal(true)}
+                  >
+                    Rate Product
+                  </button>
+                </div>
+
+                <Suspense fallback={<p>loading...</p>}>
+                  <UserReview
+                    rating_review={item.ratings_review}
+                    averge_rating={item.averge_rating}
+                  />
+                </Suspense>
+              </div>
+            </div>
+          </section>
+        ))
+      )}
+
+      <Suspense fallback={<p>loading...</p>}>
+        <CreateUserReview
+          isModalOpen={ratingModal}
+          RatingModalToggle={RatingModalToggle}
+        />
+      </Suspense>
+
+      <Suspense fallback={<p>loading....</p>}>
+        <SimilarProducts />
+      </Suspense>
+
+      <Suspense fallback={<p>loading....</p>}>
+        <Footer />
+      </Suspense>
+    </Fragment>
+  );
+}
