@@ -1,39 +1,34 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Cookies from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { lazy, Suspense } from "react";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 const Signin = lazy(() => import("./Auth/Signin"));
 const Signup = lazy(() => import("./Auth/Signup"));
 const Cart = lazy(() => import("./pages/Cart"));
-const Address = lazy(() => import("./Accounts/Address"));
-const Profile = lazy(() => import("./Accounts/Profile"));
-const ChangePassword = lazy(() => import("./Accounts/ChangePassword"));
-const AccountContainer = lazy(() => import("./Accounts/AccountContainer"));
+const Address = lazy(() => import("./pages/Accounts/Address"));
+const Profile = lazy(() => import("./pages/Accounts/Profile"));
+const ChangePassword = lazy(() => import("./pages/Accounts/ChangePassword"));
+const AccountContainer = lazy(() => import("./pages/Accounts/AccountContainer"));
 const Home = lazy(() => import("./pages/Home"));
 const NotFound = lazy(() => import("./pages/NotFound"));
-const ProductPage = lazy(() => import("./shop/ProductPage"));
+const ProductPage = lazy(() => import("./pages/Products/ProductPage"));
 const Products = lazy(() => import("./shop/AllProducts"));
-const Checkout = lazy(() => import("./shop/Checkout/Checkout"));
-const ConfrimOrder = lazy(() => import("./shop/Checkout/ConfrimOrder"));
+const Checkout = lazy(() => import("./pages/Checkout/Checkout"));
+const ConfrimOrder = lazy(() => import("./pages/Checkout/ConfrimOrder"));
 const ProductSearch = lazy(() => import("./pages/ProductSearch"));
 const ProductByCategory = lazy(() =>
   import("./shop/Category/ProductByCategory")
 );
-const Payment = lazy(() => import("./shop/Checkout/Payment"));
-const UserOrdersHistory = lazy(() => import("./Accounts/Order"));
-const ForgetPassword = lazy(() => import("./Accounts/ForgetPassword"));
+const Payment = lazy(() => import("./pages/Checkout/Payment"));
+const UserOrdersHistory = lazy(() => import("./pages/Accounts/Order"));
+const ForgetPassword = lazy(() => import("./pages/Accounts/ForgetPassword"));
 const ForgetPasswordRequest = lazy(() =>
-  import("./Accounts/RequestForgetpassword")
+  import("./pages/Accounts/RequestForgetpassword")
 );
-const EmailChangeRequest = lazy(() => import("./Accounts/EmailchangeRequest"));
-const VerifyEmailChnage = lazy(() => import("./Accounts/VerifyEmailChnage"));
+const EmailChangeRequest = lazy(() => import("./pages/Accounts/EmailchangeRequest"));
+const VerifyEmailChnage = lazy(() => import("./pages/Accounts/VerifyEmailChnage"));
 const Term_Conditions = lazy(() => import("./pages/Term_Conditions"));
-import ProductPageSkeleton from "./Skeleton/ProductPageSkeleton";
 import WholeProductpage from "./Skeleton/WholeProductpage";
-import { LOGOUT } from "./Context/Actions/ActionType";
 
 function App() {
   // console.clear();
