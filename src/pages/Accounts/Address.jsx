@@ -1,9 +1,9 @@
 import React, { Fragment, lazy, Suspense, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
-import { CREATEADDRESS } from '../Context/Actions/ActionType'
-const Navbar = lazy(() => import('../UsableComponent/Navbar'))
-import NavbarSkeleton from '../Skeleton/NavbarSkeleton'
+import { CREATEADDRESS } from '../../Context/Actions/ActionType'
+const Navbar = lazy(() => import('../../layout/Nav/Navbar'))
+import NavbarSkeleton from '../../Skeleton/NavbarSkeleton'
 
 export default function Address({ smWidth, lgWidth, mdWidth, xlWidth, title }) {
     const { user_address } = useSelector(state => state.Address)

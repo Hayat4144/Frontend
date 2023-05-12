@@ -1,6 +1,6 @@
 import React, { Fragment, lazy, Suspense, useState } from 'react'
-const Navbar = lazy(() => import('../UsableComponent/Navbar'))
-import NavbarSkeleton from '../Skeleton/NavbarSkeleton'
+const Navbar = lazy(() => import('../../layout/Nav/Navbar'))
+import NavbarSkeleton from '../../Skeleton/NavbarSkeleton'
 import { Helmet } from 'react-helmet'
 import { toast } from 'react-toastify'
 import { useParams } from 'react-router-dom'

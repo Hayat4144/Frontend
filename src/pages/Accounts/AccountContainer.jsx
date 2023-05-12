@@ -1,15 +1,15 @@
 import React, { Fragment, lazy, Suspense } from 'react'
-import AccoutnImage from '../assets/images/account.png'
-import SecurityImage from '../assets/images/security.png'
-import OrderImage from '../assets/images/Order.webp'
-import WishlistImage from '../assets/images/Wishlist.png'
-import PasswordImage from '../assets/images/passwordProtect.webp'
-import EmailImage from '../assets/images/mail.webp'
-import CartImage from '../assets/images/Cart1.jpg'
+import AccoutnImage from '../../assets/images/account.png'
+import SecurityImage from '../../assets/images/security.png'
+import OrderImage from '../../assets/images/Order.webp'
+import WishlistImage from '../../assets/images/Wishlist.png'
+import PasswordImage from '../../assets/images/passwordProtect.webp'
+import EmailImage from '../../assets/images/mail.webp'
+import CartImage from '../../assets/images/Cart1.jpg'
 import { Link } from 'react-router-dom'
-import NavbarSkeleton from '../Skeleton/NavbarSkeleton'
-import Footer from '../UsableComponent/Footer'
-const Navbar = lazy(() => import('../UsableComponent/Navbar'))
+import NavbarSkeleton from '../../Skeleton/NavbarSkeleton'
+import Footer from '../../layout/Footer'
+const Navbar = lazy(() => import('../../layout/Nav/Navbar'))
 export default function AccountContainer() {
 
     return (

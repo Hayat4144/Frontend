@@ -1,29 +1,24 @@
-import React, { Fragment, useState, Suspense, lazy } from 'react'
-const Navbar = lazy(() => import('../UsableComponent/Navbar'))
-import NavbarSkeleton from '../Skeleton/NavbarSkeleton'
+import React, { Fragment, useState, lazy, Suspense } from 'react'
+const Navbar = lazy(() => import('../../layout/Nav/Navbar'))
+import NavbarSkeleton from '../../Skeleton/NavbarSkeleton'
 import { Helmet } from 'react-helmet'
 import { toast } from 'react-toastify'
-import { useParams } from 'react-router-dom'
 
-export default function VerifyEmailChnage() {
+export default function RequestForgetpassword() {
     const [email, setemail] = useState('')
-    const [confirmemail, setconfirmemail] = useState('')
     const [isLoading, setIsLoading] = useState(false)
-    //  ------------------ getting token from url ---------------------- // 
-    const { token } = useParams();
 
-    //  ---------------------------------------- submitHandler -------------------- // 
+
+    // submitHandler 
     const SubmitHandler = async () => {
         setIsLoading(!isLoading)
-        const result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/v3/api/user/change/email/verify/done`, {
-            method: 'PUT',
+        const result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/v3/api/user/reset/password/request`, {
+            method: 'POST',
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                new_email: email,
-                confirmemail,
-                token
+                current_email: email
             }),
             credentials: 'include'
         })
@@ -31,8 +26,6 @@ export default function VerifyEmailChnage() {
         setIsLoading(false)
         if (result.status === 200) {
             console.log(data)
-            setemail('')
-            setconfirmemail('')
             toast.success(data.data, {
                 position: "bottom-center",
                 autoClose: 5000,
@@ -60,17 +53,17 @@ export default function VerifyEmailChnage() {
     return (
         <Fragment>
             <Helmet>
-                <title>Taj Jwellery | Verify Email Change</title>
+                <title>Taj Jwellery | Request forget password</title>
             </Helmet>
             <Suspense fallback={<NavbarSkeleton />}>
                 <Navbar />
             </Suspense>
-            <div className="VerifyEmailChangepage">
+            <div className="requestForgetPasswordpage">
                 <div className='text-center page-text mb-5'>
-                    <h3 className='mx-4 py-1 text-3xl mt-3 font-[1000]'>Verify Email Change</h3>
+                    <h3 className='mx-4 py-1 text-3xl mt-3 font-[1000]'>Request for forget Password</h3>
                 </div>
 
-                <div className="Verifyemailchange_container sm:mx-auto sm:w-[50%] mt-4 xl:mx-auto xl:w-[30%]  lg:mx-auto 
+                <div className="changepassword_container sm:mx-auto sm:w-[50%] mt-4 xl:mx-auto xl:w-[30%]  lg:mx-auto 
                     lg:w-[25%] border md:w-[50%] md:m-auto border-gray-300 shadow-lg 
                     rounded-md px-4 mx-3 mb-2">
                     <form onSubmit={(e) => {
@@ -79,7 +72,7 @@ export default function VerifyEmailChnage() {
                     }}>
                         <div className='Email_field mt-4'>
                             <label className='Email_label text-sm font-medium text-slate-800 block'>
-                                New Email
+                                Email
                             </label>
                             <input
                                 type={'email'}
@@ -91,23 +84,7 @@ export default function VerifyEmailChnage() {
                             w-full focus:border-indigo-600 focus:ring-indigo-700 
                             bg-inherit focus:border  px-2 outline-none text-sm text-gray-700
                              placeholder:text-gray-500"
-                                placeholder="Enter a new email" />
-                        </div>
-                        <div className='Confirm_Email_field mt-4'>
-                            <label className='Confirm_Email_label text-sm font-medium text-slate-800 block'>
-                                Confirm Email
-                            </label>
-                            <input
-                                type={'email'}
-                                value={confirmemail}
-                                onChange={(e) => {
-                                    setconfirmemail(e.target.value)
-                                }}
-                                className="border border-gray-300 rounded-md my-2 py-[6px] 
-                            w-full focus:border-indigo-600 focus:ring-indigo-700 
-                            bg-inherit focus:border  px-2 outline-none text-sm text-gray-700
-                             placeholder:text-gray-500"
-                                placeholder="Re-enter your email" />
+                                placeholder="Enter your email" />
                         </div>
                         <div className='submit_btn my-5'>
                             {!isLoading ? <button type='submit' className='w-full h-10 text-center
@@ -132,6 +109,7 @@ export default function VerifyEmailChnage() {
                     </form>
                 </div>
             </div>
+
         </Fragment>
     )
 }

@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import Navbar from '../UsableComponent/Navbar'
+import Navbar from '../../layout/Nav/Navbar'
 
 export default function ChangePassword() {
     const [currentpassword, setcurrentpassword] = useState('')
