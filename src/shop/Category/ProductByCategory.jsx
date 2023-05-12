@@ -1,5 +1,5 @@
 import React, { Fragment, lazy, Suspense, useEffect, useState } from 'react'
-const Navbar = lazy(() => import('../../UsableComponent/Navbar'))
+const Navbar = lazy(() => import('../../layout/Nav/Navbar'))
 import NavbarSkeleton from '../../Skeleton/NavbarSkeleton'
 import ProductImage from '../../assets/images/thumbnail_2.jpg'
 import { BsFillStarFill } from 'react-icons/bs'
