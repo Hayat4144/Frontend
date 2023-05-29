@@ -2,6 +2,8 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { useSelector ,useDispatch} from 'react-redux'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import {Toast_Config_Option} from '../global/Toast_Config'
+import {LOGOUT,REMOVE_ADDRESS,REMOVE_USERINFO} from '../Context/Actions/ActionType'
 
 export default function Account_List_Modal({ Modalopen, AccountModalToggle }) {
     const [isModalOpen, setIsModalOpen] = useState(Modalopen) // setinitalstate of false to this modal state 
@@ -27,36 +29,20 @@ export default function Account_List_Modal({ Modalopen, AccountModalToggle }) {
         }).then(async res=>{
             const {data,error} = await res.json();
             if(res.status !== 200){
-                toast.error(error, {
-                    position: "bottom-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "dark",
-                });
+                toast.error(error, Toast_Config_Option);
                 return ;
             }
-            dispatch({type:"LOGOUT"})
-            toast.success(data, {
-                position: "bottom-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
+            dispatch({type:LOGOUT})
+            dispatch({type:REMOVE_ADDRESS})
+            dispatch({type:REMOVE_USERINFO})
+            toast.success(data,Toast_Config_Option);
         })
         
     }
 
     return (
         <Fragment>
-            <div className={`model_body bg-white w-[35%] ${isModalOpen ? 'absolute' : 'hidden'}
+            <div className={`model_body bg-white w-[30%] ${isModalOpen ? 'absolute' : 'hidden'}
             right-10 shadow-2xl z-50 top-[76px]`}
                 onMouseLeave={() => {
                     //  --- change the modal state of this component to change the parent modal state 
@@ -75,14 +61,6 @@ export default function Account_List_Modal({ Modalopen, AccountModalToggle }) {
                     <h3 className='new-account text-sm my-2'>New customer ? <span className='text-blue-700 px-1 hover:text-blue-900 cursor-pointer'> <Link to='/V2/auth/sign_up'> Start here</Link></span></h3>
                 </div>
                 <section className='grid grid-cols-2 mx-10 my-5'>
-                    <div className='list text-black'>
-                        <h3 className='font-bold '>Your List</h3>
-                        <ul className='space-y-1 my-3 text-slate-800'>
-                            <li className='text-sm hover:text-indigo-800 cursor-pointer hover:underline'>Create a list</li>
-                            <li className='text-sm hover:text-indigo-800 cursor-pointer hover:underline'>Find a list</li>
-                            <li className='text-sm hover:text-indigo-800 cursor-pointer hover:underline'>Share a list</li>
-                        </ul>
-                    </div>
                     <div className='account-details text-black'>
                         <h3 className='font-bold '>Account Details</h3>
                         <ul className='space-y-1 my-3 text-slate-800'>

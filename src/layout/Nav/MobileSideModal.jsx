@@ -13,6 +13,8 @@ import { FaUserCircle } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import { BiCategory, BiSearch } from 'react-icons/bi'
 import { toast } from 'react-toastify'
+import {Toast_Config_Option} from '../../global/Toast_Config'
+import {LOGOUT, REMOVE_ADDRESS,REMOVE_USERINFO} from '../../Context/Actions/ActionType'
 
 export default function MobileSideModal({ mobileModal, MobileSideModalToggle }) {
     const [isModalOpen, setIsModalOpen] = useState(mobileModal)
@@ -35,29 +37,13 @@ export default function MobileSideModal({ mobileModal, MobileSideModalToggle }) 
         }).then(async res => {
             const { data, error } = await res.json();
             if (res.status !== 200) {
-                toast.error(error, {
-                    position: "bottom-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "dark",
-                });
+                toast.error(error, Toast_Config_Option);
                 return;
             }
-            dispatch({ type: "LOGOUT" })
-            toast.success(data, {
-                position: "bottom-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
+            dispatch({ type: LOGOUT })
+            dispatch({type:REMOVE_ADDRESS})
+            dispatch({type:REMOVE_USERINFO})
+            toast.success(data, Toast_Config_Option);
         })
 
     }
