@@ -7,6 +7,8 @@ import DecodeJwtToken from "../utils/DecodeJwtToken";
 import { SendCartItemBackend } from "../utils/SendCartItemBackend.js";
 import { ADD_TO_CART, UPDATE_CART_ITEM } from "../Context/Actions/ActionType";
 import GetCartItem from "../utils/GetCartItem.js";
+import GetAddress from "../utils/GetAddress.js";
+import { CREATEADDRESS } from "../Context/Actions/ActionType";
 
 export default function Signin() {
   const [email, setemail] = useState("");
@@ -23,6 +25,16 @@ export default function Signin() {
   };
   const PasswordChange = (e) => {
     setpassword(e.target.value);
+  };
+
+  const _GetAddress = async () => {
+    GetAddress()
+      .then((address) => {
+        if (address) {
+          dispatch({ type: CREATEADDRESS, payload: address });
+        }
+      })
+      .catch((error) => console.error(error));
   };
 
   const _GetCartItems = async () => {
@@ -81,6 +93,7 @@ export default function Signin() {
         }
         _GetCartItems();
         _SendCartItems();
+        _GetAddress();
         DecodeJwtToken(dispatch, navigate, token, data, searchParams, error);
       })
       .catch((err) => console.log(err));
