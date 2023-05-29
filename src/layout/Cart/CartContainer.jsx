@@ -1,7 +1,6 @@
 import React, { Fragment, Suspense, lazy } from "react";
 import CartHeader from "./CartHeader";
 const CartItem = lazy(() => import("./CartItem"));
-const Footer = lazy(()=> import('../Footer'))
 const CheckoutSummary = lazy(() => import("./CheckoutSummary"));
 
 export default function CartContainer() {
@@ -16,9 +15,6 @@ export default function CartContainer() {
           <CheckoutSummary />
         </Suspense>
       </main>
-      <Suspense fallback={"loading"}>
-        <Footer />
-      </Suspense>
     </Fragment>
   );
 }
