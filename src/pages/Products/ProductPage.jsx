@@ -1,22 +1,29 @@
 import React, { Fragment, useState, useEffect, lazy, Suspense } from "react";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import NavbarSkeleton from "../../Skeleton/NavbarSkeleton";
-import { ADD_TO_CART_ACTION } from "../../Context/Actions/CartActions";
+import {
+  ADD_TO_CART_ACTION,
+  UPDATE_CART_ACTION,
+} from "../../Context/Actions/CartActions";
 import ProductPageSkeleton from "../../Skeleton/ProductPageSkeleton";
 import { Toast_Config_Option } from "../../global/Toast_Config";
 import { BASE_URL } from "../../global/Base_URL";
 import { GetHeaders } from "../../global/GetHeaders";
 const Navbar = lazy(() => import("../../layout/Nav/Navbar"));
 const Footer = lazy(() => import("../../layout/Footer"));
-const SimilarProducts = lazy(()=>import('../../shop/SimilarProducts'))
+const SimilarProducts = lazy(() => import("../../shop/SimilarProducts"));
 const UserReview = lazy(() => import("../../shop/Review/UserReview"));
-const CreateUserReview = lazy(() =>import("../../shop/Review/CreateUserReview"));
+const CreateUserReview = lazy(() =>
+  import("../../shop/Review/CreateUserReview")
+);
 import LargeScreenImages from "../../layout/ShowProduct/LargeScreenImages";
 import SmallScreenImages from "../../layout/ShowProduct/SmallScreenImages";
 import ProductIncrementDecrement from "../../layout/ShowProduct/ProductIncrementDecrement";
 import ProductDetails from "../../layout/ShowProduct/ProductDetails";
+import { SendCartItemBackend } from "../../utils/SendCartItemBackend";
+import { UPDATE_CART_ITEM } from "../../Context/Actions/ActionType";
 
 export default function ProductPage() {
   const { id } = useParams();
@@ -30,79 +37,149 @@ export default function ProductPage() {
   const [ratingModal, setRatingModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+  const [selectedAttributes, setSelectedAttributes] = useState({});
+  const [originalprice, setoriginalprice] = useState("");
+  const { IsLogdin } = useSelector((state) => state.Signin);
 
   useEffect(() => {
     setIsLoading(true);
-    Promise.all([
-      fetch(`${BASE_URL}/v4/api/product/${id}`, GetHeaders)
-        .then(async (res) => {
-          if (res.status === 200) {
-            const { data } = await res.json();
-            setProduct_detail([data]);
-          }
-        })
-        .catch((error) => console.log(error)),
-      fetch(`${BASE_URL}/v3/api/product/varientById/${id}`, GetHeaders).then(
-        async (res) => {
-          if (res.status === 200) {
-            const { data } = await res.json();
-            setProduct_varient(data);
-            setIsLoading(false);
-          }
-        }
-      ),
-    ]);
+    const controller = new AbortController();
+    const signal = controller.signal;
+    const GetProduct_Varients = async () => {
+      const Response = await fetch(
+        `${BASE_URL}/v4/api/product/${id}`,
+        GetHeaders,
+        signal
+      );
+      const { Products, Varients, error } = await Response.json();
+      setIsLoading(false);
+      if (Response.status !== 200) return console.error(error);
+      setoriginalprice(Products.price);
+      setProduct_detail([Products]);
+      setProduct_varient(Varients);
+    };
+    GetProduct_Varients();
+    return () => {
+      controller.abort();
+    };
   }, [id]);
 
-  // ---- products attributes ---- //
-  const colors = Array.from(
-    new Set(product_varient.map((item) => item.product_attribute.color))
-  );
-  const sizes = Array.from(
-    new Set(product_varient.map((item) => item.product_attribute.size))
-  );
+  const removeDuplicateAttributesNameValue = (variants) => {
+    const uniqueAttributes = {};
 
-  // ----- get selected varients  ---- //
-  const getSelectedVarients = (varients, seletectedsize, selectedcolor) => {
-    return varients.filter(
-      (item) =>
-        item.product_attribute.size == seletectedsize &&
-        item.product_attribute.color == selectedcolor
+    variants.forEach((variant) => {
+      variant.attribute.forEach((attribute) => {
+        const { name, value } = attribute;
+
+        if (!uniqueAttributes[name]) {
+          uniqueAttributes[name] = new Set();
+        }
+
+        uniqueAttributes[name].add(value);
+      });
+    });
+
+    const uniqueAttributeArray = Object.entries(uniqueAttributes).map(
+      ([name, values]) => ({
+        name,
+        values: Array.from(values),
+      })
     );
+
+    return uniqueAttributeArray;
   };
 
-  //  ----- assing the selected varient ----- //
-  const selectedvarients = getSelectedVarients(
+  const UniqueVarients = removeDuplicateAttributesNameValue(product_varient);
+
+  const handleAttributeChange = (name, value) => {
+    setSelectedAttributes((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const findVariantsByAttributes = (variants, selectedAttributes) => {
+    return variants.filter((variant) => {
+      const matchingAttributes = variant.attribute.filter((attribute) => {
+        const { name, value } = attribute;
+        return selectedAttributes[name] === value;
+      });
+      return matchingAttributes.length === variant.attribute.length;
+    });
+  };
+
+  const selectedvarients = findVariantsByAttributes(
     product_varient,
-    selectedSize,
-    selectedColor
+    selectedAttributes
   );
 
   useEffect(() => {
     if (selectedvarients.length > 0) {
       const updateState = product_detail.map((obj) => {
-        return { ...obj, price: selectedvarients[0].price };
+        setoriginalprice(obj.price);
+        return {
+          ...obj,
+          price: selectedvarients[0].price,
+        };
+      });
+      setProduct_detail(updateState);
+    } else {
+      const updateState = product_detail.map((product) => {
+        return { ...product, price: originalprice };
       });
       setProduct_detail(updateState);
     }
-  }, [selectedSize, selectedColor, product_varient]);
+  }, [selectedAttributes]);
 
-  
-  const Add_TO_CART_FUNC = () => {
+  const AddCartItemVarient = () => {
     if (selectedvarients.length > 0) {
       let data = {
-        ...selectedvarients[0],
+        ProductId: selectedvarients[0].productid,
+        ProductvarientId: selectedvarients[0]._id,
         quantity,
-        name: product_detail[0].name,
         image: product_detail[0].assets.images[0],
       };
       dispatch(ADD_TO_CART_ACTION(data));
       toast.success(
-        `product has been added successfully to your cart.`,
+        `${product_detail[0].name} has been successfully added to your cart.`,
         Toast_Config_Option
       );
+      return data;
     } else {
-      toast.error("Please select color and size.", Toast_Config_Option);
+      toast.error("Please select a product varient", Toast_Config_Option);
+    }
+  };
+
+  const AddCartItemProduct = () => {
+    let data = {
+      ProductId: product_detail[0]._id,
+      quantity,
+      image: product_detail[0].assets.images[0],
+    };
+    dispatch(ADD_TO_CART_ACTION(data));
+    toast.success(
+      `${
+        product_detail[0].name.charAt(0).toUpperCase() +
+        product_detail[0].name.slice(1)
+      } has been successfully added to your cart.`,
+      Toast_Config_Option
+    );
+    return data;
+  };
+
+  const Add_TO_CART_FUNC = async () => {
+    if (product_varient.length > 0) {
+      const CartData = AddCartItemVarient();
+      if (IsLogdin) {
+        const updatedItem = await SendCartItemBackend({ ...CartData });
+        dispatch({ type: UPDATE_CART_ITEM, payload: updatedItem });
+      }
+    } else {
+      const CartData = AddCartItemProduct();
+      if (IsLogdin) {
+        const updatedItem = await SendCartItemBackend({ ...CartData });
+        dispatch({ type: UPDATE_CART_ITEM, payload: updatedItem });
+      }
     }
   };
 
@@ -125,6 +202,17 @@ export default function ProductPage() {
   };
 
   const IncreaseQuantity = () => {
+    const limitQuantity =
+      selectedvarients.length > 0
+        ? selectedvarients[0].stock
+        : product_detail[0].stock;
+    if (quantity === limitQuantity) {
+      toast.info(
+        `Sorry for inconvenience, there is no more stock than ${limitQuantity}`,
+        Toast_Config_Option
+      );
+      return;
+    }
     setquantity(quantity + 1);
   };
 
@@ -133,11 +221,19 @@ export default function ProductPage() {
   };
 
   const ManualQuantityChange = (e) => {
+    const limitQuantity =
+      selectedvarients.length > 0
+        ? selectedvarients[0].stock
+        : product_detail[0].stock;
+    if (Number(e.target.value) >= limitQuantity) {
+      toast.info(
+        `Sorry for inconvenience, there is no more stock than ${limitQuantity}`,
+        Toast_Config_Option
+      );
+      setquantity(limitQuantity);
+      return;
+    }
     setquantity(Number(e.target.value));
-  };
-
-  const ColourChange = (e) => {
-    setColourvalue(e.target.value);
   };
 
   const RatingModalToggle = (state) => {
@@ -153,7 +249,7 @@ export default function ProductPage() {
       {isLoading ? (
         <ProductPageSkeleton />
       ) : (
-        product_detail.map((item, index) => (
+        product_detail.map((item) => (
           <section
             key={item._id}
             className="proudct-parent my-16 px-2 grid
@@ -177,73 +273,54 @@ export default function ProductPage() {
               <ProductDetails product={item} />
               {/* ----- product varients ----- */}
 
-              {item.varients && product_varient.length > 0 ? (
-                <div className="product-size flex items-center space-x-5 my-5">
-                  <h2 className="product_attribute_name text-xl capitalize">
-                    color
-                  </h2>
-                  <div className="w-full">
-                    <form className="size_form">
-                      <select
-                        defaultValue={selectedColor}
-                        onChange={(e) => setSelectedColor(e.target.value)}
-                        className="px-5 py-2 rounded-md w-full focus:border-2
+              {UniqueVarients.map((varient, index) => (
+                <Fragment key={index}>
+                  <div
+                    className="attribute flex items-center space-x-5 my-5"
+                    key={index}
+                  >
+                    <h2 className="product_attribute_name  capitalize">
+                      {varient.name}
+                    </h2>
+                    <div className="w-full">
+                      <form className="size_form">
+                        <select
+                          value={selectedAttributes[varient.name] || ""}
+                          onChange={(e) =>
+                            handleAttributeChange(varient.name, e.target.value)
+                          }
+                          className="px-5 py-2 rounded-md w-full focus:border-2
                          focus:border-indigo-700 focus:outline-none focus:ring-indigo-700 
                         border border-gray-500"
-                      >
-                        <option defaultValue={selectedColor}>
-                          Choose a color
-                        </option>
-                        {colors.map((color, index) => (
-                          <option key={index} value={color}>
-                            {color}
+                        >
+                          <option defaultValue={selectedColor}>
+                            Choose the {varient.name}{" "}
                           </option>
-                        ))}
-                      </select>
-                    </form>
+                          {varient.values.map((value, index) => (
+                            <option key={index} value={value}>
+                              {value}
+                            </option>
+                          ))}
+                        </select>
+                      </form>
+                    </div>
                   </div>
-                </div>
-              ) : null}
-
-              {item.varients && product_varient.length > 0 ? (
-                <div className="product-size flex items-center space-x-5">
-                  <h2 className="product_attribute_name text-xl capitalize">
-                    size
-                  </h2>
-                  <div className="w-full">
-                    <form className="size_form">
-                      <select
-                        defaultValue={selectedSize}
-                        onChange={(e) => setSelectedSize(e.target.value)}
-                        className="px-5 py-2 rounded-md w-full focus:border-2
-                        focus:border-indigo-700 focus:outline-none focus:ring-indigo-700
-                        border border-gray-500"
-                      >
-                        <option defaultValue={selectedColor}>
-                          Choose a size
-                        </option>
-                        {sizes.map((size, index) => (
-                          <option key={index} value={size}>
-                            {size}
-                          </option>
-                        ))}
-                      </select>
-                    </form>
-                  </div>
-                </div>
-              ) : null}
+                </Fragment>
+              ))}
 
               <ProductIncrementDecrement
                 IncreaseQuantity={IncreaseQuantity}
                 DicreaseQuantity={DicreaseQuantity}
                 quantity={quantity}
+                ManualQuantityChange={ManualQuantityChange}
               />
               <div className="group-btn lg:flex lg:items-center ">
                 <button
+                  disabled={quantity < 10 ? true : false}
                   onClick={Add_TO_CART_FUNC}
                   className="focus:outline-none focus:shadow-lg w-full lg:py-4  my-2
                  bg-indigo-700 text-white px-3 lg:mr-3 rounded-lg  hover:bg-indigo-800 
-                    cursor-pointer py-3"
+                    cursor-pointer py-3 disabled:opacity-75 disabled:cursor-not-allowed"
                 >
                   Add to Cart
                 </button>
@@ -256,7 +333,6 @@ export default function ProductPage() {
                   Buy Now
                 </button>
               </div>
-
               <div className="product_rating_reviews my-10">
                 <div className="ratings flex item-center justify-between ">
                   <h3 className="font-bold text-xl mb-5">
