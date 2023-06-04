@@ -62,11 +62,11 @@ export default function CheckoutSummary() {
           </div>
         </section>
         <div className="checkout mx-4 my-5">
-          <PrimaryButton>
-            <Link to="/V2/shop/checkout?component=shipping">
+          <Link to="/V2/shop/checkout">
+            <PrimaryButton>
               Place order now
-            </Link>
-          </PrimaryButton>
+            </PrimaryButton>
+          </Link>
         </div>
       </div>
     </Fragment>
