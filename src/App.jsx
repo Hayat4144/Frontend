@@ -8,7 +8,9 @@ const Cart = lazy(() => import("./pages/Cart"));
 const Address = lazy(() => import("./pages/Accounts/Address"));
 const Profile = lazy(() => import("./pages/Accounts/Profile"));
 const ChangePassword = lazy(() => import("./pages/Accounts/ChangePassword"));
-const AccountContainer = lazy(() => import("./pages/Accounts/AccountContainer"));
+const AccountContainer = lazy(() =>
+  import("./pages/Accounts/AccountContainer")
+);
 const Home = lazy(() => import("./pages/Home"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const ProductPage = lazy(() => import("./pages/Products/ProductPage"));
@@ -25,10 +27,15 @@ const ForgetPassword = lazy(() => import("./pages/Accounts/ForgetPassword"));
 const ForgetPasswordRequest = lazy(() =>
   import("./pages/Accounts/RequestForgetpassword")
 );
-const EmailChangeRequest = lazy(() => import("./pages/Accounts/EmailchangeRequest"));
-const VerifyEmailChnage = lazy(() => import("./pages/Accounts/VerifyEmailChnage"));
+const EmailChangeRequest = lazy(() =>
+  import("./pages/Accounts/EmailchangeRequest")
+);
+const VerifyEmailChnage = lazy(() =>
+  import("./pages/Accounts/VerifyEmailChnage")
+);
 const Term_Conditions = lazy(() => import("./pages/Term_Conditions"));
 import WholeProductpage from "./Skeleton/WholeProductpage";
+import ProtectedRoutes from "./global/ProtectedRoutes";
 
 function App() {
   // console.clear();
@@ -52,22 +59,105 @@ function App() {
               </Suspense>
             }
           />
-          <Route
-            path="/V2/shop/checkout"
-            element={
-              <Suspense fallback={<p>laoding</p>}>
-                <Checkout />
-              </Suspense>
-            }
-          />
-          <Route
-            path="V2/shop/checkout/confirm/order"
-            element={
-              <Suspense fallback={<p>laoding</p>}>
-                <ConfrimOrder />
-              </Suspense>
-            }
-          />
+          <Route element={<ProtectedRoutes />}>
+            <Route
+              path="/V2/shop/checkout"
+              element={
+                <Suspense fallback={<p>laoding</p>}>
+                  <Checkout />
+                </Suspense>
+              }
+            />
+            <Route
+              path="V2/shop/checkout/confirm/order"
+              element={
+                <Suspense fallback={<p>laoding</p>}>
+                  <ConfrimOrder />
+                </Suspense>
+              }
+            />
+
+            <Route
+              path="/V2/shop/checkout/payment"
+              element={
+                <Suspense fallback={<p>laoding</p>}>
+                  <Payment />
+                </Suspense>
+              }
+            />
+
+            <Route
+              path="/V2/user/account/order/history"
+              element={
+                <Suspense fallback={<p>laoding</p>}>
+                  <UserOrdersHistory />
+                </Suspense>
+              }
+            />
+
+            <Route
+              path="/v2/auth/user/change/password/link/verify/:user/:token"
+              element={
+                <Suspense fallback={<p>laoding</p>}>
+                  <ForgetPassword />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/V2/forget/password/request"
+              element={
+                <Suspense fallback={<p>laoding</p>}>
+                  <ForgetPasswordRequest />
+                </Suspense>
+              }
+            />
+
+            <Route
+              path="/V2/email/change/request"
+              element={
+                <Suspense fallback={<p>laoding</p>}>
+                  <EmailChangeRequest />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/v2/auth/user/change/email/link/verify/:user/:token"
+              element={
+                <Suspense fallback={<p>laoding</p>}>
+                  <VerifyEmailChnage />
+                </Suspense>
+              }
+            />
+
+
+            <Route
+              path="/V2/account/profile"
+              element={
+                <Suspense fallback={<p>laoding</p>}>
+                  <Profile />
+                </Suspense>
+              }
+            />
+
+            <Route
+              path="/V2/account/address"
+              element={
+                <Suspense fallback={<p>laoding</p>}>
+                  <Address />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/V2/account/change/password"
+              element={
+                <Suspense fallback={<p>laoding</p>}>
+                  <ChangePassword />
+                </Suspense>
+              }
+            />
+          </Route>
+
+
           <Route
             path="/V2/shop/products/category"
             element={
@@ -76,83 +166,12 @@ function App() {
               </Suspense>
             }
           />
-          <Route
-            path="/V2/shop/checkout/payment"
-            element={
-              <Suspense fallback={<p>laoding</p>}>
-                <Payment />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/V2/user/account/order/history"
-            element={
-              <Suspense fallback={<p>laoding</p>}>
-                <UserOrdersHistory />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/v2/auth/user/change/password/link/verify/:user/:token"
-            element={
-              <Suspense fallback={<p>laoding</p>}>
-                <ForgetPassword />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/V2/forget/password/request"
-            element={
-              <Suspense fallback={<p>laoding</p>}>
-                <ForgetPasswordRequest />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/V2/email/change/request"
-            element={
-              <Suspense fallback={<p>laoding</p>}>
-                <EmailChangeRequest />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/v2/auth/user/change/email/link/verify/:user/:token"
-            element={
-              <Suspense fallback={<p>laoding</p>}>
-                <VerifyEmailChnage />
-              </Suspense>
-            }
-          />
+
           <Route
             path="/V2/user/account"
             element={
               <Suspense fallback={<p>laoding</p>}>
                 <AccountContainer />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/V2/account/profile"
-            element={
-              <Suspense fallback={<p>laoding</p>}>
-                <Profile />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/V2/account/address"
-            element={
-              <Suspense fallback={<p>laoding</p>}>
-                <Address />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/V2/account/change/password"
-            element={
-              <Suspense fallback={<p>laoding</p>}>
-                <ChangePassword />
               </Suspense>
             }
           />
