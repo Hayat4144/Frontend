@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect, lazy, Suspense } from "react";
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import NavbarSkeleton from "../../Skeleton/NavbarSkeleton";
 import {
@@ -40,6 +40,7 @@ export default function ProductPage() {
   const [selectedAttributes, setSelectedAttributes] = useState({});
   const [originalprice, setoriginalprice] = useState("");
   const { IsLogdin } = useSelector((state) => state.Signin);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoading(true);
@@ -158,9 +159,8 @@ export default function ProductPage() {
     };
     dispatch(ADD_TO_CART_ACTION(data));
     toast.success(
-      `${
-        product_detail[0].name.charAt(0).toUpperCase() +
-        product_detail[0].name.slice(1)
+      `${product_detail[0].name.charAt(0).toUpperCase() +
+      product_detail[0].name.slice(1)
       } has been successfully added to your cart.`,
       Toast_Config_Option
     );
@@ -239,6 +239,23 @@ export default function ProductPage() {
   const RatingModalToggle = (state) => {
     setRatingModal(!state);
   };
+
+  const handleBuyButton = () => {
+    const queryParams = new URLSearchParams({
+      quantity: quantity,
+    })
+    if (product_varient.length > 0 && selectedvarients.length < 1) {
+      return toast.info('Select a product varient', Toast_Config_Option)
+    }
+    if (product_varient.length > 0 && selectedvarients.length > 0) {
+      queryParams.append('varientId', selectedvarients[0]._id)
+    }
+    queryParams.append('ProductId', product_detail[0]._id)
+    queryParams.toString();
+    const updated_url = `/V2/shop/checkout?${queryParams}`
+    sessionStorage.setItem('checkOutSession','active')
+    navigate(updated_url)
+  }
 
   return (
     <Fragment>
@@ -325,6 +342,7 @@ export default function ProductPage() {
                   Add to Cart
                 </button>
                 <button
+                  onClick={handleBuyButton}
                   className="focus:outline-none focus:shadow-lg w-full lg:py-4 py-3 
                    border border-gray-300 focus:text-white focus:bg-indigo-700 
                    focus:border-none hover:text-white hover:border-none px-3 rounded-lg 
