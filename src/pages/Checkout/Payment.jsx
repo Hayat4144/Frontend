@@ -3,33 +3,28 @@ const Navbar = lazy(() => import("../../layout/Nav/Navbar"));
 import NavbarSkeleton from "../../Skeleton/NavbarSkeleton";
 const OrderSummary = lazy(() => import("./OrderSummary"));
 import Stepper from "./Steps";
-import { useSelector } from "react-redux";
 import "../../index.css";
 import { BsCheckCircle } from "react-icons/bs";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import CardPayment from "./CardPayment";
-import { toast } from "react-toastify";
-import { useNavigate, createSearchParams, useLocation, useSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 const CashOnDelivary = lazy(() => import('./CashOnDelivary'))
+const CardPayment = lazy(() => import('./CardPayment'))
+
 
 
 export default function Payment() {
-  const { IsLogdin } = useSelector((state) => state.Signin);
   const [CARD, setCARD] = useState("CARDOPTION");
   const [CashOnDelivery, setCashOnDelivery] = useState("cashondelivery");
   const [selectedoption, setSelectedoption] = useState(null);
   const navigate = useNavigate();
-  const Location = useLocation()
 
   useEffect(() => {
-    !IsLogdin ? navigate({
-      pathname: "/V2/auth/sign_in",
-      search: `?${createSearchParams({ 'next': Location.pathname })}`
-    }) : null;
+    const checkoutSession = sessionStorage.getItem('checkOutSession');
+    if (checkoutSession !== 'active') {
+      navigate('/checkout/session-expired')
+    }
   }, [])
-
-
 
 
   return (
@@ -68,7 +63,9 @@ export default function Payment() {
                     import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
                   )}
                 >
-                  <CardPayment />
+                  <Suspense fallback={'loading...'}>
+                    <CardPayment />
+                  </Suspense>
                 </Elements>
               </section>
             </div>
