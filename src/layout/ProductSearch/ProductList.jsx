@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import NoResult from "../../assets/images/no-results.png";
 import { Rating, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function ProductList({ ProductsData, noProduct }) {
   const navigate = useNavigate();
@@ -19,13 +19,9 @@ export default function ProductList({ ProductsData, noProduct }) {
                     className="w-full h-56 rounded-md hover:scale-125  transition ease-in-out duration-500"
                   />
                 </figure>
-                <div
+                <Link to={`/V2/shop/product/${item._id}/${item.name}/${encodeURIComponent(item.category)}`}
                   className="product_details my-2"
-                  onClick={() => {
-                    navigate(
-                      `/V2/shop/product/${item._id}/${item.name}/${item.category}`
-                    );
-                  }}
+
                 >
                   <p
                     className="product_name capitalize w-full 
@@ -43,7 +39,7 @@ export default function ProductList({ ProductsData, noProduct }) {
                     <span className="currency_symbol"> Rs </span>
                     {item.price}
                   </p>
-                </div>
+                </Link>
               </div>
             ))}
           </section>
