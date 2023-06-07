@@ -1,20 +1,34 @@
-import React, { Fragment, lazy, Suspense, useState } from 'react'
+import React, { Fragment, lazy, Suspense, useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 const Address = lazy(() => import('../Accounts/Address'))
 import { CREATEADDRESS } from '../../Context/Actions/ActionType'
 import { toast } from 'react-toastify'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Toast_Config_Option } from '../../global/Toast_Config'
+import { useNavigate } from 'react-router-dom'
 
 export default function AddressCheckout() {
     const { user_address } = useSelector(state => state.Address)
-    const [isAddessBarOpen, setIsAddessBarOpen] = useState(Object.keys(user_address).length > 0 ? true : false)
+    // const [isAddessBarOpen, setIsAddessBarOpen] = useState(Object.keys(user_address).length > 0 ? true : false)
     const address_data = [user_address]
-    const [Street, setStreet] = useState(user_address.Street)
-    const [Area, setArea] = useState(user_address.Area)
-    const [city, setCity] = useState(user_address.city)
-    const [State, setState] = useState(user_address.State)
-    const [pincode, setPincode] = useState(user_address.pincode)
-    const [Country, setCountry] = useState(user_address.Country)
+    const [Street, setStreet] = useState('');
+    const [Area, setArea] = useState('');
+    const [city, setCity] = useState('');
+    const [State, setState] = useState('');
+    const [pincode, setPincode] = useState('');
+    const [Country, setCountry] = useState('');
+
+    useEffect(() => {
+        if (user_address) {
+            setStreet(user_address.Street || '');
+            setArea(user_address.Area || '');
+            setCity(user_address.city || '');
+            setState(user_address.State || '');
+            setPincode(user_address.pincode || '');
+            setCountry(user_address.Country || '');
+        }
+    }, [user_address]);
+
+
     const [isLoading, setIsLoading] = useState(false)
     const dispatch = useDispatch();
 
@@ -40,33 +54,17 @@ export default function AddressCheckout() {
         const data = await result.json();
         setIsLoading(false)
         if (result.status === 200) {
-            console.log(data.doc)
-            const m = dispatch({ type: CREATEADDRESS, payload: data.doc })
-            setIsAddessBarOpen(!isAddessBarOpen)
-            toast.success(data.data, {
-                position: "bottom-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
+            dispatch({ type: CREATEADDRESS, payload: data.doc })
+            toast.success(data.data, Toast_Config_Option);
+            const currentSearchParams = new URLSearchParams(window.location.search)
+            if (currentSearchParams.has('ProductId')) {
+                const new_url = `/V2/shop/checkout/confirm/order?${currentSearchParams}`;
+                return navigate(new_url)
+            }
             navigate('/V2/shop/checkout/confirm/order')
-
         }
         else {
-            toast.error(data.error, {
-                position: 'bottom-center',
-                autoClose: 5000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            })
+            toast.error(data.error, Toast_Config_Option)
         }
     }
 

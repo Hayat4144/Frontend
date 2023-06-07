@@ -4,7 +4,6 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import { Fragment } from 'react';
 import { Typography } from '@mui/material';
-import { MdLocalShipping, MdPayments } from 'react-icons/md';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
