@@ -43,25 +43,24 @@ export default function ProductSrch() {
     const link = `${BASE_URL}/v4/api/get_all/product?${query}`;
     async function fetchProduct() {
       setIsLoading(!isLoading);
-      await fetch(link, {
+      const Response = await fetch(link, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
-      }).then(async (res) => {
-        if (res.status !== 200) {
-          setNoProduct(true);
-          setIsLoading(false);
-          setProducts([]);
-          return;
-        }
-        const { data } = await res.json();
-        setIsLoading(false);
-        const { result, total_result } = data[0];
-        setProducts(result);
-        setTotalProduct(Number(total_result[0].count));
       });
+      if (Response.status !== 200) {
+        setNoProduct(true);
+        setIsLoading(false);
+        setProducts([]);
+        return;
+      }
+      const { data } = await Response.json();
+      setIsLoading(false);
+      const { result, total_result } = data[0];
+      setProducts(result);
+      setTotalProduct(Number(total_result[0].count));
     }
     fetchProduct();
   }, [searchvalue, price, sort, currentPage, Star]);
