@@ -36,9 +36,10 @@ const VerifyEmailChnage = lazy(() =>
 const Term_Conditions = lazy(() => import("./pages/Term_Conditions"));
 import WholeProductpage from "./Skeleton/WholeProductpage";
 import ProtectedRoutes from "./global/ProtectedRoutes";
+const OrderSuccess = lazy(() => import('./Components/OrderSuccess'))
+const SessionExpired = lazy(() => import('./Components/SessionExpired'))
 
 function App() {
-  // console.clear();
   return (
     <div className="App">
       <Router>
@@ -155,9 +156,16 @@ function App() {
                 </Suspense>
               }
             />
+
+            <Route path="/v2/order/response" element={<Suspense fallback={'loading...'}>
+              <OrderSuccess />
+            </Suspense>} />
+
           </Route>
 
-
+          <Route path="/checkout/session-expired" element={<Suspense fallback={'loading...'}>
+            <SessionExpired />
+          </Suspense>} />
           <Route
             path="/V2/shop/products/category"
             element={
