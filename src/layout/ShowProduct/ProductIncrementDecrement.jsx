@@ -6,6 +6,7 @@ export default function ProductIncrementDecrement({
   quantity,
   DicreaseQuantity,
   IncreaseQuantity,
+  ManualQuantityChange,
 }) {
   return (
     <Fragment>
