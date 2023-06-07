@@ -119,7 +119,7 @@ export default function CartItem() {
           let variant = variantDetails[index];
           return (
             <div
-              key={item.ProductId}
+              key={item.ProductvarientId ? item.ProductvarientId : item.ProductId}
               className="product-image&detailst px-2 my-5"
             >
               <div className="product-details flex space-x-2">

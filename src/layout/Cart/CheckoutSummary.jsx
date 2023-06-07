@@ -19,7 +19,7 @@ export default function CheckoutSummary() {
       const _subtotal = Cartdata.reduce((a, b, index) => {
         let product = _Product_Details[index];
         if (b.ProductvarientId) {
-          let variant = _Product_Varient_Details[index > 0 ? index - 1 : index];
+          let variant = _Product_Varient_Details.find(varient => varient._id === b.ProductvarientId)
           return a + variant.price * b.quantity;
         } else {
           return a + product.price * b.quantity;
@@ -37,6 +37,11 @@ export default function CheckoutSummary() {
       cartDetails();
     }
   }, [Cartdata]);
+
+  const checkoutBtnhandler = () => {
+    sessionStorage.setItem('checkOutSession', 'active')
+  }
+
   return (
     <Fragment>
       <div className="checkout_Subtotal">
@@ -62,7 +67,7 @@ export default function CheckoutSummary() {
           </div>
         </section>
         <div className="checkout mx-4 my-5">
-          <Link to="/V2/shop/checkout">
+          <Link to="/V2/shop/checkout" onClick={checkoutBtnhandler}>
             <PrimaryButton>
               Place order now
             </PrimaryButton>
