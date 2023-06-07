@@ -1,4 +1,4 @@
-import React, { Fragment, lazy, Suspense, useState } from "react";
+import React, { Fragment, lazy, Suspense, useState,useEffect } from "react";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { CREATEADDRESS } from "../../Context/Actions/ActionType";
@@ -8,23 +8,32 @@ import { Toast_Config_Option } from "../../global/Toast_Config";
 
 export default function Address() {
   const { user_address } = useSelector((state) => state.Address);
-  const [Street, setStreet] = useState(user_address.Street || "");
-  const [Area, setArea] = useState(user_address.Area || "");
-  const [city, setCity] = useState(user_address.city || "");
-  const [State, setState] = useState(user_address.State || "");
-  const [pincode, setPincode] = useState(user_address.pincode || "");
-  const [Country, setCountry] = useState(user_address.Country) || "";
+  const [Street, setStreet] = useState('');
+  const [Area, setArea] = useState('');
+  const [city, setCity] = useState('');
+  const [State, setState] = useState('');
+  const [pincode, setPincode] = useState('');
+  const [Country, setCountry] = useState('')
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (user_address) {
+      setStreet(user_address.Street || '');
+      setArea(user_address.Area || '');
+      setCity(user_address.city || '');
+      setState(user_address.State || '');
+      setPincode(user_address.pincode || '');
+      setCountry(user_address.Country || '');
+    }
+  }, [user_address]);
   // submitHandler
   const SubmitHandler = async () => {
     setIsLoading(!isLoading);
     const response = await fetch(
-      `${
-        import.meta.env.DEV
-          ? import.meta.env.VITE_BACKEND_DEV_URL
-          : import.meta.env.VITE_BACKEND_URL
+      `${import.meta.env.DEV
+        ? import.meta.env.VITE_BACKEND_DEV_URL
+        : import.meta.env.VITE_BACKEND_URL
       }/v3/api/user/create/address`,
       {
         method: "POST",
