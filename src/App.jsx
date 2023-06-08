@@ -40,6 +40,8 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import CartSkeleton from "./Skeleton/CartSkeleton";
 import SigninSkeleton from "./Skeleton/SigninSkeleton";
 import ChangeRequestSkeleton from "./Skeleton/ChangeRequestSkeleton";
+import AccountSkeleton from "./Skeleton/AccountSkeleton";
+import AddressContainerSkeleton from "./Skeleton/AddressContainerSkeleton";
 const OrderSuccess = lazy(() => import("./Components/OrderSuccess"));
 const SessionExpired = lazy(() => import("./Components/SessionExpired"));
 
@@ -146,7 +148,7 @@ function App() {
             <Route
               path="/V2/account/address"
               element={
-                <Suspense fallback={<p>laoding</p>}>
+                <Suspense fallback={<AddressContainerSkeleton />}>
                   <Address />
                 </Suspense>
               }
@@ -154,7 +156,7 @@ function App() {
             <Route
               path="/V2/account/change/password"
               element={
-                <Suspense fallback={<p>laoding</p>}>
+                <Suspense fallback={<SigninSkeleton />}>
                   <ChangePassword />
                 </Suspense>
               }
@@ -190,7 +192,7 @@ function App() {
           <Route
             path="/V2/user/account"
             element={
-              <Suspense fallback={<p>laoding</p>}>
+              <Suspense fallback={<AccountSkeleton />}>
                 <AccountContainer />
               </Suspense>
             }
