@@ -39,6 +39,7 @@ import ProtectedRoutes from "./global/ProtectedRoutes";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import CartSkeleton from "./Skeleton/CartSkeleton";
 import SigninSkeleton from "./Skeleton/SigninSkeleton";
+import ChangeRequestSkeleton from "./Skeleton/ChangeRequestSkeleton";
 const OrderSuccess = lazy(() => import("./Components/OrderSuccess"));
 const SessionExpired = lazy(() => import("./Components/SessionExpired"));
 
@@ -102,7 +103,7 @@ function App() {
             <Route
               path="/v2/auth/user/change/password/link/verify/:user/:token"
               element={
-                <Suspense fallback={<p>laoding</p>}>
+                <Suspense fallback={<ChangeRequestSkeleton />}>
                   <ForgetPassword />
                 </Suspense>
               }
@@ -110,7 +111,7 @@ function App() {
             <Route
               path="/V2/forget/password/request"
               element={
-                <Suspense fallback={<p>laoding</p>}>
+                <Suspense fallback={<ChangeRequestSkeleton />}>
                   <ForgetPasswordRequest />
                 </Suspense>
               }
@@ -119,7 +120,7 @@ function App() {
             <Route
               path="/V2/email/change/request"
               element={
-                <Suspense fallback={<p>laoding</p>}>
+                <Suspense fallback={<ChangeRequestSkeleton />}>
                   <EmailChangeRequest />
                 </Suspense>
               }
@@ -127,7 +128,7 @@ function App() {
             <Route
               path="/v2/auth/user/change/email/link/verify/:user/:token"
               element={
-                <Suspense fallback={<p>laoding</p>}>
+                <Suspense fallback={<ChangeRequestSkeleton />}>
                   <VerifyEmailChnage />
                 </Suspense>
               }
