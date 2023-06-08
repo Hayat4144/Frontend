@@ -8,6 +8,7 @@ import { BsCheckCircle } from "react-icons/bs";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useNavigate } from 'react-router-dom'
+import CartSummarySkelton from "../../Skeleton/CartSummarySkelton";
 const CashOnDelivary = lazy(() => import('./CashOnDelivary'))
 const CardPayment = lazy(() => import('./CardPayment'))
 
@@ -63,7 +64,7 @@ export default function Payment() {
                     import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
                   )}
                 >
-                  <Suspense fallback={'loading...'}>
+                  <Suspense fallback={'loading..'}>
                     <CardPayment />
                   </Suspense>
                 </Elements>
@@ -90,14 +91,14 @@ export default function Payment() {
                 className={`form_container my-5 ${selectedoption === CashOnDelivery ? "visible" : "hidden"
                   }`}
               >
-                <Suspense fallback={<p>loading...</p>}>
+                <Suspense fallback={'loading..'}>
                   <CashOnDelivary />
                 </Suspense>
               </section>
             </div>
           </label>
         </div>
-        <Suspense fallback={<p>loadingg..</p>}>
+        <Suspense fallback={<CartSummarySkelton />}>
           <OrderSummary />
         </Suspense>
       </section>

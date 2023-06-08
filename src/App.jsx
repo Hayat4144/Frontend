@@ -42,6 +42,9 @@ import SigninSkeleton from "./Skeleton/SigninSkeleton";
 import ChangeRequestSkeleton from "./Skeleton/ChangeRequestSkeleton";
 import AccountSkeleton from "./Skeleton/AccountSkeleton";
 import AddressContainerSkeleton from "./Skeleton/AddressContainerSkeleton";
+import AddressCheckoutSkeleton from "./Skeleton/AddressCheckoutSkeleton";
+import ConfirmOrderSkeleton from "./Skeleton/ConfirmOrderSkeleton";
+import PaymentSkeleton from "./Skeleton/PaymentSkeleton";
 const OrderSuccess = lazy(() => import("./Components/OrderSuccess"));
 const SessionExpired = lazy(() => import("./Components/SessionExpired"));
 
@@ -70,7 +73,7 @@ function App() {
             <Route
               path="/V2/shop/checkout"
               element={
-                <Suspense fallback={<p>laoding</p>}>
+                <Suspense fallback={<AddressCheckoutSkeleton />}>
                   <Checkout />
                 </Suspense>
               }
@@ -78,7 +81,7 @@ function App() {
             <Route
               path="V2/shop/checkout/confirm/order"
               element={
-                <Suspense fallback={<p>laoding</p>}>
+                <Suspense fallback={<ConfirmOrderSkeleton />}>
                   <ConfrimOrder />
                 </Suspense>
               }
@@ -87,7 +90,7 @@ function App() {
             <Route
               path="/V2/shop/checkout/payment"
               element={
-                <Suspense fallback={<p>laoding</p>}>
+                <Suspense fallback={<PaymentSkeleton />}>
                   <Payment />
                 </Suspense>
               }
