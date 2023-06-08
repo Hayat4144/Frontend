@@ -36,8 +36,10 @@ const VerifyEmailChnage = lazy(() =>
 const Term_Conditions = lazy(() => import("./pages/Term_Conditions"));
 import WholeProductpage from "./Skeleton/WholeProductpage";
 import ProtectedRoutes from "./global/ProtectedRoutes";
-const OrderSuccess = lazy(() => import('./Components/OrderSuccess'))
-const SessionExpired = lazy(() => import('./Components/SessionExpired'))
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import CartSkeleton from "./Skeleton/CartSkeleton";
+const OrderSuccess = lazy(() => import("./Components/OrderSuccess"));
+const SessionExpired = lazy(() => import("./Components/SessionExpired"));
 
 function App() {
   return (
@@ -55,7 +57,7 @@ function App() {
           <Route
             path="/V2/user/cart"
             element={
-              <Suspense fallback={<p>laoding</p>}>
+              <Suspense fallback={<CartSkeleton />}>
                 <Cart />
               </Suspense>
             }
@@ -130,7 +132,6 @@ function App() {
               }
             />
 
-
             <Route
               path="/V2/account/profile"
               element={
@@ -157,15 +158,24 @@ function App() {
               }
             />
 
-            <Route path="/v2/order/response" element={<Suspense fallback={'loading...'}>
-              <OrderSuccess />
-            </Suspense>} />
-
+            <Route
+              path="/v2/order/response"
+              element={
+                <Suspense fallback={"loading..."}>
+                  <OrderSuccess />
+                </Suspense>
+              }
+            />
           </Route>
 
-          <Route path="/checkout/session-expired" element={<Suspense fallback={'loading...'}>
-            <SessionExpired />
-          </Suspense>} />
+          <Route
+            path="/checkout/session-expired"
+            element={
+              <Suspense fallback={"loading..."}>
+                <SessionExpired />
+              </Suspense>
+            }
+          />
           <Route
             path="/V2/shop/products/category"
             element={
@@ -236,6 +246,14 @@ function App() {
             element={
               <Suspense fallback={<p>laoding</p>}>
                 <NotFound />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/v2/privacy/policy"
+            element={
+              <Suspense fallback={"loading..."}>
+                <PrivacyPolicy />
               </Suspense>
             }
           />
