@@ -38,6 +38,7 @@ import WholeProductpage from "./Skeleton/WholeProductpage";
 import ProtectedRoutes from "./global/ProtectedRoutes";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import CartSkeleton from "./Skeleton/CartSkeleton";
+import SigninSkeleton from "./Skeleton/SigninSkeleton";
 const OrderSuccess = lazy(() => import("./Components/OrderSuccess"));
 const SessionExpired = lazy(() => import("./Components/SessionExpired"));
 
@@ -196,7 +197,7 @@ function App() {
           <Route
             path="/V2/auth/sign_up"
             element={
-              <Suspense fallback={<p>laoding</p>}>
+              <Suspense fallback={<SigninSkeleton />}>
                 <Signup />
               </Suspense>
             }
@@ -204,7 +205,7 @@ function App() {
           <Route
             path="/V2/auth/sign_in"
             element={
-              <Suspense fallback={<p>laoding</p>}>
+              <Suspense fallback={<SigninSkeleton />}>
                 <Signin />
               </Suspense>
             }
