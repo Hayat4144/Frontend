@@ -1,6 +1,6 @@
 import React, { Fragment, lazy, Suspense } from 'react'
-const Navbar = lazy(() => import('./Navbar'))
-const Footer = lazy(() => import('../layout/Footer'))
+const Navbar = lazy(() => import('../layout/Nav/Navbar'))
+import Footer from '../layout/Footer'
 import NavbarSkeleton from '../Skeleton/NavbarSkeleton'
 export default function Term_Conditions() {
     return (
@@ -8,8 +8,8 @@ export default function Term_Conditions() {
             <Suspense fallback={<NavbarSkeleton />}>
                 <Navbar />
             </Suspense>
-            <main className='term_conditions my-10 mx-auto w-7/12'>
-                <h3 className='text-2xl font-bold uppercase hover:text-indigo-800 px-2 my-5 text-center'>Our Terms and Conditions</h3>
+            <main className='term_conditions my-10 shadow-lg rounded-md px-2 md:px-10 py-5 mx-2 border border-gray-300 sm:mx-10 md:mx-auto md:w-[80%]'>
+                <h3 className='text-2xl font-bold uppercase px-2 my-5 text-center'>Our Terms and Conditions</h3>
                 <ol className='space-y-5 list-decimal text-justify' typeof='number'>
                     <li>These Website Standard Terms and Conditions written on this webpage shall manage your use of our website, Webiste Name accessible at [{document.domain}].</li>
                     <li>By using our Website, you accepted these terms and conditions in full. If you disagree with these terms and conditions or any part of these terms and conditions, you must not use our Website.</li>
@@ -25,9 +25,8 @@ export default function Term_Conditions() {
                     <li>Governing Law & Jurisdiction: These Website Standard Terms and Conditions will be governed by and construed in accordance with the laws of the country of [Country], and you submit to the non-exclusive jurisdiction of the state and federal courts located in [Country] for the resolution of any disputes.</li>
                 </ol>
             </main>
-            <Suspense fallback={<p>loading...</p>}>
-                <Footer />
-            </Suspense>
+
+            <Footer />
         </Fragment>
     )
 }

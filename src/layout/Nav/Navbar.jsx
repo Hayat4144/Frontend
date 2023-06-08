@@ -55,7 +55,7 @@ export default function Navbar() {
     }
 
     return (
-        <header className='w-full z-10 shadow-lg'>
+        <header className='w-full z-10 shadow-md'>
             <nav className='w-full h-20 flex items-center justify-between px-5 sm:px-4 md:px-6 lg:px-8 '>
                 {/* --- Burger --- menu */}
                 <div className='mobile_view md:hidden flex items-center space-x-5'>
