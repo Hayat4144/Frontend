@@ -4,6 +4,7 @@ import { CiUser } from 'react-icons/ci'
 import { BiSearch } from 'react-icons/bi'
 import { createSearchParams, Link, Navigate, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import CategoryList from '../Category/CategoryList';
 const Account_List_Modal = lazy(() => import('../Account_List_Modal'))
 const MobileSideModal = lazy(() => import('./MobileSideModal'))
 const MobileSearchModal = lazy(() => import('../SearchModal'))
@@ -17,10 +18,10 @@ export default function Navbar() {
     const navigate = useNavigate();
 
     // ----------------- stop scrolling if the modal is open ------------------- //
-    if(isMobileViewOpen){
+    if (isMobileViewOpen) {
         document.body.classList.toggle('modal-open');
     }
-    else{
+    else {
         document.body.classList.remove('modal-open')
     }
 
@@ -79,23 +80,7 @@ export default function Navbar() {
                     <div className='company_logo text-xl cursor-pointer'><Link to={'/'}>Taj Jwellery</Link></div>
                     <div className="list_of_item hidden md:block">
                         <ul className='flex items-center space-x-5 text-[17px]'>
-                            <li className='hover:text-indigo-700 hover:border-b-2 
-                             hover:border-indigo-700 duration-150 ease-in-out
-                             cursor-pointer py-4 '>
-                                Home
-                            </li>
-                            <li className='hover:text-indigo-700 hover:border-b-2 
-                             hover:border-indigo-700 font-semibold cursor-pointer duration-300 
-                             transition ease-in-out  py-4 '>Mens</li>
-                            <li className='hover:text-indigo-700 hover:border-b-2 
-                             hover:border-indigo-700 font-semibold cursor-pointer duration-300 
-                             transition ease-in-out py-4 '>Earings</li>
-                            <li className='hover:text-indigo-700 hover:border-b-2 
-                             hover:border-indigo-700 font-semibold cursor-pointer duration-300 
-                             transition ease-in-out py-4 '>Shoes</li>
-                            <li className='hover:text-indigo-700 hover:border-b-2 
-                             hover:border-indigo-700 font-semibold cursor-pointer duration-300 
-                             transition ease-in-out py-4 '>Fashion</li>
+                            <CategoryList />
                         </ul>
                     </div>
                 </div>
@@ -158,7 +143,7 @@ export default function Navbar() {
             </Suspense>
 
             <Suspense fallback={<p>loading..</p>}>
-                <MobileSearchModal  SearchModal={isSearchModalOpen} SearchModalToggle={SearchModalToggle}/>
+                <MobileSearchModal SearchModal={isSearchModalOpen} SearchModalToggle={SearchModalToggle} />
             </Suspense>
 
             <Suspense fallback={<p>loading...</p>}>

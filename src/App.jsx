@@ -1,39 +1,3 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { lazy, Suspense } from "react";
-const Signin = lazy(() => import("./Auth/Signin"));
-const Signup = lazy(() => import("./Auth/Signup"));
-const Cart = lazy(() => import("./pages/Cart"));
-const Address = lazy(() => import("./pages/Accounts/Address"));
-const Profile = lazy(() => import("./pages/Accounts/Profile"));
-const ChangePassword = lazy(() => import("./pages/Accounts/ChangePassword"));
-const AccountContainer = lazy(() =>
-  import("./pages/Accounts/AccountContainer")
-);
-const Home = lazy(() => import("./pages/Home"));
-const NotFound = lazy(() => import("./pages/NotFound"));
-const ProductPage = lazy(() => import("./pages/Products/ProductPage"));
-const Products = lazy(() => import("./shop/AllProducts"));
-const Checkout = lazy(() => import("./pages/Checkout/Checkout"));
-const ConfrimOrder = lazy(() => import("./pages/Checkout/ConfrimOrder"));
-const ProductSearch = lazy(() => import("./pages/ProductSearch"));
-const ProductByCategory = lazy(() =>
-  import("./shop/Category/ProductByCategory")
-);
-const Payment = lazy(() => import("./pages/Checkout/Payment"));
-const UserOrdersHistory = lazy(() => import("./pages/Accounts/Order"));
-const ForgetPassword = lazy(() => import("./pages/Accounts/ForgetPassword"));
-const ForgetPasswordRequest = lazy(() =>
-  import("./pages/Accounts/RequestForgetpassword")
-);
-const EmailChangeRequest = lazy(() =>
-  import("./pages/Accounts/EmailchangeRequest")
-);
-const VerifyEmailChnage = lazy(() =>
-  import("./pages/Accounts/VerifyEmailChnage")
-);
-const Term_Conditions = lazy(() => import("./pages/Term_Conditions"));
 import WholeProductpage from "./Skeleton/WholeProductpage";
 import ProtectedRoutes from "./global/ProtectedRoutes";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -45,8 +9,45 @@ import AddressContainerSkeleton from "./Skeleton/AddressContainerSkeleton";
 import AddressCheckoutSkeleton from "./Skeleton/AddressCheckoutSkeleton";
 import ConfirmOrderSkeleton from "./Skeleton/ConfirmOrderSkeleton";
 import PaymentSkeleton from "./Skeleton/PaymentSkeleton";
+import { lazy, Suspense } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+const Home = lazy(() => import("./pages/Home"));
+const Signin = lazy(() => import("./Auth/Signin"));
+const Signup = lazy(() => import("./Auth/Signup"));
+const Cart = lazy(() => import("./pages/Cart"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const ProductPage = lazy(() => import("./pages/Products/ProductPage"));
+const Checkout = lazy(() => import("./pages/Checkout/Checkout"));
+const ConfrimOrder = lazy(() => import("./pages/Checkout/ConfrimOrder"));
+const ProductSearch = lazy(() => import("./pages/ProductSearch"));
+const Address = lazy(() => import("./pages/Accounts/Address"));
+const Profile = lazy(() => import("./pages/Accounts/Profile"));
+const ChangePassword = lazy(() => import("./pages/Accounts/ChangePassword"));
+const Term_Conditions = lazy(() => import("./pages/Term_Conditions"));
 const OrderSuccess = lazy(() => import("./Components/OrderSuccess"));
 const SessionExpired = lazy(() => import("./Components/SessionExpired"));
+const Payment = lazy(() => import("./pages/Checkout/Payment"));
+const UserOrdersHistory = lazy(() => import("./pages/Accounts/Order"));
+const ForgetPassword = lazy(() => import("./pages/Accounts/ForgetPassword"));
+const CategoryProduct = lazy(() => import('./pages/CategoryProducts/CategoryProduct'))
+const AccountContainer = lazy(() =>
+  import("./pages/Accounts/AccountContainer")
+);
+const ProductByCategory = lazy(() =>
+  import("./shop/Category/ProductByCategory")
+);
+const ForgetPasswordRequest = lazy(() =>
+  import("./pages/Accounts/RequestForgetpassword")
+);
+const EmailChangeRequest = lazy(() =>
+  import("./pages/Accounts/EmailchangeRequest")
+);
+const VerifyEmailChnage = lazy(() =>
+  import("./pages/Accounts/VerifyEmailChnage")
+);
+
 
 function App() {
   return (
@@ -225,18 +226,14 @@ function App() {
             }
           />
           <Route
+            path="/:category"
+            element={<Suspense fallback={'loading'}><CategoryProduct /></Suspense>}
+          />
+          <Route
             path="/V2/shop/search"
             element={
               <Suspense fallback={<p>laoding</p>}>
                 <ProductSearch />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/V2/shop/products"
-            element={
-              <Suspense fallback={<p>laoding</p>}>
-                <Products />
               </Suspense>
             }
           />
@@ -266,7 +263,6 @@ function App() {
           />
         </Routes>
       </Router>
-
       <ToastContainer />
     </div>
   );
