@@ -122,6 +122,7 @@ export default function SimilarProducts() {
                             item.name.slice(1)}
                         </span>
 
+                        
                       </p>
                       <h1 className="product_rating text-[18px]">
                         <Rating value={item.average_rating} />

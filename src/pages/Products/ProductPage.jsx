@@ -182,7 +182,10 @@ export default function ProductPage() {
       }
     }
   };  
+
+
   
+
 
   // next slide
   const nextSlide = (product_image) => {
