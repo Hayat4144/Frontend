@@ -90,7 +90,7 @@ export default function ProductPage() {
     return uniqueAttributeArray;
   };
 
-  const UniqueVarients = removeDuplicateAttributesNameValue(product_varient);
+  // const UniqueVarients = removeDuplicateAttributesNameValue(product_varient);
 
   const handleAttributeChange = (name, value) => {
     setSelectedAttributes((prevState) => ({
@@ -184,7 +184,7 @@ export default function ProductPage() {
   };  
 
 
-  
+
 
 
   // next slide
