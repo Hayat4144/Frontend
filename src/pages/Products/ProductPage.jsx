@@ -41,6 +41,7 @@ export default function ProductPage() {
   const [originalprice, setoriginalprice] = useState("");
   const { IsLogdin } = useSelector((state) => state.Signin);
   const navigate = useNavigate();
+  const [UniqueVarients, setUniqueVarients] = useState([])
 
   useEffect(() => {
     setIsLoading(true);
@@ -55,6 +56,7 @@ export default function ProductPage() {
       const { Products, Varients, error } = await Response.json();
       setIsLoading(false);
       if (Response.status !== 200) return console.error(error);
+      if (Varients.length > 0) setUniqueVarients(removeDuplicateAttributesNameValue(Varients))
       setoriginalprice(Products.price);
       setProduct_detail([Products]);
       setProduct_varient(Varients);
@@ -66,6 +68,7 @@ export default function ProductPage() {
   }, [id]);
 
   const removeDuplicateAttributesNameValue = (variants) => {
+    console.log('ok')
     const uniqueAttributes = {};
 
     variants.forEach((variant) => {
@@ -181,7 +184,7 @@ export default function ProductPage() {
         dispatch({ type: UPDATE_CART_ITEM, payload: updatedItem });
       }
     }
-  };  
+  };
 
 
 
@@ -257,7 +260,7 @@ export default function ProductPage() {
     queryParams.append('ProductId', product_detail[0]._id)
     queryParams.toString();
     const updated_url = `/V2/shop/checkout?${queryParams}`
-    sessionStorage.setItem('checkOutSession','active')
+    sessionStorage.setItem('checkOutSession', 'active')
     navigate(updated_url)
   }
 
