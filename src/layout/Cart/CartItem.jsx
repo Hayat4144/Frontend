@@ -116,7 +116,7 @@ export default function CartItem() {
 
         {CartData.map((item, index) => {
           let product = productDetails[index];
-          let variant = variantDetails[index];
+          let variant = variantDetails.find(vart => vart._id === item.ProductvarientId)
           return (
             <div
               key={item.ProductvarientId ? item.ProductvarientId : item.ProductId}
@@ -166,14 +166,14 @@ export default function CartItem() {
                         DescreaseQuantity(item.ProductId, item.quantity);
                       }}
                     >
-                      <AiOutlineMinus fontSize={"22px"} onClick={() => {}} />
+                      <AiOutlineMinus fontSize={"22px"} onClick={() => { }} />
                     </button>
                     <input
                       type={"text"}
                       className="w-10 border border-indigo-800 outline-none bg-transparent text-black px-1
                     text-center"
                       value={item.quantity}
-                      onChange={(e) => {}}
+                      onChange={(e) => { }}
                     />
                     <button className="increase-button text-white bg-indigo-800 rounded-full">
                       <BiPlus
@@ -232,8 +232,8 @@ export default function CartItem() {
                     {(variant && variant.price
                       ? variant.price
                       : product
-                      ? product.price
-                      : 0) * item.quantity}
+                        ? product.price
+                        : 0) * item.quantity}
                   </span>
                 </h2>
               </div>
