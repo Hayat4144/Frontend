@@ -181,7 +181,8 @@ export default function ProductPage() {
         dispatch({ type: UPDATE_CART_ITEM, payload: updatedItem });
       }
     }
-  };
+  };  
+  
 
   // next slide
   const nextSlide = (product_image) => {

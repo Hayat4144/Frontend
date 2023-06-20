@@ -128,7 +128,7 @@ export default function SimilarProducts() {
                       </h1>
                       <p className="font-bold text-xl">
                         Rs{item.price}
-                      </p>
+                      </p>   
                     </div>
                   </Link>
                 </div>
