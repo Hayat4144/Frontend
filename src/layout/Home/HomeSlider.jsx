@@ -1,43 +1,17 @@
 import React, { Fragment, useEffect, useState } from 'react'
-// import ImageThumbnail_1 from '../../assets/SliderImage/Slider_1.jpg'
-// import ImageThumbnail_2 from '../../assets/SliderImage/Slider_2.jpg'
-// import ImageThumbnail_3 from '../../assets/SliderImage/Slider_3.jpg'
-// import ImageThumbnail_4 from '../../assets/SliderImage/Slider_4.jpg'
 import { BsArrowLeftCircle, BsArrowRightCircle } from 'react-icons/bs'
 import '../../index.css'
 import SlidersProducts from '../../shop/SlidersProducts'
 import Skeleton from 'react-loading-skeleton'
+import { BannerData } from '../../global/BannerData'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 
 export default function HomeSlider() {
     const [slideIndex, setSlideIndex] = useState(0)
-    const [SliderImage, setSliderImage] = useState([])
+    const [SliderImage, setSliderImage] = useState(BannerData)
     const [isLoading, setIsLoading] = useState(false)
     const [noProduct, setNoProduct] = useState(false)
-    useEffect(() => {
-        async function fetchBanner() {
-            setIsLoading(true)
-            await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v4/api/read/banner`, {
-                method: "GET",
-                credentials: 'include',
-                headers: {
-                    'content-type': 'application/json'
-                }
-            }).then(async (res) => {
-                const { data } = await res.json();
-                if (data.length < 1) {
-                    setNoProduct(true)
-                    setIsLoading(false)
-                    return;
-                }
-                setSliderImage(data);
-                setIsLoading(false)
-            })
-                .catch(error => console.log(error))
-        }
-        fetchBanner();
-    }, [])
 
     // next slide
     const nextSlide = () => {
@@ -63,7 +37,7 @@ export default function HomeSlider() {
         <Fragment>
             {
                 isLoading ? <div className='w-full'>
-                    <Skeleton className='w-full md:h-[400px] lg:h-[550px] '/>
+                    <Skeleton className='w-full md:h-[400px] lg:h-[550px] ' />
                 </div> : noProduct ? <div>no product found</div> : <section className='hero_section_slider_container w-full'>
                     <figure className='slider_image_container'>
                         <img className='home_slider_image w-full md:h-[400px] lg:h-[550px]'
