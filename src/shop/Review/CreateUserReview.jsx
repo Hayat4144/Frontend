@@ -4,6 +4,8 @@ import { toast } from 'react-toastify'
 import { BsStarFill } from 'react-icons/bs'
 import { Rating, Typography } from '@mui/material'
 import { useEffect } from 'react'
+import { BASE_URL } from '../../global/Base_URL'
+import { Toast_Config_Option } from '../../global/Toast_Config'
 
 
 export default function CreateUserReview({ isModalOpen, RatingModalToggle }) {
@@ -22,7 +24,7 @@ export default function CreateUserReview({ isModalOpen, RatingModalToggle }) {
 
     const ReviewSubmitHandler = async () => {
         setIsLoading(!isLoading)
-        const result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/v4/api/product/reviews`, {
+        const result = await fetch(`${BASE_URL}/v4/api/product/reviews`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
@@ -37,30 +39,12 @@ export default function CreateUserReview({ isModalOpen, RatingModalToggle }) {
         const response = await result.json();
         if (result.status !== 200) {
             setIsLoading(false)
-            toast.error(response.error, {
-                position: 'bottom-center',
-                autoClose: 5000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            })
+            toast.error(response.error, Toast_Config_Option)
             return;
         }
         setIsLoading(false)
         console.log(response.data);
-        toast.success(response.data, {
-            position: "bottom-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-        });
+        toast.success(response.data, Toast_Config_Option);
         RatingModalToggle(showModal)
     }
 

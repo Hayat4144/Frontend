@@ -67,6 +67,7 @@ export default function ProductPage() {
     };
   }, [id]);
 
+
   const removeDuplicateAttributesNameValue = (variants) => {
     console.log('ok')
     const uniqueAttributes = {};
@@ -392,9 +393,9 @@ export default function ProductPage() {
         />
       </Suspense>
 
-      <Suspense fallback={<p>loading....</p>}>
+      {/* <Suspense fallback={<p>loading....</p>}>
         <SimilarProducts />
-      </Suspense>
+      </Suspense> */}
 
       <Suspense fallback={<p>loading....</p>}>
         <Footer />
