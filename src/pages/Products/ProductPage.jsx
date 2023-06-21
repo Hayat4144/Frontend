@@ -296,7 +296,7 @@ export default function ProductPage() {
               <ProductDetails product={item} />
               {/* ----- product varients ----- */}
 
-              {UniqueVarients.length &&
+              {UniqueVarients.length > 0 &&
 
                 UniqueVarients.map((varient, index) => (
                   <Fragment key={index}>
