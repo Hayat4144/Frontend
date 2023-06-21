@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { BsArrowLeftCircle, BsArrowRightCircle } from 'react-icons/bs'
 import '../../index.css'
-import SlidersProducts from '../../shop/SlidersProducts'
 import Skeleton from 'react-loading-skeleton'
 import { BannerData } from '../../global/BannerData'
 import 'react-loading-skeleton/dist/skeleton.css'
@@ -44,7 +43,7 @@ export default function HomeSlider() {
                             src={SliderImage[slideIndex]?.image} />
                     </figure>
                     <div className='w-full px-5 justify-between  text-white 
-                        font-bold text-4xl md:text-6xl flex absolute top-36  sm:top-48 
+                        font-bold text-4xl md:text-6xl flex absolute top-60 sm:top-72
                         md:top-56 lg:top-80'>
                         <h3 className='cursor-pointer' onClick={() => {
                             backslide();
@@ -55,10 +54,6 @@ export default function HomeSlider() {
                     </div>
                 </section>
             }
-
-            <div className='slider_products mx-5'>
-                <SlidersProducts />
-            </div>
         </Fragment >
     )
 }
