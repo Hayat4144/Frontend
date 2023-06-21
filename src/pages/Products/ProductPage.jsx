@@ -55,7 +55,6 @@ export default function ProductPage() {
       const { Products, Varients, error } = await Response.json();
       setIsLoading(false);
       if (Response.status !== 200) return console.log(error);
-      console.log(Varients)
       if (Varients.length > 0) setUniqueVarients(removeDuplicateAttributesNameValue(Varients))
       setoriginalprice(Products.price);
       setProduct_detail([Products]);
@@ -69,7 +68,6 @@ export default function ProductPage() {
 
 
   const removeDuplicateAttributesNameValue = (variants) => {
-    console.log('ok')
     const uniqueAttributes = {};
 
     variants.forEach((variant) => {
@@ -395,9 +393,9 @@ export default function ProductPage() {
         />
       </Suspense>
 
-      {/* <Suspense fallback={<p>loading....</p>}>
+      <Suspense fallback={<p>loading....</p>}>
         <SimilarProducts />
-      </Suspense> */}
+      </Suspense>
 
       <Suspense fallback={<p>loading....</p>}>
         <Footer />
