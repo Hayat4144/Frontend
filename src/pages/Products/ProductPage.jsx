@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import NavbarSkeleton from "../../Skeleton/NavbarSkeleton";
 import {
   ADD_TO_CART_ACTION,
-  UPDATE_CART_ACTION,
 } from "../../Context/Actions/CartActions";
 import ProductPageSkeleton from "../../Skeleton/ProductPageSkeleton";
 import { Toast_Config_Option } from "../../global/Toast_Config";
@@ -55,7 +54,8 @@ export default function ProductPage() {
       );
       const { Products, Varients, error } = await Response.json();
       setIsLoading(false);
-      if (Response.status !== 200) return console.error(error);
+      if (Response.status !== 200) return console.log(error);
+      console.log(Varients)
       if (Varients.length > 0) setUniqueVarients(removeDuplicateAttributesNameValue(Varients))
       setoriginalprice(Products.price);
       setProduct_detail([Products]);
@@ -298,40 +298,42 @@ export default function ProductPage() {
               <ProductDetails product={item} />
               {/* ----- product varients ----- */}
 
-              {UniqueVarients.map((varient, index) => (
-                <Fragment key={index}>
-                  <div
-                    className="attribute flex items-center space-x-5 my-5"
-                    key={index}
-                  >
-                    <h2 className="product_attribute_name  capitalize">
-                      {varient.name}
-                    </h2>
-                    <div className="w-full">
-                      <form className="size_form">
-                        <select
-                          value={selectedAttributes[varient.name] || ""}
-                          onChange={(e) =>
-                            handleAttributeChange(varient.name, e.target.value)
-                          }
-                          className="px-5 py-2 rounded-md w-full focus:border-2
+              {UniqueVarients.length &&
+
+                UniqueVarients.map((varient, index) => (
+                  <Fragment key={index}>
+                    <div
+                      className="attribute flex items-center space-x-5 my-5"
+                      key={index}
+                    >
+                      <h2 className="product_attribute_name  capitalize">
+                        {varient.name}
+                      </h2>
+                      <div className="w-full">
+                        <form className="size_form">
+                          <select
+                            value={selectedAttributes[varient.name] || ""}
+                            onChange={(e) =>
+                              handleAttributeChange(varient.name, e.target.value)
+                            }
+                            className="px-5 py-2 rounded-md w-full focus:border-2
                          focus:border-indigo-700 focus:outline-none focus:ring-indigo-700 
                         border border-gray-500"
-                        >
-                          <option defaultValue={selectedColor}>
-                            Choose the {varient.name}{" "}
-                          </option>
-                          {varient.values.map((value, index) => (
-                            <option key={index} value={value}>
-                              {value}
+                          >
+                            <option defaultValue={selectedColor}>
+                              Choose the {varient.name}{" "}
                             </option>
-                          ))}
-                        </select>
-                      </form>
+                            {varient.values.map((value, index) => (
+                              <option key={index} value={value}>
+                                {value}
+                              </option>
+                            ))}
+                          </select>
+                        </form>
+                      </div>
                     </div>
-                  </div>
-                </Fragment>
-              ))}
+                  </Fragment>
+                ))}
 
               <ProductIncrementDecrement
                 IncreaseQuantity={IncreaseQuantity}
