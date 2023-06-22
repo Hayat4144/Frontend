@@ -25,7 +25,6 @@ export default function CategoryList() {
                         <li key={cat._id}
                             onMouseEnter={(e) => {
                                 e.stopPropagation();
-                                console.log('top cat enter')
                                 handleMouseEnter(cat._id)
                             }}
                             className="hover:text-indigo-700 hover:border-b-2 
