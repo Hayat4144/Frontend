@@ -12,13 +12,14 @@ import { FiFilter } from "react-icons/fi";
 import PriceFilter from "../layout/ProductSearch/PriceFilter";
 import StarFilter from "../layout/ProductSearch/StarFilter";
 import Pagination from "../Components/Pagination";
+import { Typography } from "@mui/material";
 
 export default function ProductSrch() {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [noProduct, setNoProduct] = useState(false);
   const [totalProduct, setTotalProduct] = useState();
-  const [showProductPerPage, setShowProductPerPage] = useState(10);
+  const [showProductPerPage, setShowProductPerPage] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
   const [RatingOpen, setRatingOpen] = useState(true);
   const [PriceOpen, setPriceOpen] = useState(true);
@@ -28,18 +29,19 @@ export default function ProductSrch() {
   const [price, setprice] = useState([0, 8000]);
   const [searchParams] = useSearchParams();
   const searchvalue = searchParams.get("keyword");
+  const category = searchParams.get('category')
 
   // fetch products from backend api
   useEffect(() => {
-    const query = `search=${searchvalue}&price[gte]=${price[0]}&price[lte]=${
-      price[1]
-    }&page=${currentPage}&Star=${Star}&sort=${
-      sort === "sortPriceLowToHigh"
+    const search_text = `search=${searchvalue}`
+    const category_search = `category=${category}`
+    let query = `${category ? category_search : search_text}&price[gte]=${price[0]}&price[lte]=${price[1]
+      }&page=${currentPage}&Star=${Star}&sort=${sort === "sortPriceLowToHigh"
         ? "price"
         : sort === "sortPriceHighToLow"
-        ? "price"
-        : sort
-    }${sort === "sortPriceHighToLow" ? "&orderby=desc" : ""}`;
+          ? "price"
+          : sort
+      }${sort === "sortPriceHighToLow" ? "&orderby=desc" : ""}`;
     const link = `${BASE_URL}/v4/api/get_all/product?${query}`;
     async function fetchProduct() {
       setIsLoading(!isLoading);
@@ -63,10 +65,10 @@ export default function ProductSrch() {
       setTotalProduct(Number(total_result[0].count));
     }
     fetchProduct();
-  }, [searchvalue, price, sort, currentPage, Star]);
+  }, [searchvalue, price, sort, currentPage, Star, category]);
 
-  if (totalProduct > 10) {
-    var numberofPages = Math.ceil(totalProduct / 10);
+  if (totalProduct > 20) {
+    var numberofPages = Math.ceil(totalProduct / 20);
     var page_number = [...Array(numberofPages + 1).keys()].slice(1);
   }
 
@@ -107,12 +109,13 @@ export default function ProductSrch() {
             shadow-md h-10 md:h-12  w-full px-5 flex items-center justify-between 
             border-gray-400"
           >
+            
             <ShowHeaderInfo
               startingProductNumber={startingProductNumber}
               lastProductNumber={lastProductNumber}
               totalProduct={totalProduct}
             />
-            <div className="sort_box md:flex items-center justify-between px-2 border hidden  border-gray-300">
+            <div className="sort_box md:flex w-fit rounded-md py-1 items-center justify-between px-2 border hidden  border-gray-300">
               <h4>Sort:</h4>
               <SortFilter paddingX={4} sort={sort} setsort={setsort} />
             </div>
@@ -122,26 +125,27 @@ export default function ProductSrch() {
         <section className="md:grid grid-cols-10">
           {/* for small screen */}
           {!noProduct || products.length > 1 ? (
-            <aside className="md:hidden filter-sort-for-mobile-only  grid grid-cols-2 px-5">
-              <div className="sort_box flex items-center justify-between px-2 overflow-hidden border border-gray-300">
-                <h4>Sort:</h4>
-                <SortFilter paddingX={4} sort={sort} setsort={setsort} />
+            <aside className="md:hidden filter-sort-for-mobile-only pb-5 grid grid-cols-2 px-5">
+              <div className="border flex w-fit items-center py-1 px-2 rounded-md border-gray-300">
+                <h4 >Sort:</h4>
+                <SortFilter sort={sort} setsort={setsort} />
               </div>
               <article className="filter">
-                <h3 className="flex items-center md:hidden space-x-3  md:float-left float-right font-[500]">
+                <h3
+                  className="flex items-center md:hidden space-x-3  md:float-left float-right font-[500]"
+                  onClick={() => setisMobilfilter(!isMobilfilter)}>
                   <span className="filter_text">Filter</span>
                   <FiFilter
                     className="focus:text-indigo-800 text-xl"
-                    onClick={() => setisMobilfilter(!isMobilfilter)}
                   />
                 </h3>
                 <aside
-                  className={`${
-                    isMobilfilter ? "flex" : "hidden"
-                  } w-full h-full 
+                  className={`${isMobilfilter ? "flex" : "hidden"
+                    } w-full h-full 
                 flex fixed  bg-black inset-0 bg-opacity-30 opacity-100 space-x-10 z-50`}
                 >
-                  <div className="filter_box bg-white w-4/6 h-full px-5 py-10">
+                  <div className="filter_box bg-white w-[72%] h-full px-5 py-10">
+                    <Typography>Add your Filters </Typography>
                     <form className="filter-form my-4">
                       <StarFilter
                         setRatingOpen={setRatingOpen}
@@ -189,11 +193,11 @@ export default function ProductSrch() {
               />
             </form>
           </aside>
-          <div className="col-span-7 lg:col-span-8 mx-2 md:mx-4">
+          <div className="col-span-7 lg:col-span-8 mx-2 md:mx-4 mb-5">
             <ProductList ProductsData={products} noProduct={noProduct} />
           </div>
         </section>
-        {totalProduct > 10 ? (
+        {totalProduct > 20 ? (
           <Pagination
             previousPage={previousPage}
             currentPage={currentPage}

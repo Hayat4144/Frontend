@@ -10,7 +10,7 @@ export default function SortFilter({ paddingX , sort, setsort }) {
         id="sort"
         value={sort}
         onChange={(e) => setsort(e.target.value)}
-        className={`px-${paddingX} py-1 rounded-md bg-inherit`}
+        className={`px-${paddingX} py-1 w-fit rounded-md bg-inherit`}
         >
         <option value={sortByName}> Name</option>
         <option value={sortPriceHighToLow}>Price Hight to low</option>
