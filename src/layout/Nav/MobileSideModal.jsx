@@ -29,11 +29,11 @@ export default function MobileSideModal({ mobileModal, MobileSideModalToggle }) 
 
     const logoutFunc = async () => {
         await fetch(`${import.meta.env.DEV ? import.meta.env.VITE_BACKEND_DEV_URL : import.meta.env.VITE_BACKEND_URL}/v3/api/user/logout`, {
-            method: "GET",
+            method: "DELETE",
             headers: {
                 'Content-Type': "application/json"
             },
-            credentials: 'include'
+            credentials:'include',
         }).then(async res => {
             const { data, error } = await res.json();
             if (res.status !== 200) {
