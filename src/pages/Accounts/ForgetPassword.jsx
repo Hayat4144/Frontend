@@ -4,6 +4,8 @@ import NavbarSkeleton from '../../Skeleton/NavbarSkeleton'
 import { Helmet } from 'react-helmet'
 import { toast } from 'react-toastify'
 import { useParams } from 'react-router-dom'
+import { BASE_URL } from '../../global/Base_URL'
+import { Toast_Config_Option } from '../../global/Toast_Config'
 
 export default function ForgetPassword() {
     const [newpassword, setNewpassword] = useState('')
@@ -17,7 +19,7 @@ export default function ForgetPassword() {
     // submitHandler 
     const SubmitHandler = async () => {
         setIsLoading(!isLoading)
-        const result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/v3/api/user/reset/password/verify/done`, {
+        const result = await fetch(`${BASE_URL}/v3/api/user/reset/password/verify/done`, {
             method: 'PUT',
             headers: {
                 "Content-Type": "application/json",
@@ -32,29 +34,10 @@ export default function ForgetPassword() {
         const data = await result.json();
         setIsLoading(false)
         if (result.status === 200) {
-            console.log(data)
-            toast.success(data.data, {
-                position: "bottom-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
+            toast.success(data.data, Toast_Config_Option);
         }
         else {
-            toast.error(data.error, {
-                position: 'bottom-center',
-                autoClose: 5000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            })
+            toast.error(data.error, Toast_Config_Option)
         }
     }
 
@@ -68,7 +51,7 @@ export default function ForgetPassword() {
             </Suspense>
             <div className='forgetPasswordPage'>
                 <div className='text-center page-text mb-5'>
-                    <h3 className='mx-4 py-1 text-3xl mt-3 font-[1000]'>Forget  your password</h3>
+                    <h3 className='mx-4 py-1 text-3xl mt-3 font-[1000]'>Reset your password</h3>
                 </div>
                 <div className="changepassword_container sm:mx-auto sm:w-[50%] mt-4 xl:mx-auto xl:w-[30%]  lg:mx-auto 
                     lg:w-[25%] border md:w-[50%] md:m-auto border-gray-300 shadow-lg 
@@ -123,7 +106,7 @@ export default function ForgetPassword() {
                               hover:bg-indigo-700'>Change password</button> : <button type="button"
                                 className="inline-flex items-center justify-center py-2  leading-4 
                               text-sm shadow rounded-md text-white bg-indigo-800 hover:bg-indigo-900
-                               w-24 text-center transition ease-in-out duration-150 cursor-not-allowed"
+                               w-full text-center transition ease-in-out duration-150 cursor-not-allowed"
                                 disabled="">
                                 <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-slate-500"
                                     xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

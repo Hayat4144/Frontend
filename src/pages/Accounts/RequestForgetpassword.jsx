@@ -3,6 +3,8 @@ const Navbar = lazy(() => import('../../layout/Nav/Navbar'))
 import NavbarSkeleton from '../../Skeleton/NavbarSkeleton'
 import { Helmet } from 'react-helmet'
 import { toast } from 'react-toastify'
+import { BASE_URL } from '../../global/Base_URL'
+import { Toast_Config_Option } from '../../global/Toast_Config'
 
 export default function RequestForgetpassword() {
     const [email, setemail] = useState('')
@@ -12,7 +14,7 @@ export default function RequestForgetpassword() {
     // submitHandler 
     const SubmitHandler = async () => {
         setIsLoading(!isLoading)
-        const result = await fetch(`${import.meta.env.VITE_BACKEND_URL}/v3/api/user/reset/password/request`, {
+        const result = await fetch(`${BASE_URL}/v3/api/user/reset/password/request`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
@@ -26,28 +28,10 @@ export default function RequestForgetpassword() {
         setIsLoading(false)
         if (result.status === 200) {
             console.log(data)
-            toast.success(data.data, {
-                position: "bottom-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
+            toast.success(data.data, Toast_Config_Option);
         }
         else {
-            toast.error(data.error, {
-                position: 'bottom-center',
-                autoClose: 5000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            })
+            toast.error(data.error, Toast_Config_Option)
         }
     }
     return (
