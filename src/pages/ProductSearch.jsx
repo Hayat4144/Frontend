@@ -115,7 +115,7 @@ export default function ProductSrch() {
               lastProductNumber={lastProductNumber}
               totalProduct={totalProduct}
             />
-            <div className="sort_box md:flex w-fit rounded-md py-1 items-center justify-between px-2 border hidden  border-gray-300">
+            <div className="sort_box md:flex w-fit rounded-md items-center justify-between px-2 border hidden  border-gray-300">
               <h4>Sort:</h4>
               <SortFilter paddingX={4} sort={sort} setsort={setsort} />
             </div>
