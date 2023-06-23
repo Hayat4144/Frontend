@@ -1,7 +1,8 @@
 import React, { Fragment, useState, useEffect, lazy } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Rating } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import SampleProductSkeleton from "../Skeleton/SampleProductSkeleton";
+import SliderProduct from "./SliderProduct";
+
 
 export default function SampleProducts({ name }) {
   //  -------------------- product details ------------------------ //
@@ -14,10 +15,9 @@ export default function SampleProducts({ name }) {
   const fetchData = async () => {
     setIsLoading(!isLoading);
     await fetch(
-      `${
-        import.meta.env.DEV
-          ? import.meta.env.VITE_BACKEND_DEV_URL
-          : import.meta.env.VITE_BACKEND_URL
+      `${import.meta.env.DEV
+        ? import.meta.env.VITE_BACKEND_DEV_URL
+        : import.meta.env.VITE_BACKEND_URL
       }/v4/api/get/sample/product?search=${name}`,
       {
         method: "GET",
@@ -41,6 +41,7 @@ export default function SampleProducts({ name }) {
     fetchData();
   }, []);
 
+
   return (
     <Fragment>
       {isLoading ? (
@@ -53,42 +54,8 @@ export default function SampleProducts({ name }) {
         </div>
       ) : (
         <Fragment>
-          <div className="sample_product_container mx-2  md:px-5 px-2 py-5 mb-5 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-            {product_detail.map((item, index) => (
-              <div className="product_detaiils" key={item._id}>
-                <figure className="overflow-hidden">
-                  <img
-                    src={item.assets.images[0].url}
-                    alt="product-pic"
-                    className="w-full h-56  hover:scale-125  transition ease-in-out duration-500"
-                  />
-                </figure>
-                <Link
-                  className="product_details my-2"
-                  to={`/V2/shop/product/${item._id}/${
-                    item.name
-                  }/${encodeURIComponent(item.category)}`}
-                >
-                  <p
-                    className="product_name capitalize w-full sm:justify-between cursor-pointer
-                                    text-xl hover:text-indigo-700 sm:flex items-center  sm:font-extrabold"
-                  >
-                    <span className="product_name block">
-                      {item.name.length > 20
-                        ? `${item.name.substring(0, 20)}...`
-                        : item.name}
-                    </span>
-                    <span className="currency_symbol block">
-                      {" "}
-                      Rs {item.price}{" "}
-                    </span>
-                  </p>
-                  <h1 className="product_rating my-2  text-[18px]">
-                    <Rating value={item.average_rating} />
-                  </h1>
-                </Link>
-              </div>
-            ))}
+          <div className="mx-2 my-5">
+            <SliderProduct product_detail={product_detail} />
           </div>
         </Fragment>
       )}

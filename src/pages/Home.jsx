@@ -23,34 +23,29 @@ export default function Home() {
         <Suspense fallback={<SampleProductSkeleton />}>
           <HomeSlider />
         </Suspense>
-        <div className="bg-gray-200">
-          <div className="mx-2"> <SlidersProducts /> </div>
-          <section className="sample_product_show bg-white mx-2">
-            <div className="product_show_title px-5 py-5">
-              <h4 className="text-xl font-bold hover:text-indigo-700">
-                Top shoes for Men and women
-              </h4>
-            </div>
+        <section className="bg-gray-200 w-full h-full px-2 pb-5">
+          <SlidersProducts />
+          <div className="bg-white mb-5 py-5">
+            <h4 className="text-xl font-bold mx-5">
+              Top shoes for Men and women
+            </h4>
             <Suspense fallback={<SampleProductSkeleton />}>
               <SampleProducts name="shoes" />
             </Suspense>
-          </section>
-          <section className="sample_product_show bg-white mx-2">
-            <div className="product_show_title px-5 py-5">
-              <h4 className="text-xl font-bold hover:text-indigo-700">
-                Latest Jhumka designed for collage girl
-              </h4>
-            </div>
+          </div>
+          
+          <div className="bg-white mb-5 py-5">
+            <h4 className="text-xl font-bold mx-5">
+            Latest Jhumka designed for collage girl
+            </h4>
             <Suspense fallback={<SampleProductSkeleton />}>
               <SampleProducts name="jhumka" />
             </Suspense>
-          </section>
-        </div>
-        <div className="footer_box">
-          <Suspense fallback={<p>loading...</p>}>
+          </div>
+        </section>
+        <Suspense fallback={<p>loading...</p>}>
             <Footer />
-          </Suspense>
-        </div>
+          </Suspense>    
       </main>
     </Fragment>
   );
