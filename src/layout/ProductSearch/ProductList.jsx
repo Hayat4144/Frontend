@@ -1,10 +1,11 @@
 import React, { Fragment } from "react";
 import NoResult from "../../assets/images/no-results.png";
-import { Rating, Typography } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Rating, } from "@mui/material";
+import { Link } from "react-router-dom";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 export default function ProductList({ ProductsData, noProduct }) {
-  const navigate = useNavigate();
   return (
     <Fragment>
       <Fragment>
@@ -13,10 +14,11 @@ export default function ProductList({ ProductsData, noProduct }) {
             {ProductsData.map((item) => (
               <div key={item._id} className="cursor-pointer">
                 <figure className="overflow-hidden rounded-md">
-                  <img
+                  <LazyLoadImage
                     src={item.assets.images[0].url}
                     alt="product-pic"
-                    className="w-full h-56 rounded-md hover:scale-125  transition ease-in-out duration-500"
+                    effect="blur"
+                    className="w-full h-56  hover:scale-125  transition ease-in-out duration-500"
                   />
                 </figure>
                 <Link to={`/V2/shop/product/${item._id}/${item.name}/${encodeURIComponent(item.category)}`}

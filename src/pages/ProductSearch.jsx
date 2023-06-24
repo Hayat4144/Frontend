@@ -13,6 +13,14 @@ import PriceFilter from "../layout/ProductSearch/PriceFilter";
 import StarFilter from "../layout/ProductSearch/StarFilter";
 import Pagination from "../Components/Pagination";
 import { Typography } from "@mui/material";
+import SampleProductSkeleton from "../Skeleton/SampleProductSkeleton";
+
+
+const MemoNavbarSkeleton = React.memo(NavbarSkeleton);
+const MemoNavbar = React.memo(Navbar);
+const MemoFooter = React.memo(Footer);
+const MemoProductList = React.memo(ProductList);
+const MemoSampleProductSkeleton = React.memo(SampleProductSkeleton);
 
 export default function ProductSrch() {
   const [products, setProducts] = useState([]);
@@ -31,41 +39,54 @@ export default function ProductSrch() {
   const searchvalue = searchParams.get("keyword");
   const category = searchParams.get('category')
 
-  // fetch products from backend api
-  useEffect(() => {
-    const search_text = `search=${searchvalue}`
-    const category_search = `category=${category}`
-    let query = `${category ? category_search : search_text}&price[gte]=${price[0]}&price[lte]=${price[1]
-      }&page=${currentPage}&Star=${Star}&sort=${sort === "sortPriceLowToHigh"
+
+  // Move the API request logic to a separate function
+  async function fetchProducts(searchvalue, price, sort, currentPage, Star, category) {
+    setIsLoading(true);
+    const search_text = `search=${searchvalue}`;
+    const category_search = `category=${category}`;
+    let query = `${category ? category_search : search_text}&price[gte]=${price[0]}&price[lte]=${price[1]}&page=${currentPage}&Star=${Star}&sort=${sort === "sortPriceLowToHigh"
+      ? "price"
+      : sort === "sortPriceHighToLow"
         ? "price"
-        : sort === "sortPriceHighToLow"
-          ? "price"
-          : sort
-      }${sort === "sortPriceHighToLow" ? "&orderby=desc" : ""}`;
+        : sort}${sort === "sortPriceHighToLow" ? "&orderby=desc" : ""}`;
     const link = `${BASE_URL}/v4/api/get_all/product?${query}`;
-    async function fetchProduct() {
-      setIsLoading(!isLoading);
-      const Response = await fetch(link, {
+
+    try {
+      const response = await fetch(link, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
       });
-      if (Response.status !== 200) {
+
+      if (response.status !== 200) {
         setNoProduct(true);
-        setIsLoading(false);
         setProducts([]);
+        setTotalProduct(0);
         return;
       }
-      const { data } = await Response.json();
-      setIsLoading(false);
+
+      const { data } = await response.json();
       const { result, total_result } = data[0];
       setProducts(result);
       setTotalProduct(Number(total_result[0].count));
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      setNoProduct(true);
+      setProducts([]);
+      setTotalProduct(0);
+    } finally {
+      setIsLoading(false);
     }
-    fetchProduct();
+  }
+
+  // Update the useEffect dependency array to only include necessary variables
+  useEffect(() => {
+    fetchProducts(searchvalue, price, sort, currentPage, Star, category);
   }, [searchvalue, price, sort, currentPage, Star, category]);
+
 
   if (totalProduct > 20) {
     var numberofPages = Math.ceil(totalProduct / 20);
@@ -99,8 +120,8 @@ export default function ProductSrch() {
 
   return (
     <Fragment>
-      <Suspense fallback={<NavbarSkeleton />}>
-        <Navbar />
+      <Suspense fallback={<MemoNavbarSkeleton />}>
+        <MemoNavbar />
       </Suspense>
       <main className="grid row-span-2 gap-10">
         {!noProduct || products.length > 1 ? (
@@ -109,7 +130,6 @@ export default function ProductSrch() {
             shadow-md h-10 md:h-12  w-full px-5 flex items-center justify-between 
             border-gray-400"
           >
-            
             <ShowHeaderInfo
               startingProductNumber={startingProductNumber}
               lastProductNumber={lastProductNumber}
@@ -194,7 +214,8 @@ export default function ProductSrch() {
             </form>
           </aside>
           <div className="col-span-7 lg:col-span-8 mx-2 md:mx-4 mb-5">
-            <ProductList ProductsData={products} noProduct={noProduct} />
+            {isLoading ? <MemoSampleProductSkeleton /> :
+              <MemoProductList ProductsData={products} noProduct={noProduct} />}
           </div>
         </section>
         {totalProduct > 20 ? (
@@ -207,6 +228,9 @@ export default function ProductSrch() {
           />
         ) : null}
       </main>
+      <div className="mt-5">
+        <MemoFooter />
+      </div>
     </Fragment>
   );
 }
