@@ -187,6 +187,10 @@ export default function Order() {
                             </div>
                           )}
                         </div>
+                        <div className="payment-status flex space-x-3 items-center">
+                          <h1 className="text-[15px]">Payment status:</h1>
+                          <span className={`${item.paymentStatus === 'failed' ? 'text-red-700' : item.paymentStatus === 'paid' ? 'text-green-800 font-bold' : '' } capitalize font-bold`}>{item.paymentStatus}</span>
+                        </div>
                       </section>
                     </div>
                   ))
