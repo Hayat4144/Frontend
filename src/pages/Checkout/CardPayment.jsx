@@ -108,6 +108,7 @@ export default function CardPayment() {
     const { error, paymentIntent } = await stripe.handleCardAction(response.client_secret);
     if (error) {
       toast.error(error.message, Toast_Config_Option)
+      ConfirmPaymentIntent(error.payment_intent.id,error.payment_method.id);
       return;
     }
     const ConfirmPayment = await ConfirmPaymentIntent(paymentIntent.id, paymentIntent.payment_method);
